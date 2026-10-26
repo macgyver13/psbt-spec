@@ -3,7 +3,7 @@ name = "psbt-spec"
 version = "0.1.0"
 edition = "2021"
 description = "Executable declarative specification of PSBT v0 (BIP-174) and v2 (BIP-370) validity"
-license = "MIT"
+license = "CC0-1.0"
 
 [dependencies]
 base64 = "0.22"
