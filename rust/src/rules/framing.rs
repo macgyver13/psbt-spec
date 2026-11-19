@@ -1,6 +1,9 @@
 use crate::encoding::{scan, ScanError, MAGIC};
 
-// A PSBT MUST begin with the magic bytes 0x70736274FF.
+/// Checks GEN-F-1: every serialization starts with `70 73 62 74 FF`.
+///
+/// Accepts arbitrary bytes without prerequisites. Returns `Ok(())` exactly when
+/// that prefix is present, otherwise `Err`; trailing bytes are not checked.
 pub fn validate_magic(bytes: &[u8]) -> Result<(), String> {
     if !bytes.starts_with(&MAGIC) {
         return Err("missing magic bytes".into());
@@ -8,8 +11,12 @@ pub fn validate_magic(bytes: &[u8]) -> Result<(), String> {
     Ok(())
 }
 
-// Every record MUST be complete: each compact size, including the key type,
-// minimally encoded, and each key and value exactly its stated length.
+/// Checks GEN-F-2: records have complete, minimally encoded CompactSizes
+/// and exactly the declared key and value lengths.
+///
+/// Requires the magic check to have passed. Returns `Err` for record decoding
+/// errors, otherwise `Ok(())`. Missing magic and unterminated maps are left to
+/// the other framing checks; success alone does not permit parsing.
 pub fn validate_records(bytes: &[u8]) -> Result<(), String> {
     match scan(bytes) {
         Err(ScanError::Record(detail)) => Err(detail),
@@ -17,8 +24,11 @@ pub fn validate_records(bytes: &[u8]) -> Result<(), String> {
     }
 }
 
-// The serialization MUST end with a 0x00 separator closing its last map,
-// and MUST contain at least the global map.
+/// Checks GEN-F-3: at least the global map exists and every map terminates.
+///
+/// Requires magic and record checks to have passed. Returns `Err` for a missing
+/// map or final separator, otherwise `Ok(())`. Other scan failures are left to
+/// the preceding checks; only all three framing checks establish parseability.
 pub fn validate_maps_terminated(bytes: &[u8]) -> Result<(), String> {
     match scan(bytes) {
         Err(ScanError::Unterminated) => Err("last map is not terminated".into()),

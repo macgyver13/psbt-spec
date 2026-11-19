@@ -1,135 +1,174 @@
 # psbt-spec
 
-An executable, declarative specification of PSBT validity for version 0
-([BIP-174](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki)) and version 2
-([BIP-370](https://github.com/bitcoin/bips/blob/master/bip-0370.mediawiki)), built so that
-silent payment rules ([BIP-375](https://github.com/bitcoin/bips/blob/master/bip-0375.mediawiki),
-[BIP-376](https://github.com/bitcoin/bips/blob/master/bip-0376.mediawiki)) can be layered on top.
+An evaluation tool for the PSBT BIPs. Projects such as wallets, libraries and
+vector generators use it to judge their own compliance with the BIPs by rule
+ID: each rule has a stable ID, its BIP evidence, a strength and a coverage
+value, so a report can say which rules a project matches, over-enforces or
+misses. It specifies PSBT versions 0 and 2, including silent payments under
+BIP-375 and BIP-376. Extension rules cover
+Taproot (BIP-371), MuSig2 (BIP-373), DNS payment proofs (BIP-353), message
+signing (BIP-322), and pay-to-contract (BIP-372, Draft).
 
-The construction follows [Hornet's consensus specification](https://hornetnode.org/spec.html):
-the rules are a tree of small combinators, and each leaf names one validation function and states
-one normative MUST sentence. The difference here is that the tree describes itself, so
-[`spec.html`](spec.html) is rendered from the same graph that validates, not from comments.
+[`PRINCIPLES.md`](PRINCIPLES.md) states how the specification decides what a
+rule is and how it is worded, checked, tested and audited.
+
+[`rust/src/spec.rs`](rust/src/spec.rs) is the source of truth. It declares
+every rule, definition, reference and guidance entry once, in display order,
+with its normative strength (MUST, MUST NOT, SHOULD, MAY), each rule's coverage
+(Full, Partial, Declared, Pending), its BIP evidence, its wording and an
+optional reader note. The graphs below the declarations bind checks to rules
+with `check!(id, validator)` inside `section`, `all`, `each`, `with`, `when`,
+and BIP gates, in evaluation order. A rule may be bound at several points, as
+GEN-F-5 is for the global, input and output maps; an unknown or undeclared ID
+fails the build.
+
+[`rust/src/catalog.rs`](rust/src/catalog.rs) holds the declaration types, the
+preamble, the open questions and the import history, and joins declarations
+with the graph bindings. `spec::specification()` joins that metadata with
+the rule descriptions to generate [`spec.html`](spec.html). Neither the
+specification nor the renderer parses JSON.
+
+The HTML's Validation column links each rule binding beside its statement and
+shows its coverage. Reader-facing implementation notes describe material
+prerequisites and coverage limits.
+Coverage, not the presence of a binding, says how much of a statement its check
+decides.
+
+## New rule set
+
+| Designation | Meaning | Examples |
+|---|---|---|
+| `GEN-<section>-<number>` | Properties of a PSBT under the applicable version and extensions | `GEN-F-5`, `GEN-ST-1`, `GEN-SP-1`, `GEN-TR-1` |
+| `ROLE-<role>-<number>` | Duties or prerequisites at the named operation | `ROLE-C-3`, `ROLE-S-1`, `ROLE-F-7` |
+| `REF-<number>` | Procedures the rules cite | `REF-1`, `REF-5` |
+| `GUIDE-<number>` | Recommendations and permitted actions | `GUIDE-1`, `GUIDE-2` |
+
+Definitions have no ID; the page lists them by term. The General sections are
+Framing (`F`, bytes, records and field formats), Structure (`ST`, version,
+version fields and map count), Transaction (`T`), and the extensions.
+
+Extension sections use short names: `SP` (BIP-375/376), `TR` (BIP-371), `MS`
+(BIP-373), `DNS` (BIP-353), `MSG` (BIP-322), and `P2C` (BIP-372). Role statements
+continue the `ROLE-<role>-<number>` sequence.
+
+Published normative strengths are preserved. Guidance IDs identify entries without
+changing their SHOULD or MAY wording. Display order is not the order the reference checks run. The scope covers versions
+0 and 2, with an absent `PSBT_GLOBAL_VERSION` meaning version 0.
+
+Open questions are listed at the top of `spec.html`. Creator, Constructor, Updater, private-key signing, script construction,
+and missing-context outcomes require implementation work beyond the current APIs.
+
+## Implementation
+
+The combinators follow [Hornet's consensus specification](https://hornetnode.org/spec.html).
+A rule's ID is the error code its check reports. BIP-375 and BIP-376 semantics are
+explicitly enabled through `Bip`.
+
+The catalog graphs are evaluated with explicit `Incomplete` and `NotApplicable`
+outcomes by `evaluate` (General rules), `evaluate_for_signing` (one selected
+input), `evaluate_for_finalizing` (the Finalizer's preconditions on a lone
+PSBT), and one entry point per role with executable rules: `evaluate_creating`,
+`evaluate_constructing`, `evaluate_signing`, `evaluate_finalizing`,
+`evaluate_extracting` and `evaluate_combining`. Each runs the General rules on
+every PSBT involved, then the role's Precondition rules on what it received and
+its Result rules on what it returned. The Updater's only rule (ROLE-U-1) is
+not observable in a PSBT, so an Updater's output is checked with `evaluate`.
+
+Every registered field is known and syntax-checked whatever `Bip` list the caller
+passes; `Bip` enables extension semantics only. A check run with no BIP enabled
+therefore rejects malformed BIP-375/376 fields, and without BIP-375 an output's
+`PSBT_OUT_SP_V0_INFO` does not stand in for `PSBT_OUT_SCRIPT`.
+
+## Build and verify
+
+```bash
+cd rust
+cargo run --bin render > ../spec.html
+cargo run --bin render -- --json > ../rules.json
+cargo run --bin render -- --markdown > ../rules.md
+cargo test
+```
+
+`spec.html` lists the General rules, then each role's Precondition rules,
+Result rules and guidance, with filters by strength, BIP and text. Field
+names in rule text link to the field registry, whose rows list the rules
+naming each field. `rules.json` holds every declared entry (ID, wording,
+strength, coverage, phase, gates, checks, evidence, note, gap, corpus) for
+machine audits; [`docs/rules.md`](docs/rules.md) and its JSON Schema describe
+it. `rules.md` is the same catalog as Markdown, grouped General first and then
+by role. Each rule's
+corpus coverage (the vectors that isolate it, the valid vectors that pass it,
+and a status) is computed by the certifier at render time. Function links are relative to the repository; set
+`PSBT_SPEC_SOURCE_BASE` to a blob URL at a pinned commit (ending in `/`) when
+rendering a copy to publish.
+
+Tests verify catalog ID and migration integrity, rendered catalog and
+validation rules, and agreement with checked-in HTML. Each vector names the
+rule ID its entry point stops at. `tests/rule_ids.rs` requires every rule with
+a check to be observed by ID through its entry point, both Verified and Failed.
+
+When changing a rule, edit its declaration in `spec.rs` and regenerate the HTML.
+
+## Rule and vector report
+
+Generate a self-contained HTML report of the checked-in JSON fixtures:
+
+```bash
+cd rust
+cargo run --bin coverage > ../coverage.html
+```
+
+Open the generated `coverage.html` at the repository root directly in a browser
+(no web server required). `rust/src/bin/coverage.template.html` is the source
+template and contains no vector data. The report filters by corpus, rule, operation scope,
+status, or the Silent payments lens. Select a cell for rule wording, recorded
+outcomes, prerequisite blockers, iteration indices, and documented enforcement
+gaps. The lens selects rules by their source evidence; it does not disable base
+validation. Vector details compare General evaluation with and without the
+fixture's enabled extensions.
+
+This report observes execution in exhaustive mode (`Trace::exhaustive`): after
+a failure, independent rules and later items still run, so one fixture shows
+every rule it breaks; rules in an ordered group (`seq`) or behind a context
+projection stay Blocked. Outcomes are the same as without it. A successful
+check can be vacuous. Each fixture's expectation names the rule its entry
+point stops at; other rules' outcomes are observed, not asserted. Missing role intent or transition data is shown explicitly. Cases
+constructed or mutated inside Rust tests are outside the report. Regenerate it
+after changing rules or vectors; the HTML is a local artifact, not checked in.
 
 ## Layout
 
-- [`rust/src/spec.rs`](rust/src/spec.rs): the rule graph. Read this first.
-- [`rust/src/algebra.rs`](rust/src/algebra.rs): the combinators. `Rule` checks the current
-  context, `All` runs children in order, `With` projects to a narrower context, `Each` iterates,
-  `When` gates on a condition (such as PSBTv2), and `From` gates on a BIP the validator implements.
-- [`rust/src/registry.rs`](rust/src/registry.rs): Table 1, the known fields with their key data
-  format, value format, and the versions that require or exclude them.
-- [`rust/src/rules/`](rust/src/rules): the validation functions, one per rule.
-- [`rust/src/silent_payments.rs`](rust/src/silent_payments.rs): BIP-352 and BIP-374 primitives,
-  input eligibility and public key recovery, shared by the BIP-375 rules.
-- [`vectors/`](vectors): test vectors from BIP-174, BIP-370 and BIP-375, plus generated BIP-376 vectors. Each names the rule ID it
-  must fail at (`error`), or `null` when valid. They are language neutral, so other
-  implementations of this spec can run the same files.
+- [`rust/src/spec.rs`](rust/src/spec.rs): authoritative rule graph and explicit documentation definitions.
+- [`rust/src/catalog.rs`](rust/src/catalog.rs): supporting metadata and catalog assembly.
+- [`rust/src/bin/render.rs`](rust/src/bin/render.rs): renders the Rust catalog, executable validation rules, and field registry.
+- [`rust/src/algebra.rs`](rust/src/algebra.rs): existing validation graph combinators.
+- [`rust/src/registry.rs`](rust/src/registry.rs): the field inventory: every field of the BIPs in scope, with the format GEN-F-5 enforces.
+- [`rust/src/rules/`](rust/src/rules): existing validation functions.
+- [`rust/src/silent_payments.rs`](rust/src/silent_payments.rs): silent-payment primitives and context recovery.
+- [`vectors/`](vectors): vector corpus; the PSBT vector files follow [`corpus.schema.json`](vectors/corpus.schema.json) (schema v1): a `bip_revision`, the file's `bips` and a `vectors` array, each vector with `description`, `psbt`, `valid`, the rule ID its entry point stops at (`rule`, when invalid), whether that outcome is Incomplete (`outcome`), and a non-default entry point (`task`).
+- [`vectors/bitcoin_core_sighash.json`](vectors/bitcoin_core_sighash.json): Bitcoin Core's `src/test/data/sighash.json` (`43cb41859e`), the legacy signature hash cases ECDSA verification is tested against.
 
-## Rule IDs
+## Vector generators
 
-A rule's ID is its error code. A PSBT is valid if and only if no rule fails, and the first failing
-rule is reported.
+The local BIP-376 corpus is generated from fixed keys. `vectors/roles.json` is
+maintained by hand; no script reproduces it. Its vectors include the supplied
+and combined PSBTs for transition checks.
 
-| Prefix | Context | Rules |
-|---|---|---|
-| F | Raw bytes | Framing: magic, record encoding, map termination |
-| M | Each map | Key uniqueness |
-| G | Global map | Field formats, version, required and excluded fields, map count |
-| I | Each input | Field formats, required and excluded fields, lock time ranges |
-| O | Each output | Field formats, required and excluded fields |
-| T | Whole PSBT | Lock time determination, and modifiable flags that agree with the signatures (v2) |
-| P | Whole PSBT, each input, each output | Silent payment sending (BIP-375) |
-| R | Each input | Silent payment spending (BIP-376) |
-| S | Each input | Signer checks, run only by `validate_for_signing` |
-| N | Each input | Input Finalizer checks, run only by `validate_for_finalizing` |
-| X | Each input, each output | Transaction Extractor checks, run only by `validate_for_extraction` |
-| C | Combined PSBTs and the result | Combiner transition checks, run only by `validate_combination` |
-
-## Usage
-
-```bash
-cd rust && cargo test
-```
-
-```bash
-cd rust && cargo run --bin render > ../spec.html
-```
-
-```rust
-let verdict = psbt_spec::validate(&psbt_bytes, &[]); // Err(Violation { rule: "G03", detail })
-let verdict = psbt_spec::validate_for_signing(&psbt_bytes, &[psbt_spec::Bip::Bip375]);
-let verdict = psbt_spec::validate_for_finalizing(&psbt_bytes, &[psbt_spec::Bip::Bip376]);
-let verdict = psbt_spec::validate_for_extraction(&psbt_bytes, &[psbt_spec::Bip::Bip375]);
-let verdict = psbt_spec::validate_combination(&[&psbt_a, &psbt_b], &combined, &[]);
-```
-
-## Silent payments
-
-The BIP-375 sending rules are gated by `From(BIP-375)`, and the BIP-376 spending rules by
-`From(BIP-376)`. A validator that does not enable a BIP treats its fields as unknown, which
-matches how a PSBT parser without silent payment support behaves. The enabled BIPs travel with
-the parsed PSBT, so the registry's format and version rules see a BIP's fields only when it is on.
-
-With BIP-375 enabled, a PSBTv2 output may carry `PSBT_OUT_SP_V0_INFO` in place of
-`PSBT_OUT_SCRIPT`. The registry records this as a replacement on the `PSBT_OUT_SCRIPT` row, so
-`O02` accepts either field.
-
-The BIP-375 rules port the reference validator in `bip-0375/validator/validate_psbt.py` of the
-BIPs repository, and `vectors/bip375.json` is converted from its `bip375_test_vectors.json`.
-Every PSBT in the `valid` and `workflows` sections is a valid vector, except the bare OP_2
-input vector, which the reference runs with only its input eligibility check: it fails `P13`.
-
-BIP-376 publishes no reference implementation or test vectors, so `vectors/bip376.json` is
-generated by [`vectors/tools/gen_bip376.py`](vectors/tools/gen_bip376.py) from fixed keys:
+FIXME: `gen_bip376.py` still writes the pre-schema-v1 shape (`error`, no
+`valid`, no `bip_revision` wrapper); convert its output before regenerating.
 
 ```bash
 PYTHONPATH=<secp256k1lab>/src python3 vectors/tools/gen_bip376.py > vectors/bip376.json
 ```
 
-The BIP-376 rules check only what a PSBT shows without private keys: a finalized input drops
-the spending fields (`R01`), a spend key comes with a tweak (`R02`), a tweak spends a P2TR
-witness UTXO (`R03`), and the spend key plus the tweak times G gives the output key (`R04`).
-BIP-376's field table says Input Finalizers "should" remove the tweak and spend key fields,
-while its Input Finalizer section says "MUST". `R01` follows the MUST.
+Published vectors are pinned to `bitcoin/bips` revision
+`5aadddb511a5dcfe4599531bd8ae5e5b96d0f793` and are byte-identical to it:
+`bip340_vectors.csv` (`bip-0340/test-vectors.csv`), `bip341_wallet_vectors.json`
+(`bip-0341/wallet-test-vectors.json`), `bip322_basic.json`
+(`bip-0322/basic-test-vectors.json`), and the PSBTs or proofs in `bip371.json`,
+`bip373.json`, and `bip353_proofs.json` (from the BIP texts). The error codes
+on invalid BIP-371 and BIP-373 vectors (`GEN-F-5`) are local assignments.
 
-## Roles
-
-Each role MUST in the BIPs is one of three kinds, and the spec covers them differently:
-
-- **Snapshot invariants**: a MUST that leaves state any later PSBT shows. These are validity rules.
-  `T02` to `T04` check that `PSBT_GLOBAL_TX_MODIFIABLE` agrees with the signatures present, as
-  the BIP-370 Signer must ensure. `P15` checks that no input is signed while a silent payment
-  output lacks its script, as the BIP-375 Signer must ensure. `R01` checks the BIP-376 Input
-  Finalizer removed the spending fields.
-- **Role preconditions**: what a role checks before acting, as their own graphs. Signer rules
-  (`S`), Input Finalizer rules (`N`), and Transaction Extractor rules (`X`). `N01` is BIP-174's
-  requirement that the Input Finalizer refuse an input whose signatures do not match its
-  `PSBT_IN_SIGHASH_TYPE`, and `N02` is BIP-376's that an input with `PSBT_IN_SP_TWEAK` has
-  `PSBT_IN_TAP_KEY_SIG`. Together with `P14`, which verifies every silent payment output script,
-  `X02` gives the BIP-375 extractor requirement.
-- **Transitions**: rules that compare PSBTs before and after a role runs. They validate a
-  `TransitionContext`, which holds the PSBTs a role was given and the PSBT it produced, each
-  already valid. The Combiner rules (`C`) check that every PSBT shares a unique identifier
-  (`C01`: the unsigned transaction's txid in v0, the BIP-370 unique identifier in v2), that the
-  combined PSBT keeps every key it was given (`C02`), and that it adds no key-value pair it was
-  not given (`C03`). With BIP-375 enabled, an output with `PSBT_OUT_SP_V0_INFO` contributes
-  `0x00 || PSBT_OUT_SP_V0_INFO` to the unique identifier in place of its script, as BIP-375's
-  Unique Identification section specifies, so the identifier is the same before and after the
-  Signer sets `PSBT_OUT_SCRIPT`. Where the PSBTs conflict on a key, `C03` accepts the value of any of them, as
-  BIP-174 lets a Combiner pick arbitrarily. The Constructor's transitions and "the Signer must
-  only add data" are not covered yet.
-
-`vectors/roles.json` holds the snapshot, finalizer, extractor and combiner vectors, generated by
-[`vectors/tools/gen_roles.py`](vectors/tools/gen_roles.py). A combiner vector lists the PSBTs
-combined under `combine`, and `psbt` is the PSBT produced. The combiner vectors include BIP-174's
-combiner test vectors in both input orders, and each BIP-375 workflow's Updater and Signer PSBTs
-combined, with the reference's unique identifier under `unique_id`:
-
-```bash
-PYTHONPATH=<secp256k1lab>/src python3 vectors/tools/gen_roles.py <bips repo> > vectors/roles.json
-```
-
-One BIP-375 invalid vector, whose TX_MODIFIABLE flags are set after `PSBT_OUT_SCRIPT`, also
-carries a SIGHASH_ALL signature, so `T02` rejects it before `P12`. It is labeled `T02` with a
-note, and a copy without the signature checks `P12`.
+Regeneration should use an identified source revision. Preserve published,
+development, and generated vector origins; matching descriptions do not establish
+identical PSBT bytes.

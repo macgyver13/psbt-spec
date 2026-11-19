@@ -1,38 +1,28 @@
-use std::collections::HashSet;
+mod common;
 
-use base64::{engine::general_purpose::STANDARD, Engine};
-use psbt_spec::algebra::{Doc, Entry};
-use psbt_spec::context::{determine_locktime, unique_id, PsbtContext};
-use psbt_spec::{
-    encoding::scan, spec, validate, validate_combination, validate_for_extraction, validate_for_finalizing,
-    validate_for_signing, Bip,
-};
+use common::{outcome, passed, psbt, vector_bips, vectors};
+use psbt_spec::context::{determine_locktime, PsbtContext};
+use psbt_spec::encoding::scan;
+use psbt_spec::{evaluate, Bip, Evaluation};
 use serde_json::Value;
 
-fn vectors(name: &str) -> Vec<Value> {
-    let path = format!("{}/../vectors/{name}.json", env!("CARGO_MANIFEST_DIR"));
-    serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
+/// Each vector names the rule its entry point stops at (`rule`, Failed unless
+/// `outcome` says incomplete), or passes when `valid` is true.
+fn check(v: &Value, bips: &[Bip]) -> Option<String> {
+    let got = outcome(v, bips);
+    let expected = v["rule"].as_str();
+    let incomplete = v["outcome"].as_str() == Some("incomplete");
+    let ok = match (&got, expected) {
+        (e, None) => passed(e),
+        (Evaluation::Failed(x), Some(rule)) => !incomplete && x.rule == rule,
+        (Evaluation::Incomplete(x), Some(rule)) => incomplete && x.rule == rule,
+        _ => false,
+    };
+    (!ok).then(|| format!("{}: expected {expected:?}{}, got {got:?}", v["description"], if incomplete { " (incomplete)" } else { "" }))
 }
 
-fn psbt(v: &Value) -> Vec<u8> {
-    STANDARD.decode(v["psbt"].as_str().unwrap()).unwrap()
-}
-
-/// Each vector must fail at exactly the rule it names, or pass when `error` is null.
-/// Signer rule failures must still pass the validity rules on their own.
 fn run(name: &str, bips: &[Bip]) {
-    let mut mismatches = Vec::new();
-    for v in vectors(name) {
-        let bytes = psbt(&v);
-        let expected = v["error"].as_str();
-        let got = validate_for_signing(&bytes, bips).err();
-        if got.as_ref().map(|e| e.rule) != expected {
-            mismatches.push(format!("{}: expected {expected:?}, got {got:?}", v["description"]));
-        }
-        if expected.is_some_and(|r| r.starts_with('S')) {
-            assert_eq!(validate(&bytes, bips), Ok(()), "{}", v["description"]);
-        }
-    }
+    let mismatches: Vec<_> = vectors(name).iter().filter_map(|v| check(v, bips)).collect();
     assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
 }
 
@@ -51,55 +41,52 @@ fn bip375_vectors() {
     run("bip375", &[Bip::Bip375]);
 }
 
+#[test]
+fn bip376_vectors() {
+    run("bip376", &[Bip::Bip375, Bip::Bip376]);
+    assert_disabled_results("bip376");
+}
+
 /// Signer snapshot, Input Finalizer, Transaction Extractor and Combiner vectors.
-/// Each names its check and enabled BIPs.
+/// Each names its task and enabled BIPs.
 #[test]
 fn role_vectors() {
-    let mut mismatches = Vec::new();
-    for v in vectors("roles") {
-        let bytes = psbt(&v);
-        let bips: Vec<Bip> = v["bips"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|b| match b.as_u64() {
-                Some(375) => Bip::Bip375,
-                Some(376) => Bip::Bip376,
-                other => panic!("unknown BIP {other:?}"),
-            })
-            .collect();
-        let got = match v["check"].as_str() {
-            Some("validity") => validate(&bytes, &bips),
-            Some("finalizing") => validate_for_finalizing(&bytes, &bips),
-            Some("extraction") => validate_for_extraction(&bytes, &bips),
-            Some("combining") => {
-                let combine: Vec<Vec<u8>> =
-                    v["combine"].as_array().unwrap().iter().map(|p| STANDARD.decode(p.as_str().unwrap()).unwrap()).collect();
-                let combine: Vec<&[u8]> = combine.iter().map(Vec::as_slice).collect();
-                if let Some(expected) = v["unique_id"].as_str() {
-                    let id = unique_id(&PsbtContext::new(&spec::parse(&bytes, &bips)));
-                    let hex: String = id.iter().rev().map(|b| format!("{b:02x}")).collect();
-                    assert_eq!(hex, expected, "{}", v["description"]);
-                }
-                validate_combination(&combine, &bytes, &bips)
-            }
-            other => panic!("unknown check {other:?}"),
-        }
-        .err();
-        if got.as_ref().map(|e| e.rule) != v["error"].as_str() {
-            mismatches.push(format!("{}: expected {}, got {got:?}", v["description"], v["error"]));
-        }
-    }
+    let mismatches: Vec<_> = vectors("roles")
+        .iter()
+        .filter_map(|v| {
+            check(v, &vector_bips(v))
+        })
+        .collect();
     assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
 }
 
-/// A validator without BIP-376 treats its fields as unknown and accepts every vector.
-#[test]
-fn bip376_vectors() {
-    run("bip376", &[Bip::Bip376]);
-    for v in vectors("bip376") {
-        assert_eq!(validate(&psbt(&v), &[]), Ok(()), "{}", v["description"]);
+/// Without the extension enabled, every registered field is still known and
+/// format-checked, but the silent-payment rules (GEN-SP) do not run. Without
+/// BIP375, PSBT_OUT_SP_V0_INFO does not stand in for PSBT_OUT_SCRIPT, so such
+/// outputs fail GEN-ST-2. Rules no BIP gates, such as Taproot's, still apply.
+fn assert_disabled_results(name: &str) {
+    for v in vectors(name) {
+        let bytes = psbt(&v);
+        let Ok(parsed) = scan(&bytes) else { panic!("{}", v["description"]) };
+        let ctx = PsbtContext::new(&parsed);
+        let info_without_script = ctx.version == 2
+            && ctx.outputs().iter().any(|o| o.value(0x09).is_some() && o.value(0x04).is_none());
+        let expected = match v["rule"].as_str() {
+            Some(e) if !e.starts_with("GEN-SP-") && v["outcome"].is_null() => Some(e),
+            _ if info_without_script => Some("GEN-ST-2"),
+            _ => None,
+        };
+        let got = match evaluate(&bytes, &[]) {
+            Evaluation::Failed(x) => Some(x.rule),
+            _ => None,
+        };
+        assert_eq!(got, expected, "{}", v["description"]);
     }
+}
+
+#[test]
+fn bip375_disabled_vectors() {
+    assert_disabled_results("bip375");
 }
 
 #[test]
@@ -109,23 +96,10 @@ fn bip370_locktime_vectors() {
         let ctx = PsbtContext::new(&scan(&bytes).ok().unwrap());
         let expected = v["locktime"].as_u64().map(|l| l as u32);
         assert_eq!(determine_locktime(&ctx), expected, "{}", v["description"]);
-        let rule = validate(&bytes, &[]).err().map(|e| e.rule);
-        assert_eq!(rule, expected.is_none().then_some("T01"), "{}", v["description"]);
-    }
-}
-
-#[test]
-fn rule_ids_are_unique() {
-    let mut doc = Doc::default();
-    spec::validity_rules(&[]).describe(&mut doc);
-    spec::signer_rules(&[]).describe(&mut doc);
-    spec::extractor_rules(&[]).describe(&mut doc);
-    spec::finalizer_rules(&[]).describe(&mut doc);
-    spec::combiner_rules(&[]).describe(&mut doc);
-    let mut seen = HashSet::new();
-    for entry in doc.entries {
-        if let Entry::Rule { id, .. } = entry {
-            assert!(seen.insert(id), "duplicate rule ID {id}");
-        }
+        let rule = match evaluate(&bytes, &[]) {
+            Evaluation::Failed(x) => Some(x.rule),
+            _ => None,
+        };
+        assert_eq!(rule, expected.is_none().then_some("GEN-T-1"), "{}", v["description"]);
     }
 }

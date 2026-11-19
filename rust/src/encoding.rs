@@ -63,6 +63,10 @@ impl<'a> Reader<'a> {
         self.take(usize::try_from(n).map_err(|_| "length overflows".to_string())?)
     }
 
+    pub fn remaining(&self) -> usize {
+        self.bytes.len() - self.pos
+    }
+
     pub fn finish(&self) -> Result<(), String> {
         if !self.is_empty() {
             return Err(format!("{} trailing bytes", self.bytes.len() - self.pos));
@@ -255,6 +259,10 @@ pub fn p2wsh_script(witness_script: &[u8]) -> Vec<u8> {
     let mut s = vec![0x00, 0x20];
     s.extend(sha256::Hash::hash(witness_script).to_byte_array());
     s
+}
+
+pub fn is_p2wsh(script: &[u8]) -> bool {
+    script.len() == 34 && script[0] == 0x00 && script[1] == 0x20
 }
 
 pub fn is_p2sh(script: &[u8]) -> bool {
