@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "psbt-spec evaluation report v2 (psbt-spec.report/2)",
+  "description": "Written by `psbt-spec evaluate`: one project, through one adapter, over one or more corpus files, against one psbt-spec revision. See docs/report.md.",
+  "type": "object",
+  "required": ["format", "spec", "project", "adapter", "declared", "corpus", "started", "finished", "summary", "rows", "vectors"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "psbt-spec.report/2" },
+    "spec": {
+      "description": "The psbt-spec revision that ran the evaluation and attributed the vectors.",
+      "type": "object",
+      "required": ["revision", "dirty", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "dirty": { "description": "Tracked files differed from the revision.", "type": "boolean" },
+        "status": { "description": "The status line of rules.json at that revision.", "type": "string" }
+      }
+    },
+    "project": {
+      "description": "From the adapter's hello.",
+      "type": "object",
+      "required": ["name", "version", "revision"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "revision": { "type": "string" }
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "required": ["name", "version", "protocol"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "protocol": { "const": "psbt-spec.adapter/1" }
+      }
+    },
+    "declared": {
+      "description": "The tasks and BIPs the adapter declared in its hello.",
+      "type": "object",
+      "required": ["tasks", "bips"],
+      "additionalProperties": false,
+      "properties": {
+        "tasks": { "type": "array", "items": { "$ref": "#/$defs/adapter_task" }, "uniqueItems": true },
+        "bips": { "$ref": "#/$defs/bips" }
+      }
+    },
+    "corpus": {
+      "description": "Every corpus file evaluated, pinned.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["file", "sha256", "bip_revision", "vectors"],
+        "additionalProperties": false,
+        "properties": {
+          "file": { "description": "The path as given to evaluate. Vector refs start with it.", "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "bip_revision": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+          "vectors": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "started": { "type": "string", "format": "date-time" },
+    "finished": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "required": ["vectors", "stages", "valid", "rows", "rejects", "confounded", "triage"],
+      "additionalProperties": false,
+      "properties": {
+        "vectors": {
+          "type": "object",
+          "required": ["total", "withheld", "not_run", "accepted", "rejected"],
+          "additionalProperties": false,
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "withheld": { "type": "integer", "minimum": 0 },
+            "not_run": { "description": "n/a or error.", "type": "integer", "minimum": 0 },
+            "accepted": { "type": "integer", "minimum": 0 },
+            "rejected": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "stages": {
+          "description": "Stage requests: invalid deserialize vectors that isolate a General rule with roles, put to an owning role's task. Same fields as vectors.",
+          "type": "object",
+          "required": ["total", "withheld", "not_run", "accepted", "rejected"],
+          "additionalProperties": false,
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "withheld": { "type": "integer", "minimum": 0 },
+            "not_run": { "description": "n/a or error.", "type": "integer", "minimum": 0 },
+            "accepted": { "type": "integer", "minimum": 0 },
+            "rejected": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "valid": {
+          "description": "Valid vectors sent, and those the project accepted with no LOOSER evidence from its returned PSBT.",
+          "type": "object",
+          "required": ["total", "passed"],
+          "additionalProperties": false,
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "passed": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "rows": {
+          "description": "Rows per verdict. A row with two verdicts counts under both.",
+          "type": "object",
+          "required": ["MATCH", "STRICTER", "LOOSER", "NOT IMPLEMENTED", "NOT RUN"],
+          "additionalProperties": false,
+          "properties": {
+            "MATCH": { "type": "integer", "minimum": 0 },
+            "STRICTER": { "type": "integer", "minimum": 0 },
+            "LOOSER": { "type": "integer", "minimum": 0 },
+            "NOT IMPLEMENTED": { "type": "integer", "minimum": 0 },
+            "NOT RUN": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "rejects": {
+          "description": "Refusals (vectors and stage requests) by the rule the project named (docs/report.md, Named rules).",
+          "type": "object",
+          "required": ["confirmed", "unconfirmed", "other_rule", "unknown_rule"],
+          "additionalProperties": false,
+          "properties": {
+            "confirmed": { "description": "Refusals that gave MATCH evidence and named that rule.", "type": "integer", "minimum": 0 },
+            "unconfirmed": { "description": "Refusals that gave MATCH evidence and named no rule, or a rule ID not in rules.json.", "type": "integer", "minimum": 0 },
+            "other_rule": { "description": "Refusals of an isolated or confounded vector that named a rule in rules.json other than its refusal rules. They give no MATCH.", "type": "integer", "minimum": 0 },
+            "unknown_rule": { "description": "Refusals that named a rule ID not in rules.json, of any vector.", "type": "integer", "minimum": 0 }
+          }
+        },
+        "confounded": { "description": "Refs of confounded vectors the project rejected.", "type": "array", "items": { "$ref": "#/$defs/ref" } },
+        "triage": { "description": "Refs of invalid vectors with class none or undecided.", "type": "array", "items": { "$ref": "#/$defs/ref" } }
+      }
+    },
+    "rows": {
+      "description": "One row per (rule, task): every General rule with no roles under deserialize, every General rule with roles under each task of those roles, every Role rule under its task, each other (rule, task) pair that evidence or a rule the project named names, and one unattributed row (rule null) per task with unattributed STRICTER evidence.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/row" }
+    },
+    "vectors": {
+      "description": "Every vector of every corpus file, in file order.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/vector" }
+    }
+  },
+  "$defs": {
+    "adapter_task": { "enum": ["deserialize", "sign", "finalize", "extract", "combine"] },
+    "task": { "enum": ["deserialize", "create", "construct", "update", "sign", "finalize", "extract", "combine"] },
+    "bips": { "type": "array", "items": { "type": "integer", "minimum": 1 }, "uniqueItems": true },
+    "ref": { "description": "<corpus file>#<zero-based vector index>.", "type": "string", "pattern": "^.+#[0-9]+$" },
+    "rule_id": { "type": "string", "pattern": "^[A-Z]+(-[A-Z0-9]+)*-[0-9]+$" },
+    "rule_ids": { "type": "array", "items": { "$ref": "#/$defs/rule_id" }, "uniqueItems": true },
+    "verdict": { "enum": ["MATCH", "STRICTER", "LOOSER", "NOT IMPLEMENTED", "NOT RUN"] },
+    "row": {
+      "type": "object",
+      "required": ["rule", "task", "verdicts", "bips", "evidence", "stale"],
+      "additionalProperties": false,
+      "properties": {
+        "rule": { "description": "null for unattributed STRICTER.", "oneOf": [{ "$ref": "#/$defs/rule_id" }, { "type": "null" }] },
+        "task": { "$ref": "#/$defs/task" },
+        "verdicts": {
+          "description": "One verdict, or LOOSER and STRICTER together.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/verdict" },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "bips": { "description": "Union of the request bips of the evidence vectors: the Versions / extensions column.", "$ref": "#/$defs/bips" },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["vector", "verdict"],
+            "additionalProperties": false,
+            "properties": {
+              "vector": { "$ref": "#/$defs/ref" },
+              "verdict": { "$ref": "#/$defs/verdict" }
+            }
+          }
+        },
+        "stale": {
+          "description": "Evidence links of the rule into a BIP the evidence vectors exercise, at a bips commit other than the corpus file's bip_revision (principle 29).",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["bip", "evidence", "corpus", "file"],
+            "additionalProperties": false,
+            "properties": {
+              "bip": { "type": "integer" },
+              "evidence": { "description": "bips commit of the rule's evidence link.", "type": "string" },
+              "corpus": { "description": "bip_revision of the corpus file.", "type": "string" },
+              "file": { "type": "string" }
+            }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "vector": {
+      "type": "object",
+      "required": ["ref", "description", "task", "valid", "bips", "failed", "incomplete", "class", "outcome", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "ref": { "$ref": "#/$defs/ref" },
+        "description": { "type": "string" },
+        "task": { "$ref": "#/$defs/adapter_task" },
+        "valid": { "type": "boolean" },
+        "bips": { "description": "The request bips.", "$ref": "#/$defs/bips" },
+        "failed": { "description": "Attribution: rules Failed on the vector.", "$ref": "#/$defs/rule_ids" },
+        "incomplete": { "description": "Attribution: rules Incomplete on the vector. Never evidence.", "$ref": "#/$defs/rule_ids" },
+        "class": {
+          "description": "valid; isolated (one refusal rule); confounded (two or more refusal rules); result (no refusal rule, one or more Result rules); none (fails no rule); undecided (fails no rule, some Incomplete).",
+          "enum": ["valid", "isolated", "confounded", "result", "none", "undecided"]
+        },
+        "note": { "description": "The corpus note, copied.", "type": "string" },
+        "outcome": { "description": "The adapter's verdict, or withheld when the vector was not sent.", "enum": ["accept", "reject", "n/a", "error", "withheld"] },
+        "reason": { "description": "The adapter's reason, or why the vector was withheld.", "type": "string" },
+        "rule": { "description": "The rule the project named when rejecting, as sent, even when it is not in rules.json.", "type": "string" },
+        "error": { "description": "outcome error only: adapter (the adapter answered error), crashed, timeout or protocol (an unusable response).", "enum": ["adapter", "crashed", "timeout", "protocol"] },
+        "returned": {
+          "description": "Attribution of the PSBT the project returned, when it was attributed (valid and result vectors the project accepted).",
+          "type": "object",
+          "required": ["failed", "incomplete"],
+          "additionalProperties": false,
+          "properties": {
+            "failed": { "$ref": "#/$defs/rule_ids" },
+            "incomplete": { "$ref": "#/$defs/rule_ids" }
+          }
+        },
+        "stages": {
+          "description": "Stage requests made from this vector, in task order (docs/report.md). Present only when there is at least one.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/stage" }
+        },
+        "evidence": {
+          "description": "What this vector contributes to rows under its task. rule null is unattributed STRICTER.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "verdict"],
+            "additionalProperties": false,
+            "properties": {
+              "rule": { "oneOf": [{ "$ref": "#/$defs/rule_id" }, { "type": "null" }] },
+              "verdict": { "$ref": "#/$defs/verdict" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        { "if": { "properties": { "outcome": { "const": "error" } } }, "then": { "required": ["error"] }, "else": { "not": { "required": ["error"] } } }
+      ]
+    },
+    "stage": {
+      "description": "The vector put to the task of a role that owns the General rule it isolates. Its attribution is under that task.",
+      "type": "object",
+      "required": ["task", "failed", "incomplete", "class", "outcome", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "task": { "enum": ["sign", "finalize", "extract"] },
+        "failed": { "$ref": "#/$defs/rule_ids" },
+        "incomplete": { "$ref": "#/$defs/rule_ids" },
+        "class": { "const": "isolated" },
+        "outcome": { "enum": ["accept", "reject", "n/a", "error", "withheld"] },
+        "reason": { "type": "string" },
+        "rule": { "type": "string" },
+        "error": { "enum": ["adapter", "crashed", "timeout", "protocol"] },
+        "evidence": {
+          "description": "What the stage request contributes to rows under its task.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rule", "verdict"],
+            "additionalProperties": false,
+            "properties": {
+              "rule": { "$ref": "#/$defs/rule_id" },
+              "verdict": { "$ref": "#/$defs/verdict" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        { "if": { "properties": { "outcome": { "const": "error" } } }, "then": { "required": ["error"] }, "else": { "not": { "required": ["error"] } } }
+      ]
+    }
+  }
+}

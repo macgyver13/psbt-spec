@@ -5,9 +5,17 @@ fn has_key(map: &Map, record: &Record) -> bool {
     map.iter().any(|r| r.key_type == record.key_type && r.key_data == record.key_data)
 }
 
-// Every PSBT a Combiner combines, and the PSBT it produces, MUST share a unique identifier.
+/// Checks ROLE-B-1, a precondition: every PSBT the Combiner was given has the
+/// same transaction identifier.
+///
+/// Requires individually validated PSBTs and enough context for `unique_id`:
+/// v0 unsigned transactions, or v2 outpoints, amounts, scripts and determinable
+/// locktime. Enabled BIP375 substitutes SP info for output scripts. Returns
+/// `Err` for any differing identifier, otherwise `Ok(())`, including one or no
+/// sources. That the result keeps the identifier follows from ROLE-B-2.
 pub fn validate_shared_unique_id(t: &TransitionContext) -> Result<(), String> {
-    let id = unique_id(&t.after);
+    let Some(first) = t.before.first() else { return Ok(()) };
+    let id = unique_id(first);
     match t.before.iter().position(|p| unique_id(p) != id) {
         Some(i) => Err(format!("PSBT {i} has a different unique identifier")),
         None => Ok(()),

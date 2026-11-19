@@ -2,13 +2,15 @@
 name = "psbt-spec"
 version = "0.1.0"
 edition = "2021"
-description = "Executable declarative specification of PSBT v0 (BIP-174) and v2 (BIP-370) validity"
+description = "Rule IDs, evidence and reference checks for evaluating a project's compliance with the PSBT BIPs (v0, v2 and extensions)"
 license = "CC0-1.0"
 
 [dependencies]
 base64 = "0.22"
 bitcoin_hashes = "0.14"
-k256 = { version = "0.13", default-features = false, features = ["arithmetic"] }
+k256 = { version = "0.13", default-features = false, features = ["arithmetic", "ecdsa", "schnorr"] }
+musig2 = { version = "=0.4.1", default-features = false, features = ["k256"] }
+dnssec-prover = "=0.6.10"
+bip32 = { version = "=0.5.3", default-features = false, features = ["secp256k1"] }
 
-[dev-dependencies]
 serde_json = "1"

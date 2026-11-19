@@ -23,7 +23,12 @@ fn eligible_shares(input: &InputContext) -> Result<Vec<Share<'_>>, String> {
     Ok(shares)
 }
 
-// An output with PSBT_OUT_SP_V0_LABEL MUST also have PSBT_OUT_SP_V0_INFO.
+/// Checks GEN-SP-1: an output carrying SP_V0_LABEL also carries SP_V0_INFO.
+///
+/// The caller enables BIP375 and supplies a valid output projection with unique
+/// keys and validated field formats. Returns `Err` for a label without info,
+/// otherwise `Ok(())`, including neither field. This checks presence only, not
+/// label derivation or the resulting output script.
 pub fn validate_sp_label_has_info(output: &OutputContext) -> Result<(), String> {
     if output.value(OUT_SP_V0_LABEL).is_some() && output.value(OUT_SP_V0_INFO).is_none() {
         return Err(format!("output {} has a label but no silent payment info", output.index));
@@ -171,6 +176,18 @@ pub fn validate_sp_tx_unmodifiable(psbt: &PsbtContext) -> Result<(), String> {
     Ok(())
 }
 
+// No input carries a signature while any output lacks PSBT_OUT_SCRIPT. A present empty
+// script counts as set.
+pub fn validate_sp_unsigned_until_scripts(psbt: &PsbtContext) -> Result<(), String> {
+    let Some(o) = psbt.outputs().iter().position(|o| o.value(OUT_SCRIPT).is_none()) else {
+        return Ok(());
+    };
+    match psbt.inputs().iter().find(|i| !input_signatures(i).is_empty()) {
+        Some(i) => Err(format!("input {} is signed while output {o} has no PSBT_OUT_SCRIPT", i.index)),
+        None => Ok(()),
+    }
+}
+
 // A silent payment output with PSBT_OUT_SCRIPT MUST have the ECDH shares and input public keys
 // its derivation needs.
 pub fn validate_sp_script_derivable(psbt: &PsbtContext) -> Result<(), String> {
@@ -197,12 +214,3 @@ pub fn validate_sp_script(psbt: &PsbtContext) -> Result<(), String> {
     Ok(())
 }
 
-// An input MUST NOT carry a signature while any output lacks PSBT_OUT_SCRIPT.
-pub fn validate_sp_no_signature_before_scripts(psbt: &PsbtContext) -> Result<(), String> {
-    let missing = psbt.outputs().iter().position(|o| o.value(OUT_SCRIPT).is_none_or(|s| s.is_empty()));
-    let signed = psbt.inputs().iter().position(|i| !input_signatures(i).is_empty());
-    if let (Some(o), Some(i)) = (missing, signed) {
-        return Err(format!("input {i} is signed while output {o} has no PSBT_OUT_SCRIPT"));
-    }
-    Ok(())
-}

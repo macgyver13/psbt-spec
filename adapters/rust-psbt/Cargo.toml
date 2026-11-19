@@ -1,0 +1,12 @@
+[package]
+name = "psbt-spec-adapter-rust-psbt"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Not a member of psbt-spec's rust/ workspace.
+[workspace]
+
+[dependencies]
+psbt-v2 = { path = "../../../rust-psbt", features = ["std", "base64", "miniscript", "silent-payments"] }
+serde_json = "1"

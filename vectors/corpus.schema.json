@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "psbt-spec corpus file, schema v1",
+  "description": "One file per BIP or topic: the BIP revision it was labeled against, the BIPs it exercises, and its vectors. Applies to bip174, bip370, bip371, bip373, bip375, bip376 and roles. Known-answer and non-PSBT files (bip322_basic, bip341_wallet_vectors, bip353_proofs, bip370_locktime, bitcoin_core_sighash, bip340_vectors.csv) are outside this schema. Whether a vector isolates its rule is decided by the all-failures evaluation (tests/corpus.rs), not by this label.",
+  "type": "object",
+  "required": ["bip_revision", "bips", "vectors"],
+  "additionalProperties": false,
+  "properties": {
+    "bip_revision": {
+      "description": "Short commit of bitcoin/bips the file was labeled against.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "bips": {
+      "description": "BIP numbers the file exercises beyond the PSBT version: 370, 371, 373, 375, 376 (the evaluator adds 174 or 370 itself, from each PSBT). A vector's own bips add to these. Empty for bip174 and roles, whose vectors set their own.",
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1 },
+      "uniqueItems": true
+    },
+    "vectors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/vector" }
+    }
+  },
+  "$defs": {
+    "vector": {
+      "type": "object",
+      "required": ["description", "psbt", "valid"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "task": {
+          "description": "The entry point. Absent means validity, the General rules (evaluate).",
+          "enum": ["validity", "signing", "finalizing", "extraction", "combining"]
+        },
+        "psbt": { "description": "Base64. For role tasks, the PSBT the role is given (finalizing, extraction) or returned (combining).", "type": "string" },
+        "valid": { "description": "Whether the task's entry point accepts the vector.", "type": "boolean" },
+        "rule": { "description": "The rule ID the entry point stops at. Present exactly when valid is false.", "type": "string", "pattern": "^[A-Z]+-[A-Z0-9]+-[0-9]+$" },
+        "outcome": { "description": "Set to incomplete when rule is reported Incomplete rather than Failed.", "const": "incomplete" },
+        "note": { "description": "Free text. A triage class (confounded, lagging, ambiguous, defect) starts the note, followed by a colon.", "type": "string" },
+        "bips": { "description": "Extension BIPs enabled for the vector (roles.json only; other files fix them per file).", "type": "array", "items": { "enum": [375, 376] } },
+        "combine": { "description": "Combining only: the base64 PSBTs that were combined.", "type": "array", "items": { "type": "string" } },
+        "unique_id": { "description": "Combining only: the expected unique ID, hex; null when not checked.", "type": ["string", "null"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "valid": { "const": true } } }, "then": { "not": { "required": ["rule"] } }, "else": { "required": ["rule"] } }
+      ]
+    }
+  }
+}

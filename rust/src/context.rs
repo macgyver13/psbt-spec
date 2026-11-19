@@ -26,12 +26,23 @@ pub const IN_FINAL_SCRIPTSIG: u64 = 0x07;
 pub const IN_FINAL_SCRIPTWITNESS: u64 = 0x08;
 pub const IN_PREVIOUS_TXID: u64 = 0x0e;
 pub const IN_OUTPUT_INDEX: u64 = 0x0f;
+pub const IN_SEQUENCE: u64 = 0x10;
 pub const IN_REQUIRED_TIME_LOCKTIME: u64 = 0x11;
 pub const IN_REQUIRED_HEIGHT_LOCKTIME: u64 = 0x12;
 pub const IN_TAP_KEY_SIG: u64 = 0x13;
 pub const IN_TAP_SCRIPT_SIG: u64 = 0x14;
+pub const IN_TAP_LEAF_SCRIPT: u64 = 0x15;
+pub const IN_TAP_BIP32_DERIVATION: u64 = 0x16;
 pub const IN_TAP_INTERNAL_KEY: u64 = 0x17;
 pub const IN_TAP_MERKLE_ROOT: u64 = 0x18;
+pub const IN_P2C_TWEAK: u64 = 0x19;
+pub const OUT_TAP_INTERNAL_KEY: u64 = 0x05;
+pub const OUT_TAP_TREE: u64 = 0x06;
+pub const OUT_TAP_BIP32_DERIVATION: u64 = 0x07;
+pub const IN_MUSIG2_PARTICIPANT_PUBKEYS: u64 = 0x1a;
+pub const IN_MUSIG2_PUB_NONCE: u64 = 0x1b;
+pub const IN_MUSIG2_PARTIAL_SIG: u64 = 0x1c;
+pub const OUT_MUSIG2_PARTICIPANT_PUBKEYS: u64 = 0x08;
 pub const IN_SP_ECDH_SHARE: u64 = 0x1d;
 pub const IN_SP_DLEQ: u64 = 0x1e;
 pub const IN_SP_SPEND_BIP32_DERIVATION: u64 = 0x1f;
@@ -181,6 +192,32 @@ impl InputContext {
     }
 }
 
+/// The signature operation selected by the caller, independent of PSBT metadata.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SignatureKind {
+    Witness,
+    NonWitness,
+}
+
+/// One input selected for signing after framing, field formats, required fields,
+/// and map counts have passed. This supplies operation intent to ROLE-S-1;
+/// it does not assert that supplied UTXO or script commitments have been verified.
+#[derive(Clone)]
+pub struct SigningInputContext {
+    input: InputContext,
+    signature_kind: SignatureKind,
+}
+
+impl SigningInputContext {
+    pub fn new(input: InputContext, signature_kind: SignatureKind) -> Self {
+        Self { input, signature_kind }
+    }
+
+    pub fn input(&self) -> &InputContext { &self.input }
+
+    pub fn signature_kind(&self) -> SignatureKind { self.signature_kind }
+}
+
 #[derive(Clone)]
 pub struct OutputContext {
     pub psbt: PsbtContext,
@@ -251,6 +288,37 @@ pub fn unique_id(ctx: &PsbtContext) -> [u8; 32] {
         locktime: determine_locktime(ctx).unwrap(),
     }
     .txid()
+}
+
+/// The transaction a signature commits to: the unsigned transaction (v0), or the
+/// transaction the v2 fields describe. None when a v2 output has no
+/// PSBT_OUT_SCRIPT or the locktime cannot be determined.
+pub fn signing_tx(ctx: &PsbtContext) -> Option<Transaction> {
+    if let Some(tx) = &ctx.unsigned_tx {
+        return Some(tx.clone());
+    }
+    let inputs = ctx.inputs().into_iter().map(|i| {
+        let (txid, vout) = i.prevout();
+        let sequence = value_u32(i.map(), IN_SEQUENCE).unwrap_or(u32::MAX);
+        TxIn { txid, vout, script_sig: Vec::new(), sequence, witness: Vec::new() }
+    });
+    let outputs = ctx.outputs().into_iter().map(|o| {
+        Some(TxOut {
+            amount: i64::from_le_bytes(o.value(OUT_AMOUNT)?.try_into().ok()?),
+            script_pubkey: o.value(OUT_SCRIPT)?.to_vec(),
+        })
+    });
+    Some(Transaction {
+        version: value_u32(ctx.psbt.global(), GLOBAL_TX_VERSION)?,
+        inputs: inputs.collect(),
+        outputs: outputs.collect::<Option<_>>()?,
+        locktime: determine_locktime(ctx)?,
+    })
+}
+
+/// The output every input spends, or None if any input lacks a UTXO field.
+pub fn spent_outputs(ctx: &PsbtContext) -> Option<Vec<TxOut>> {
+    ctx.inputs().iter().map(InputContext::spent_output).collect()
 }
 
 /// A role's transition: the PSBTs it was given and the PSBT it produced, each

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PSBT checked-in JSON fixtures · execution observations</title>
+<style>
+:root{color-scheme:light;--ink:#193044;--muted:#526779;--line:#cfdae3;--paper:#fff;--accent:#096b73}
+
+*{box-sizing:border-box}
+body{margin:0;background:#f2f5f8;color:var(--ink);font:14px/1.5 system-ui,sans-serif}
+header,main{max-width:1600px;margin:auto;padding:24px}
+header{padding-bottom:8px}
+h1{font-size:28px;margin:0 0 6px}
+h2{font-size:19px;margin:0 0 12px}
+h3{font-size:15px;margin:18px 0 6px}
+p{margin:6px 0 12px}
+.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+.muted,small{color:var(--muted)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+label{display:block;font-weight:600}
+input,select,button{font:inherit}
+input[type=search],select{width:100%;padding:9px;border:1px solid #8c9fad;border-radius:6px;background:#fff;color:var(--ink);margin-top:4px}
+.check{display:flex;align-items:center;gap:8px;align-self:center}
+button{cursor:pointer;border:1px solid #8c9fad;border-radius:6px;background:white;color:var(--ink);padding:7px 12px}
+button:hover{background:#edf6f7}
+:focus-visible{outline:3px solid #087fbe;outline-offset:3px}
+.summary{display:flex;flex-wrap:wrap;gap:10px 24px;margin-bottom:12px}
+.summary strong{font-size:20px}
+.matrix-wrap{max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:8px;background:white}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px;text-align:center;vertical-align:middle}
+thead th{position:sticky;top:0;z-index:2;background:#eaf0f5;width:145px;min-width:145px;max-width:145px;overflow-wrap:anywhere}
+thead th:first-child{z-index:4}
+th:first-child{position:sticky;left:0;text-align:left;min-width:240px;max-width:280px;background:#f5f8fa;z-index:1}
+thead th:first-child{top:0;z-index:4}
+th small{display:block;font-weight:400}
+.vector-description{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:250px;margin-top:4px}
+td{height:65px}
+td button{width:100%;min-height:45px;padding:5px;font-size:12px}
+td button[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--accent);background:#e2f3f3}
+.bad{border-color:#b74040;color:#922727;background:#fff0ef}
+.good{border-color:#519382;color:#216551;background:#f0faf6}
+.none{color:#647587;background:#f6f7f9}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12px;overflow-wrap:anywhere}
+.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+dl{margin:0}
+dt{font-weight:600;margin-top:8px}
+dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.event{padding:12px;border:1px solid var(--line);border-radius:7px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.event p{margin:5px 0}
+#empty{padding:20px}
+.legend{margin:12px 0 0}
+.error{color:#922727}
+code{font-size:12px}
+caption{text-align:left;padding:10px;color:var(--muted)}
+@media(max-width:700px){header,main{padding:16px}
+.details-grid{grid-template-columns:1fr}
+h1{font-size:24px}
+}
+
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">PSBT · rule / vector report</div>
+<h1>Rule and vector coverage</h1>
+<p>This report covers the 237 checked-in JSON fixtures in bip174, bip370, bip370_locktime, bip375, bip376, and roles. Rust-generated and mutated tests are excluded.</p>
+<p class="muted">Select a cell to inspect what ran, where evaluation stopped, and what context is missing.</p>
+</header>
+<main>
+<section class="panel" aria-label="Report filters">
+<div class="filters">
+<label>Corpus<select id="corpus"><option value="">All corpora</option></select></label>
+<label>Rule search<input id="rule-search" type="search" placeholder="ID, text, topic, gap…"></label>
+<label>Vector search<input id="vector-search" type="search" placeholder="ID, description, operation…"></label>
+<label>Scope<select id="scope"><option value="">All scopes</option></select></label>
+<label>Rule lens<select id="lens"><option value="all">All rules</option><option value="sp">Silent payments</option></select></label>
+<label>Event status (cells)<select id="status"><option value="">All statuses</option></select></label>
+<label class="check"><input id="gaps" type="checkbox">Observation gaps only</label>
+<button id="reset" type="button">Reset filters</button>
+</div>
+<details style="margin-top:14px"><summary>How to interpret this report</summary><p class="muted">Counts describe execution observations, not full conformance or positive/negative assertion coverage. <strong>Passed means the validator returned success;</strong> it does not prove the substantive condition was exercised. Expected errors are legacy assertions only; they are not asserted catalog outcomes. Legacy check mappings indicate candidate relevance only.</p><p class="muted" style="margin:14px 0 0">The Silent payments lens selects rule columns whose source evidence is BIP-352, BIP-374, BIP-375, or BIP-376. It filters columns only, keeps all vectors available, and does not turn validation off or implement future BIPs. Each fixture harness fixes the evaluated operation and enabled extension BIPs: bip174, bip370, and bip370_locktime use no extension BIPs; bip375 enables BIP-375; bip376 enables BIP-376; roles uses each fixture’s BIP list. These settings are not changed by view filters. Status filters events within cells, keeping rows and columns. Observation gaps: rules with no passed events or no failed events across the entire supplied dataset. Missing observations do not establish missing assertions or nonconformance.</p></details>
+</section>
+<section class="panel" aria-label="Observation matrix">
+<div id="summary" class="summary" role="status" aria-live="polite"></div>
+<p id="view-scope" class="muted"></p>
+<div class="matrix-wrap" tabindex="0" role="region" aria-label="Scrollable rule and vector matrix">
+<table id="matrix"><caption>Vectors are rows; rules are columns. Select a cell for rule, vector, and event details. Counts are events, not vectors.</caption><thead id="matrix-head"></thead><tbody id="matrix-body"></tbody></table>
+<div id="empty" hidden>No matching rules or vectors. Adjust the filters.</div>
+</div>
+<p class="muted">Role observations assess supplied snapshot data using catalog-bound checks. They do not prove that signatures, scripts or cleanup were constructed correctly. Duties requiring intent or before/after states remain marked context_missing. Combiner cells also record source prerequisites, identified by subject.</p>
+<p class="legend muted">Cells show counts by status. Green: only passed observations. Red: at least one failed observation. Other statuses retain their names; “No events” means no recorded events, distinct from the recorded status “empty”.</p>
+</section>
+<section id="details" class="panel" aria-labelledby="details-title">
+<h2 id="details-title" tabindex="-1">Cell details</h2>
+<div id="detail-body"><p class="muted">Select a matrix cell to inspect its observations and iteration paths.</p></div>
+</section>
+<noscript><p>This local report requires JavaScript to render the embedded observations.</p></noscript>
+</main>
+<script id="coverage-data" type="application/json">__COVERAGE_DATA__</script>
+<script>
+'use strict';
+(() => {
+  const $ = id => document.getElementById(id);
+  const statuses = ['passed','failed','incomplete','not_applicable','gated','blocked','empty','context_missing','not_implemented','descriptive'];
+  // All data-derived content is inserted as text, never markup.
+  const el = (tag, text, className) => {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  };
+  const embedded = $('coverage-data').textContent;
+  if (embedded.trim().startsWith('__')) {
+    $('summary').append(el('p', 'This is the report source template. Generate the report from the rust directory:', 'error'));
+    $('summary').append(el('code', 'cargo run --bin coverage > ../coverage.html'));
+    const link = el('a', 'Open the generated report at the repository root');
+    link.href = '../../../coverage.html';
+    $('summary').append(link);
+    return;
+  }
+  let data;
+  try {
+    data = JSON.parse(embedded);
+    if (!Array.isArray(data.rules) || !Array.isArray(data.vectors)) throw new Error('Invalid report schema');
+  } catch (error) {
+    $('summary').append(el('p', 'Unable to read embedded coverage data: ' + error.message, 'error'));
+    return;
+  }
+  const { rules, vectors } = data;
+  const eventsFor = (vector, rule) => vector.cells[rule.id] || [];
+  const gapReasons = new Map(rules.map(rule => {
+    const seen = new Set(vectors.flatMap(vector => eventsFor(vector, rule).map(event => event.status)));
+    const reasons = [];
+    if (!seen.has('passed')) reasons.push('No passed events');
+    if (!seen.has('failed')) reasons.push('No failed events');
+    return [rule.id, reasons];
+  }));
+  const fill = (id, values) => [...new Set(values)].sort().forEach(value => {
+    const option = el('option', value); option.value = value; $(id).append(option);
+  });
+  fill('corpus', vectors.map(vector => vector.corpus));
+  fill('scope', rules.map(rule => rule.scope));
+  fill('status', [...statuses, ...vectors.flatMap(vector => Object.values(vector.cells).flatMap(events => events.map(event => event.status)))]);
+  const matches = (query, values) => values.join(' ').toLowerCase().includes(query.trim().toLowerCase());
+  const filteredEvents = (vector, rule) => eventsFor(vector, rule).filter(event => !$('status').value || event.status === $('status').value);
+  let selected = null;
+  let selectedButton = null;
+  function field(list, label, value) {
+    list.append(el('dt', label), el('dd', value === null || value === undefined || value === '' ? '—' : String(value)));
+  }
+  function showDetails(vector, rule, button, focus) {
+    selected = { vector, rule };
+    if (selectedButton) selectedButton.setAttribute('aria-pressed', 'false');
+    selectedButton = button;
+    if (button) button.setAttribute('aria-pressed', 'true');
+    const body = $('detail-body'); body.replaceChildren();
+    const grid = el('div', undefined, 'details-grid');
+    const ruleSection = el('div'); ruleSection.append(el('h3', 'Rule · ' + rule.id));
+    const ruleList = el('dl');
+    field(ruleList, 'Rule text', rule.text);
+    field(ruleList, 'Category / topic', [rule.category, rule.topic].join(' / '));
+    field(ruleList, 'Scope', rule.scope);
+    field(ruleList, 'Silent payments', rule.sp ? 'Yes' : 'No');
+    field(ruleList, 'Implemented', rule.implemented ? 'Yes' : 'No');
+    field(ruleList, 'Catalog gap', rule.gap);
+    field(ruleList, 'Observation gaps (whole dataset)', gapReasons.get(rule.id).join('\n') || 'None by this report’s definition');
+    field(ruleList, 'Explicit catalog expectation', 'Not recorded in the current JSON fixtures');
+    ruleSection.append(ruleList);
+    const vectorSection = el('div'); vectorSection.append(el('h3', 'Vector · ' + vector.id));
+    const vectorList = el('dl');
+    for (const [label, value] of [
+      ['Corpus', vector.corpus], ['Description', vector.description], ['Note', vector.note],
+      ['Harness operation (fixed)', vector.operation], ['Enabled extension BIPs (fixed by fixture harness)', vector.bips.join(', ') || 'None'],
+      ['Catalog outcome for this operation', vector.result],
+      ['General rules with fixture BIPs', vector.general_result],
+      ['General rules with extensions disabled', vector.base_general_result], ['Expected result comparison', vector.expected_result],
+      ['Legacy expected error (not a catalog assertion)', vector.expected]
+    ]) field(vectorList, label, value);
+    const candidates = vector.expected === null ? [] : rules.filter(candidate => candidate.id === vector.expected);
+    field(vectorList, 'Rule named by the expected error',
+      vector.expected === null ? 'No expected error.' : candidates.length + ' candidate(s): ' + (candidates.map(candidate => candidate.id).join(', ') || 'none'));
+    vectorSection.append(vectorList, el('p', 'Candidates indicate mapping relevance only, not catalog expectations or asserted catalog outcomes.', 'muted'));
+    grid.append(ruleSection, vectorSection); body.append(grid);
+    const all = eventsFor(vector, rule), visible = filteredEvents(vector, rule);
+    body.append(el('h3', 'Events · ' + visible.length + ' shown / ' + all.length + ' recorded'));
+    body.append(el('p', 'Paths are zero-based iteration indices: map index for GEN-F-4, input index for input and signer/finalizer checks, or output index for output checks; combiner source subjects are numbered separately; an empty path means no iteration indices were recorded. Status filtering applies here too.', 'muted'));
+    if (!visible.length) body.append(el('p', all.length ? 'No events match the status filter.' : 'No events recorded for this rule and vector.'));
+    visible.forEach(event => {
+      const item = el('div', undefined, 'event');
+      item.append(el('span', event.status, 'badge'));
+      item.append(el('p', 'Subject: ' + (event.subject || 'Operation context')));
+      item.append(el('p', 'Iteration path: ' + JSON.stringify(event.path)));
+      item.append(el('p', event.detail || 'No detail recorded.'));
+      body.append(item);
+    });
+    if (focus) $('details-title').focus();
+  }
+  function render() {
+    const shownRules = rules.filter(rule =>
+      (!$('scope').value || rule.scope === $('scope').value) &&
+      ($('lens').value !== 'sp' || rule.sp) &&
+      (!$('gaps').checked || gapReasons.get(rule.id).length) &&
+      matches($('rule-search').value, [rule.id, rule.text, rule.category, rule.topic, rule.scope, rule.gap]));
+    const shownVectors = vectors.filter(vector =>
+      (!$('corpus').value || vector.corpus === $('corpus').value) &&
+      matches($('vector-search').value, [vector.id, vector.corpus, vector.description, vector.note, vector.operation, ...vector.bips, vector.result, vector.expected_result, vector.expected]));
+    $('matrix-head').replaceChildren(); $('matrix-body').replaceChildren();
+    const header = el('tr');
+    const corner = el('th', 'Vector / Rule'); corner.scope = 'col'; header.append(corner);
+    shownRules.forEach(rule => {
+      const th = el('th', rule.id); th.scope = 'col'; th.title = rule.text;
+      th.append(el('small', rule.scope + (rule.sp ? ' · SP' : ''))); header.append(th);
+    });
+    $('matrix-head').append(header);
+    const totals = new Map(); let total = 0; selectedButton = null;
+    const fragment = document.createDocumentFragment();
+    shownVectors.forEach(vector => {
+      const row = el('tr'); const th = el('th', vector.id); th.scope = 'row';
+      th.append(el('small', vector.corpus + ' · ' + vector.operation));
+      const description = el('small', vector.description, 'vector-description');
+      description.title = vector.description; th.append(description); row.append(th);
+      shownRules.forEach(rule => {
+        const events = filteredEvents(vector, rule), counts = new Map();
+        events.forEach(event => { counts.set(event.status, (counts.get(event.status) || 0) + 1); totals.set(event.status, (totals.get(event.status) || 0) + 1); total++; });
+        const cell = el('td');
+        const label = [...counts].map(([status, count]) => status + ': ' + count).join(' · ') || (eventsFor(vector, rule).length ? 'No matching events' : 'No events');
+        const kind = counts.has('failed') ? 'bad' : counts.size === 1 && counts.has('passed') ? 'good' : 'none';
+        const button = el('button', label, kind); button.type = 'button';
+        button.setAttribute('aria-label', vector.id + ' / ' + rule.id + ': ' + label);
+        button.setAttribute('aria-pressed', 'false');
+        button.addEventListener('click', () => showDetails(vector, rule, button, true));
+        if (selected && selected.vector === vector && selected.rule === rule) { selectedButton = button; button.setAttribute('aria-pressed', 'true'); }
+        cell.append(button); row.append(cell);
+      }); fragment.append(row);
+    });
+    $('matrix-body').append(fragment);
+    $('empty').hidden = Boolean(shownRules.length && shownVectors.length);
+    $('view-scope').textContent = 'View scope: corpus ' + ($('corpus').value || 'all') +
+      ' · rule scope ' + ($('scope').value || 'all') +
+      ' · lens ' + ($('lens').value === 'sp' ? 'Silent payments source evidence' : 'all rules') +
+      ' · event status ' + ($('status').value || 'all') +
+      ' · observation gaps ' + ($('gaps').checked ? 'only' : 'all') +
+      ' · rule search ' + ($('rule-search').value || 'none') +
+      ' · vector search ' + ($('vector-search').value || 'none') +
+      '. Evaluation settings remain fixed by each fixture harness; see cell details for operation and enabled BIPs.';
+    const summary = $('summary'); summary.replaceChildren();
+    for (const [count, label] of [[shownRules.length, 'rules'], [shownVectors.length, 'vectors'], [total, 'observations shown (including skipped checks)']]) {
+      const item = el('span'); item.append(el('strong', String(count)), document.createTextNode(' ' + label)); summary.append(item);
+    }
+    for (const [status, count] of totals) summary.append(el('span', status + ': ' + count, 'badge'));
+    if (selected && selectedButton) showDetails(selected.vector, selected.rule, selectedButton, false);
+    else if (selected) {
+      selected = null;
+      $('detail-body').replaceChildren(el('p', 'The selected cell is outside the current filters. Select a visible cell.', 'muted'));
+    }
+  }
+  const controls = ['corpus','rule-search','vector-search','scope','lens','status','gaps'];
+  controls.forEach(id => $(id).addEventListener($(id).type === 'search' ? 'input' : 'change', render));
+  $('reset').addEventListener('click', () => {
+    controls.forEach(id => { if (id === 'gaps') $(id).checked = false; else $(id).value = id === 'lens' ? 'all' : ''; }); render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

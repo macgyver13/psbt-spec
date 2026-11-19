@@ -1,7 +1,7 @@
 //! BIP-352 and BIP-374 primitives, and the input eligibility, public key
 //! recovery and output derivation the BIP-375 sending rules share.
 
-use bitcoin_hashes::{hash160, sha256, Hash};
+use bitcoin_hashes::{hash160, Hash};
 use k256::elliptic_curve::group::Group;
 use k256::elliptic_curve::ops::Reduce;
 use k256::elliptic_curve::sec1::ToEncodedPoint;
@@ -13,18 +13,14 @@ use crate::context::{
     IN_FINAL_SCRIPTSIG, IN_FINAL_SCRIPTWITNESS, IN_PARTIAL_SIG, IN_REDEEM_SCRIPT, IN_SP_ECDH_SHARE, IN_TAP_INTERNAL_KEY,
     IN_TAP_KEY_SIG, IN_TAP_MERKLE_ROOT, IN_TAP_SCRIPT_SIG, OUT_SCRIPT, OUT_SP_V0_INFO,
 };
-use crate::encoding::{decode_exact, is_p2sh, p2sh_script, put_compact_size, read_witness, Reader};
+use crate::taproot::{tagged_hash, taproot_output_key, verify_taproot_control_block};
+use crate::encoding::{decode_exact, is_p2sh, p2sh_script, read_witness, Reader};
 
 /// The BIP-341 NUMS point H. A taproot output with this internal key has no key path.
 const NUMS_H: [u8; 32] = [
     0x50, 0x92, 0x9b, 0x74, 0xc1, 0xa0, 0x49, 0x54, 0xb7, 0x8b, 0x4b, 0x60, 0x35, 0xe9, 0x7a, 0x5e, 0x07, 0x8a, 0x5a,
     0x0f, 0x28, 0xec, 0x96, 0xd5, 0x47, 0xbf, 0xee, 0x9a, 0xce, 0x80, 0x3a, 0xc0,
 ];
-
-fn tagged_hash(tag: &str, msg: &[u8]) -> [u8; 32] {
-    let tag = sha256::Hash::hash(tag.as_bytes()).to_byte_array();
-    sha256::Hash::hash(&[&tag[..], &tag, msg].concat()).to_byte_array()
-}
 
 fn scalar(bytes: [u8; 32]) -> Scalar {
     <Scalar as Reduce<U256>>::reduce_bytes(&FieldBytes::from(bytes))
@@ -71,7 +67,7 @@ fn commits_to(spk: &[u8], pubkey: &[u8]) -> bool {
 
 /// The data pushes of a push-only script, or none if it is empty, truncated,
 /// or has any opcode other than a push.
-fn pushes(script: Option<&[u8]>) -> Vec<Vec<u8>> {
+pub(crate) fn pushes(script: Option<&[u8]>) -> Vec<Vec<u8>> {
     let mut r = Reader::new(script.unwrap_or_default());
     let mut items = Vec::new();
     while !r.is_empty() {
@@ -90,7 +86,7 @@ fn pushes(script: Option<&[u8]>) -> Vec<Vec<u8>> {
     items
 }
 
-fn final_witness(input: &InputContext) -> Vec<Vec<u8>> {
+pub(crate) fn final_witness(input: &InputContext) -> Vec<Vec<u8>> {
     input.value(IN_FINAL_SCRIPTWITNESS).map(|w| decode_exact(w, read_witness).unwrap()).unwrap_or_default()
 }
 
@@ -110,10 +106,8 @@ pub fn spent_script(input: &InputContext) -> Result<Vec<u8>, String> {
 }
 
 /// The BIP-341 x-only output key for the NUMS internal key and a script tree merkle root.
-fn nums_output_key(merkle_root: &[u8]) -> Vec<u8> {
-    let internal = point(&[&[0x02][..], &NUMS_H].concat()).unwrap();
-    let tweak = scalar(tagged_hash("TapTweak", &[&NUMS_H[..], merkle_root].concat()));
-    xonly(&(internal + ProjectivePoint::GENERATOR * tweak))
+fn nums_output_key(merkle_root: &[u8]) -> Option<[u8; 32]> {
+    taproot_output_key(&NUMS_H, Some(merkle_root.try_into().ok()?)).map(|(key, _)| key)
 }
 
 /// True if a finalized script path witness spends from the NUMS internal key,
@@ -122,23 +116,13 @@ fn final_witness_nums_claim(input: &InputContext, output_key: &[u8]) -> bool {
     let mut stack = final_witness(input);
     drop_annex(&mut stack);
     let [.., leaf, control] = stack.as_slice() else { return false };
-    if control.len() < 33 || (control.len() - 33) % 32 != 0 || control[1..33] != NUMS_H {
-        return false;
-    }
-    let mut leaf_msg = vec![control[0] & 0xfe];
-    put_compact_size(&mut leaf_msg, leaf.len());
-    leaf_msg.extend(leaf);
-    let mut node = tagged_hash("TapLeaf", &leaf_msg);
-    for sibling in control[33..].chunks(32) {
-        let (lo, hi) = if node[..] <= *sibling { (&node[..], sibling) } else { (sibling, &node[..]) };
-        node = tagged_hash("TapBranch", &[lo, hi].concat());
-    }
-    nums_output_key(&node) == output_key
+    let Ok(output_key) = <&[u8; 32]>::try_from(output_key) else { return false };
+    control.get(1..33) == Some(&NUMS_H[..]) && verify_taproot_control_block(output_key, control, leaf, control[0] & 0xfe)
 }
 
 /// The redeemScript of a P2SH input, from PSBT_IN_REDEEM_SCRIPT or, once the
 /// Input Finalizer has pruned it, the last push of the final scriptSig.
-fn redeem_script(input: &InputContext) -> Option<Vec<u8>> {
+pub(crate) fn redeem_script(input: &InputContext) -> Option<Vec<u8>> {
     match input.value(IN_REDEEM_SCRIPT) {
         Some(rs) => Some(rs.to_vec()),
         None => pushes(input.value(IN_FINAL_SCRIPTSIG)).pop(),
@@ -153,7 +137,7 @@ pub fn is_eligible(input: &InputContext) -> Result<bool, String> {
     if is_p2tr(&spk) {
         let output_key = &spk[2..];
         let nums_fields = input.value(IN_TAP_INTERNAL_KEY) == Some(&NUMS_H[..])
-            && input.value(IN_TAP_MERKLE_ROOT).is_some_and(|root| nums_output_key(root) == output_key);
+            && input.value(IN_TAP_MERKLE_ROOT).is_some_and(|root| nums_output_key(root).is_some_and(|k| k[..] == *output_key));
         return Ok(!nums_fields && !final_witness_nums_claim(input, output_key));
     }
     if is_p2sh(&spk) {
@@ -198,8 +182,8 @@ pub fn input_signatures(input: &InputContext) -> Vec<(Vec<u8>, bool)> {
     let pushes = pushes(input.value(IN_FINAL_SCRIPTSIG));
     if is_p2tr(&spk) {
         drop_annex(&mut stack);
-        // TODO: a script path witness's signatures depend on its leaf script,
-        // which is not interpreted here, so only a key path signature is checked.
+        // A script path witness does not label its signatures; see
+        // has_finalized_script_path.
         if stack.len() == 1 {
             sigs.push((stack.remove(0), true));
         }
@@ -215,6 +199,15 @@ pub fn input_signatures(input: &InputContext) -> Vec<(Vec<u8>, bool)> {
         sigs.extend(pushes[1..pushes.len() - 1].iter().map(|s| (s.clone(), false)));
     }
     sigs
+}
+
+/// True if the input is finalized with a Taproot script path witness. Such a
+/// witness does not say which items are signatures (before finalizing,
+/// PSBT_IN_TAP_SCRIPT_SIG labels them), so `input_signatures` omits them.
+pub fn has_finalized_script_path(input: &InputContext) -> bool {
+    let mut stack = final_witness(input);
+    drop_annex(&mut stack);
+    stack.len() >= 2 && spent_script(input).is_ok_and(|spk| is_p2tr(&spk))
 }
 
 /// BIP-374 VerifyProof with the generator G and no message.

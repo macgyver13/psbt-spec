@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "psbt-spec attribute command v1 (psbt-spec.attribute/1)",
+  "description": "One JSON object per line. The caller writes hello_request and request lines to `psbt-spec attribute` on stdin; it writes one hello_response, result or error line to stdout for each, in order. See docs/attribute.md.",
+  "oneOf": [
+    { "$ref": "#/$defs/hello_request" },
+    { "$ref": "#/$defs/hello_response" },
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/result" },
+    { "$ref": "#/$defs/error" }
+  ],
+  "$defs": {
+    "id": {
+      "description": "Optional, chosen by the caller and echoed. Any JSON string or integer.",
+      "type": ["string", "integer"]
+    },
+    "base64": {
+      "description": "A PSBT in standard base64 (RFC 4648 section 4) with padding.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+    },
+    "rule_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Z]+(-[A-Z0-9]+)*-[0-9]+$" },
+      "uniqueItems": true
+    },
+    "hello_request": {
+      "type": "object",
+      "required": ["task"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "task": { "const": "hello" }
+      }
+    },
+    "hello_response": {
+      "type": "object",
+      "required": ["protocol", "spec"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "protocol": { "const": "psbt-spec.attribute/1" },
+        "spec": {
+          "description": "The psbt-spec revision that attributes, for the caller's records (principle 24).",
+          "type": "object",
+          "required": ["revision", "dirty", "status"],
+          "additionalProperties": false,
+          "properties": {
+            "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "dirty": { "type": "boolean" },
+            "status": { "type": "string" }
+          }
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": ["task", "bips"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "task": { "enum": ["deserialize", "create", "construct", "sign", "finalize", "extract", "combine"] },
+        "bips": {
+          "description": "As in the adapter contract. 174 and 370 are accepted and do not gate (the reference reads the version from the PSBT); 372, 375 and 376 enable their rules; 322, 353, 371 and 373 are always checked. Any other number is an error.",
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "psbt": { "$ref": "#/$defs/base64", "description": "The PSBT the role was given. Required for deserialize, construct, sign, finalize and extract." },
+        "sources": {
+          "description": "combine only, required: the PSBTs the Combiner was given.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/base64" },
+          "minItems": 1
+        },
+        "returned": { "$ref": "#/$defs/base64", "description": "The PSBT the role returned. Required for create, construct and combine; optional for sign and finalize (absent: Preconditions only); not allowed for deserialize and extract." },
+        "delegates_additions": { "description": "create only, required: the Creator hands the PSBT to others to add inputs or outputs (ROLE-C-2).", "type": "boolean" },
+        "intended_timelocks": {
+          "description": "construct only, optional: for inputs the Constructor added, by index in the returned PSBT, whether the chosen spend branch needs a locktime (ROLE-C-4). Absent: ROLE-C-4 is Incomplete.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["input", "requires_locktime"],
+            "additionalProperties": false,
+            "properties": {
+              "input": { "type": "integer", "minimum": 0 },
+              "requires_locktime": { "type": "boolean" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        { "if": { "properties": { "task": { "const": "deserialize" } } }, "then": { "required": ["psbt"], "properties": { "sources": false, "returned": false, "delegates_additions": false, "intended_timelocks": false } } },
+        { "if": { "properties": { "task": { "const": "extract" } } }, "then": { "required": ["psbt"], "properties": { "sources": false, "returned": false, "delegates_additions": false, "intended_timelocks": false } } },
+        { "if": { "properties": { "task": { "enum": ["sign", "finalize"] } } }, "then": { "required": ["psbt"], "properties": { "sources": false, "delegates_additions": false, "intended_timelocks": false } } },
+        { "if": { "properties": { "task": { "const": "create" } } }, "then": { "required": ["returned", "delegates_additions"], "properties": { "psbt": false, "sources": false, "intended_timelocks": false } } },
+        { "if": { "properties": { "task": { "const": "construct" } } }, "then": { "required": ["psbt", "returned"], "properties": { "sources": false, "delegates_additions": false } } },
+        { "if": { "properties": { "task": { "const": "combine" } } }, "then": { "required": ["sources", "returned"], "properties": { "psbt": false, "delegates_additions": false, "intended_timelocks": false } } }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "required": ["failed", "incomplete"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "failed": { "$ref": "#/$defs/rule_ids", "description": "Rules reported Failed, in evaluation order without repeats." },
+        "incomplete": { "$ref": "#/$defs/rule_ids", "description": "Rules reported Incomplete and not Failed anywhere, in evaluation order. Never a violation (principle 14)." }
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["error"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "error": { "description": "Why the request could not be attributed: malformed JSON, a missing or forbidden field, bad base64, an unknown BIP.", "type": "string" }
+      }
+    }
+  }
+}
