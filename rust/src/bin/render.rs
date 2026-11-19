@@ -14,7 +14,7 @@ use psbt_spec::attribution::attribute;
 use psbt_spec::corpus;
 use psbt_spec::registry::{Field, FIELDS};
 use psbt_spec::spec;
-use psbt_spec::spec::{Specification, Statement};
+use psbt_spec::spec::{Basis, Evidence, Specification, Statement};
 use serde_json::json;
 
 /// Notable changes, newest first: (date, change).
@@ -115,12 +115,33 @@ fn esc(s: &str) -> String {
     s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;").replace('\'', "&#39;")
 }
 
+/// Every source of a statement, each with its own link.
+fn sources(statement: &Statement) -> impl Iterator<Item = &Evidence> {
+    std::iter::once(&statement.evidence).chain(statement.also)
+}
+
 fn evidence_link(statement: &Statement) -> String {
-    let evidence = &statement.evidence;
-    if evidence.url.is_empty() {
+    sources(statement).map(|evidence| if evidence.url.is_empty() {
         esc(evidence.label)
     } else {
         format!("<a href=\"{}\">{}</a>", esc(evidence.url), esc(evidence.label))
+    }).collect::<Vec<_>>().join("; ")
+}
+
+/// The basis tag of a Derived or Resolution rule; Direct rules show none.
+fn basis_tag(statement: &Statement) -> String {
+    match statement.basis {
+        Basis::Direct => String::new(),
+        Basis::Derived => "<span class=basis>Derived</span>".into(),
+        Basis::Resolution => "<span class=basis>Resolution</span>".into(),
+    }
+}
+
+fn reading(statement: &Statement) -> String {
+    if statement.reading.is_empty() {
+        String::new()
+    } else {
+        format!("<span class=reading>Reading: {}</span>", linked_text(statement.reading))
     }
 }
 
@@ -297,12 +318,13 @@ fn linked_text(text: &str) -> String {
 
 /// The BIP numbers a statement's evidence cites, for the extension filter.
 fn bips(statement: &Statement) -> String {
-    let label = statement.evidence.label;
-    let mut found: Vec<String> = label.match_indices("BIP").filter_map(|(at, _)| {
-        let digits: String = label[at + 3..].chars().take_while(char::is_ascii_digit).collect();
-        (!digits.is_empty()).then_some(digits)
-    }).collect();
-    found.dedup();
+    let mut found: Vec<String> = Vec::new();
+    for label in sources(statement).map(|e| e.label) {
+        for (at, _) in label.match_indices("BIP") {
+            let digits: String = label[at + 3..].chars().take_while(char::is_ascii_digit).collect();
+            if !digits.is_empty() && !found.contains(&digits) { found.push(digits); }
+        }
+    }
     found.join(" ")
 }
 
@@ -320,12 +342,12 @@ fn statement_row(statement: &Statement, show_topic: bool, corpus: &BTreeMap<Stri
         format!("<span class=evidence>From {}</span>", evidence_link(statement))
     };
     format!(
-        "<tr id=\"{}\" data-rule data-strength=\"{}\" data-bips=\"{}\"><td class=id>{id}{}{}</td><td>{topic}<span class=statement-text>{}</span>{evidence}{}</td><td class=validation>{}</td></tr>\n",
+        "<tr id=\"{}\" data-rule data-strength=\"{}\" data-bips=\"{}\"><td class=id>{id}{}{}{}</td><td>{topic}<span class=statement-text>{}</span>{}{evidence}{}</td><td class=validation>{}</td></tr>\n",
         esc(&anchor),
         statement.strength.map(|s| s.label()).unwrap_or(""),
         bips(statement),
-        strength_tag(statement), phase_tag(statement), linked_text(statement.text),
-        implementation_note(statement), validation_cell(statement)
+        strength_tag(statement), basis_tag(statement), phase_tag(statement), linked_text(statement.text),
+        reading(statement), implementation_note(statement), validation_cell(statement)
             + &if statement.coverage.is_some() { corpus_cell(statement, corpus.get(statement.id)) } else { String::new() }
     )
 }
@@ -541,7 +563,9 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
             "phase": phase(e),
             "gates": e.implementations.first().map(|i| i.gates.clone()).unwrap_or_default(),
             "checks": e.implementations.iter().map(|i| i.func.trim_start_matches("crate::")).collect::<Vec<_>>(),
-            "evidence": { "label": e.evidence.label, "url": e.evidence.url },
+            "basis": e.coverage.map(|_| e.basis.label()),
+            "reading": e.reading,
+            "evidence": sources(e).map(|s| json!({ "label": s.label, "url": s.url })).collect::<Vec<_>>(),
             "note": e.implementation_note,
             "gap": e.enforcement.gap,
             "role": e.role,
@@ -612,6 +636,7 @@ fn markdown_entry(e: &Statement, level: usize, corpus: &BTreeMap<String, RuleCor
     let heading = "#".repeat(level);
     let title = match (e.id.is_empty(), e.strength) {
         (true, _) => e.topic.to_owned(),
+        (false, Some(strength)) if e.basis != Basis::Direct => format!("{} ({}, {}) {}", e.id, strength.label(), e.basis.label(), e.topic),
         (false, Some(strength)) => format!("{} ({}) {}", e.id, strength.label(), e.topic),
         (false, None) => format!("{} {}", e.id, e.topic),
     };
@@ -642,12 +667,15 @@ fn markdown_entry(e: &Statement, level: usize, corpus: &BTreeMap<String, RuleCor
     if !e.roles.is_empty() {
         md += &format!("- Enforced by: {}\n", e.roles.join(", "));
     }
+    if !e.reading.is_empty() {
+        md += &format!("- Basis: {}. {}\n", e.basis.label(), e.reading);
+    }
     if !e.evidence.label.is_empty() {
-        md += &if e.evidence.url.is_empty() {
-            format!("- From: {}\n", e.evidence.label)
+        md += &format!("- From: {}\n", sources(e).map(|s| if s.url.is_empty() {
+            s.label.to_owned()
         } else {
-            format!("- From: [{}]({})\n", e.evidence.label, e.evidence.url)
-        };
+            format!("[{}]({})", s.label, s.url)
+        }).collect::<Vec<_>>().join(", "));
     }
     if !e.implementation_note.is_empty() {
         md += &format!("- Note: {}\n", e.implementation_note);
@@ -831,6 +859,8 @@ td.id {{ font-family: ui-monospace, monospace; white-space: nowrap; }}
 .gate {{ color: var(--accent); font-weight: 600; }}
 .strength, .phase, .coverage, .evidence {{ display: block; font: 12px/1.4 -apple-system, system-ui, sans-serif; color: var(--muted); }}
 .strength, .phase {{ white-space: nowrap; }}
+.basis {{ display: block; font: italic 12px/1.4 -apple-system, system-ui, sans-serif; color: var(--muted); }}
+.reading {{ display: block; font: 13px/1.4 -apple-system, system-ui, sans-serif; margin-top: 4px; }}
 .strip {{ font-size: 14px; }}
 .count {{ color: var(--muted); }}
 dl.legend {{ display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: 14px; }}
@@ -850,7 +880,7 @@ a.field {{ text-decoration-style: dotted; }}
 <nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
 <h1>{title}</h1>
 <p><strong>Status:</strong> {status}</p>
-<p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source.</p>
+<p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source. A rule marked Derived or Resolution is the project's reading, not BIP wording, and says why.</p>
 <p>Silent payments: BIP375 covers sending to a silent payment address with a PSBT, and BIP376 covers spending a silent payment output. Both build on <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0352.mediawiki">BIP352</a> (silent payments) and <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0374.mediawiki">BIP374</a> (DLEQ proofs); the silent payment terms are in <a href="#definitions">Definitions</a>.</p>
 <dl class=legend>
 <dt>Verified</dt><dd>The check found the property holds.</dd>
@@ -861,6 +891,8 @@ a.field {{ text-decoration-style: dotted; }}
 <dt>Partial</dt><dd>Coverage: it decides part of the property; the implementation note says what it leaves undecided.</dd>
 <dt>Declared</dt><dd>Coverage: this reference cannot decide it, because it needs cryptography the reference does not carry or behavior a PSBT does not show.</dd>
 <dt>Pending</dt><dd>Coverage: there is no check yet.</dd>
+<dt>Derived</dt><dd>Basis: the rule follows from BIP text but does not restate one sentence; it merges sentences, or reads a requirement from a field description or another BIP. An unmarked rule restates one BIP sentence.</dd>
+<dt>Resolution</dt><dd>Basis: the BIP text is ambiguous or silent, and the project decided; the reading gives the basis.</dd>
 </dl>
 <p><a href="{source}rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="llms.txt">llms.txt</a> &middot; <a href="PRINCIPLES.md">Principles</a> &middot; <a href="ROADMAP.md">Roadmap</a></p>
 {version}{evaluate}{questions}{preamble}

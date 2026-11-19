@@ -39,7 +39,7 @@
     },
     "entry": {
       "type": "object",
-      "required": ["id", "topic", "category", "section", "text", "strength", "coverage", "phase", "gates", "checks", "evidence", "note", "gap", "role", "roles", "corpus"],
+      "required": ["id", "topic", "category", "section", "text", "strength", "coverage", "phase", "gates", "checks", "basis", "reading", "evidence", "note", "gap", "role", "roles", "corpus"],
       "additionalProperties": false,
       "properties": {
         "id": { "description": "Rule, procedure or guidance ID; the page anchor is #<id>. Empty for a definition, whose anchor is #term-<slug of topic>.", "type": "string" },
@@ -52,11 +52,17 @@
         "phase": { "description": "For a role rule: checked on the PSBT the role received (Precondition) or returned (Result).", "enum": ["Precondition", "Result", null] },
         "gates": { "description": "Conditions under which the rule applies, such as a BIP being enabled.", "type": "array", "items": { "type": "string" } },
         "checks": { "description": "The reference functions bound to the rule.", "type": "array", "items": { "type": "string" } },
+        "basis": { "description": "Rules only: where the wording comes from. Null for other entries.", "enum": ["direct", "derived", "resolution", null] },
+        "reading": { "description": "For a derived or resolution rule, the project's reading and its basis; otherwise empty.", "type": "string" },
         "evidence": {
-          "type": "object",
-          "required": ["label", "url"],
-          "additionalProperties": false,
-          "properties": { "label": { "type": "string" }, "url": { "type": "string" } }
+          "description": "The sources, first the main one.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "url"],
+            "additionalProperties": false,
+            "properties": { "label": { "type": "string" }, "url": { "type": "string" } }
+          }
         },
         "note": { "type": "string" },
         "gap": { "description": "For a Partial rule, what its check leaves undecided.", "type": "string" },

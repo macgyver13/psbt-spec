@@ -29,7 +29,9 @@ Each entry:
 | `phase` | Role rules: Precondition or Result. |
 | `gates` | When the rule applies, such as "From BIP-375". |
 | `checks` | Reference functions bound to the rule. |
-| `evidence` | The BIP sentence it comes from: `label` and `url`. |
+| `basis` | Rules only: `direct` (restates one BIP sentence), `derived` (merges sentences, or reads a requirement from a field description or another BIP) or `resolution` (the project decided where the BIP is ambiguous or silent). Null for other entries. |
+| `reading` | For a derived or resolution rule, the project's reading and its basis; otherwise empty. |
+| `evidence` | The sources it comes from, first the main one: a list of `{label, url}`. |
 | `note`, `gap` | Reader note; for a Partial rule, what the check leaves undecided. |
 | `role`, `roles` | The role a guidance entry belongs to; the roles that enforce a General rule. |
 | `corpus` | Rules only: `status` (`corpus`, `tests only`, `none`), the invalid vectors that isolate the rule and the valid vectors that pass it, each as `{file, index}` in `vectors/<file>.json`. |

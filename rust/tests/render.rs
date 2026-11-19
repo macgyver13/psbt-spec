@@ -78,6 +78,12 @@ fn rendered_catalog_matches_rust_statements() {
             assert_eq!(text(wording), statement.text, "wording for {anchor}");
             let rendered = text(row);
             assert!(rendered.contains(statement.evidence.label), "evidence for {anchor}");
+            for also in statement.also {
+                assert!(row.contains(&format!("\">{}</a>", also.label)), "cited source {} for {anchor}", also.label);
+            }
+            assert_eq!(statement.reading.is_empty(), statement.basis == psbt_spec::spec::Basis::Direct, "a reading exactly when not direct, for {anchor}");
+            assert_eq!(row.contains("<span class=basis>"), statement.basis != psbt_spec::spec::Basis::Direct, "basis tag for {anchor}");
+            assert!(statement.reading.is_empty() || rendered.contains("Reading: "), "reading for {anchor}");
             assert_eq!(
                 row.contains("<summary>Implementation note</summary>"),
                 !statement.implementation_note.is_empty() || !statement.enforcement.gap.is_empty(),

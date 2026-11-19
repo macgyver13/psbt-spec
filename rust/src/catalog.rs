@@ -31,6 +31,11 @@ pub struct Statement {
     /// Set for rules only.
     pub coverage: Option<Coverage>,
     pub evidence: Evidence,
+    /// Further sources, each with its own link.
+    pub also: &'static [Evidence],
+    pub basis: Basis,
+    /// For a Derived or Resolution rule, the project's reading and its basis.
+    pub reading: &'static str,
     pub notes: &'static str,
     /// Reader-facing guidance; imported review metadata is retained separately.
     pub implementation_note: &'static str,
@@ -62,6 +67,29 @@ impl Strength {
             Strength::MustNot => "MUST NOT",
             Strength::Should => "SHOULD",
             Strength::May => "MAY",
+        }
+    }
+}
+
+/// Where a rule's wording comes from (PRINCIPLES item 12).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Basis {
+    /// Restates one BIP sentence at its strength.
+    Direct,
+    /// Follows from BIP text without restating one sentence: it merges
+    /// sentences, or reads a requirement from a field description or
+    /// another BIP.
+    Derived,
+    /// The BIP text is ambiguous or silent and the project decided.
+    Resolution,
+}
+
+impl Basis {
+    pub fn label(self) -> &'static str {
+        match self {
+            Basis::Direct => "direct",
+            Basis::Derived => "derived",
+            Basis::Resolution => "resolution",
         }
     }
 }
@@ -129,6 +157,11 @@ pub struct Declaration {
     pub strength: Option<Strength>,
     pub coverage: Option<Coverage>,
     pub evidence: Evidence,
+    /// Further sources, each with its own link.
+    pub also: &'static [Evidence],
+    pub basis: Basis,
+    /// For a Derived or Resolution rule, the project's reading and its basis.
+    pub reading: &'static str,
     /// Reader-facing note on prerequisites and limits.
     pub note: &'static str,
     /// What a Partial check leaves undecided.
@@ -143,20 +176,20 @@ pub struct Declaration {
 
 impl Declaration {
     pub const fn rule(id: &'static str, strength: Strength, coverage: Coverage, evidence: Evidence, text: &'static str) -> Self {
-        Self { id, topic: "", text, strength: Some(strength), coverage: Some(coverage), evidence, note: "", gap: "", role: "", roles: &[] }
+        Self { id, topic: "", text, strength: Some(strength), coverage: Some(coverage), evidence, also: &[], basis: Basis::Direct, reading: "", note: "", gap: "", role: "", roles: &[] }
     }
 
     pub const fn guidance(id: &'static str, strength: Strength, topic: &'static str, evidence: Evidence, text: &'static str) -> Self {
-        Self { id, topic, text, strength: Some(strength), coverage: None, evidence, note: "", gap: "", role: "", roles: &[] }
+        Self { id, topic, text, strength: Some(strength), coverage: None, evidence, also: &[], basis: Basis::Direct, reading: "", note: "", gap: "", role: "", roles: &[] }
     }
 
     pub const fn reference(id: &'static str, topic: &'static str, evidence: Evidence, text: &'static str) -> Self {
-        Self { id, topic, text, strength: None, coverage: None, evidence, note: "", gap: "", role: "", roles: &[] }
+        Self { id, topic, text, strength: None, coverage: None, evidence, also: &[], basis: Basis::Direct, reading: "", note: "", gap: "", role: "", roles: &[] }
     }
 
     /// A definition, listed by its term.
     pub const fn term(term: &'static str, evidence: Evidence, text: &'static str) -> Self {
-        Self { id: "", topic: term, text, strength: None, coverage: None, evidence, note: "", gap: "", role: "", roles: &[] }
+        Self { id: "", topic: term, text, strength: None, coverage: None, evidence, also: &[], basis: Basis::Direct, reading: "", note: "", gap: "", role: "", roles: &[] }
     }
 
     /// Shows guidance with the named role section.
@@ -174,6 +207,21 @@ impl Declaration {
 
     pub const fn gap(self, gap: &'static str) -> Self {
         Self { gap, ..self }
+    }
+
+    /// Marks the rule as derived, with the reading that derives it.
+    pub const fn derived(self, reading: &'static str) -> Self {
+        Self { basis: Basis::Derived, reading, ..self }
+    }
+
+    /// Marks the rule as a project resolution, with its basis.
+    pub const fn resolution(self, reading: &'static str) -> Self {
+        Self { basis: Basis::Resolution, reading, ..self }
+    }
+
+    /// Adds sources after the first, each with its own link.
+    pub const fn cite(self, also: &'static [Evidence]) -> Self {
+        Self { also, ..self }
     }
 }
 
@@ -268,6 +316,9 @@ pub fn build(doc: &Doc, descriptions: &[Text], declared: &[DeclaredSection]) -> 
             strength: metadata.strength,
             coverage: metadata.coverage,
             evidence: metadata.evidence,
+            also: &[],
+            basis: Basis::Direct,
+            reading: "",
             notes: metadata.notes,
             implementation_note: metadata.implementation_note,
             review: metadata.review,
@@ -319,6 +370,9 @@ fn declared_statement(d: &Declaration, definitions: &mut BTreeMap<&'static str, 
         strength: d.strength,
         coverage: d.coverage,
         evidence: d.evidence,
+        also: d.also,
+        basis: d.basis,
+        reading: d.reading,
         notes: "",
         implementation_note: d.note,
         review: "",

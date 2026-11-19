@@ -251,7 +251,7 @@ A PSBT's signatures MUST agree with PSBT_GLOBAL_TX_MODIFIABLE: Inputs Modifiable
 
 ### Taproot
 
-#### GEN-TR-1 (MUST)
+#### GEN-TR-1 (MUST, derived)
 
 For each input with PSBT_IN_TAP_LEAF_SCRIPT, every control block MUST reconstruct to the spent P2TR key.
 
@@ -259,10 +259,11 @@ For each input with PSBT_IN_TAP_LEAF_SCRIPT, every control block MUST reconstruc
 - Vectors: tests only
   - passes: vectors/bip371.json #14 #16
   - passes: vectors/bip373.json #6 #7 #8
-- From: [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
+- Basis: derived. BIP371 describes the control block only as specified in BIP341. A control block that does not reconstruct to the spent output key fails BIP341 script path validation.
+- From: [BIP371 - PSBT_IN_TAP_LEAF_SCRIPT](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Script validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#script-validation-rules)
 - Note: Applies only to inputs with PSBT_IN_TAP_LEAF_SCRIPT. Takes the spent output from either UTXO field; a missing spent output returns Incomplete. The control block leaf version must equal the leaf script version.
 
-#### GEN-TR-2 (MUST)
+#### GEN-TR-2 (MUST, derived)
 
 PSBT_IN_TAP_INTERNAL_KEY, tweaked by PSBT_IN_TAP_MERKLE_ROOT or, without it, by some script tree, MUST produce the spent P2TR output key.
 
@@ -271,10 +272,11 @@ PSBT_IN_TAP_INTERNAL_KEY, tweaked by PSBT_IN_TAP_MERKLE_ROOT or, without it, by 
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #3 #4 #5 #6 #7 #8 #9 #10 #11
   - passes: vectors/bip375.json #49 #61 #68 #69 #70 #74 #75
-- From: [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
+- Basis: derived. BIP371 gives the internal key and merkle root of the spent output. BIP341 defines the output key as the internal key tweaked by that root, so fields that do not produce it do not describe the output.
+- From: [BIP371 - PSBT_IN_TAP_INTERNAL_KEY and PSBT_IN_TAP_MERKLE_ROOT](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Constructing and spending Taproot outputs](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#constructing-and-spending-taproot-outputs)
 - Note: Without PSBT_IN_TAP_MERKLE_ROOT, a key-only tweak that matches is Verified and a mismatch is Incomplete, since the PSBT may omit the script tree. A missing spent output returns Incomplete.
 
-#### GEN-TR-3 (MUST)
+#### GEN-TR-3 (MUST, derived)
 
 PSBT_OUT_TAP_INTERNAL_KEY, tweaked by the root of PSBT_OUT_TAP_TREE or, without it, by some script tree, MUST produce the output's P2TR key.
 
@@ -282,17 +284,19 @@ PSBT_OUT_TAP_INTERNAL_KEY, tweaked by the root of PSBT_OUT_TAP_TREE or, without 
 - Vectors: tests only
   - passes: vectors/bip371.json #13 #14 #15 #16
   - passes: vectors/bip373.json #12 #13
-- From: [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
+- Basis: derived. BIP371 gives the internal key and script tree of the output. BIP341 defines the output key as the internal key tweaked by the tree's root, so fields that do not produce it do not describe the output.
+- From: [BIP371 - PSBT_OUT_TAP_INTERNAL_KEY and PSBT_OUT_TAP_TREE](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Constructing and spending Taproot outputs](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#constructing-and-spending-taproot-outputs)
 - Note: Uses PSBT_OUT_SCRIPT (v2) or the unsigned transaction's output (v0). Without PSBT_OUT_TAP_TREE, a key-only match is Verified and a mismatch is Incomplete. An output with no script yet returns Incomplete.
 
-#### GEN-TR-4 (MUST)
+#### GEN-TR-4 (MUST, derived)
 
 Each leaf hash in PSBT_OUT_TAP_BIP32_DERIVATION MUST be a leaf of PSBT_OUT_TAP_TREE.
 
 - Coverage: Full
 - Vectors: tests only
   - passes: vectors/bip371.json #15
-- From: [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
+- Basis: derived. BIP371 says the leaf hashes are of the leaves which involve this public key. Read as a requirement, each one is a leaf of the output's tree.
+- From: [BIP371 - PSBT_OUT_TAP_BIP32_DERIVATION](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
 - Note: Without PSBT_OUT_TAP_TREE, leaf hashes cannot be checked and the rule returns Incomplete. Input derivation leaf hashes are not checked, because inputs list only the leaves signers can sign.
 
 ### MuSig2
@@ -314,7 +318,7 @@ The key of each PSBT_IN_MUSIG2_PARTICIPANT_PUBKEYS and PSBT_OUT_MUSIG2_PARTICIPA
 - Coverage: Full
 - Vectors: tests only
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-- From: [BIP373 - Specification; BIP327 - Key Aggregation](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0373.mediawiki#specification)
+- From: [BIP373 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0373.mediawiki#specification), [BIP327 - Key Aggregation](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0327.mediawiki#key-aggregation)
 - Note: Runs BIP327 KeyAgg with the musig2 crate over the listed keys in order and compares the untweaked aggregate key. Keys listed in a different order produce a different key and fail.
 
 ### DNS payment instructions
@@ -330,23 +334,25 @@ When PSBT_OUT_DNSSEC_PROOF is present, the field value MUST begin with a valid l
 
 ### Generic signed messages
 
-#### GEN-MSG-1 (MUST)
+#### GEN-MSG-1 (MUST, derived)
 
 In a BIP322 PSBT, the first input's PSBT_IN_WITNESS_UTXO, when present, MUST be output 0 of to_spend, whose amount is 0.
 
 - Coverage: Full
 - Vectors: tests only
 - Enforced by: Creator and Constructor
+- Basis: derived. Merges BIP322's PSBT creator section with its Full format, which makes to_spend's output 0 the spent output at amount 0.
 - From: [BIP322 - PSBT creator; Full](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0322.mediawiki#psbt-creator)
 - Note: Not applicable without PSBT_IN_WITNESS_UTXO; a non-witness UTXO is checked against the prevout by ROLE-S-1 and recognition.
 
-#### GEN-MSG-2 (MUST)
+#### GEN-MSG-2 (MUST, derived)
 
 In a BIP322 PSBT, every input after the first MUST have PSBT_IN_WITNESS_UTXO or PSBT_IN_NON_WITNESS_UTXO; the non-witness UTXO may be omitted when an earlier input spending the same transaction has it.
 
 - Coverage: Full
 - Vectors: tests only
 - Enforced by: Creator and Constructor
+- Basis: derived. Merges the inputs of BIP322's Full (Proof of Funds) format with its PSBT creator section.
 - From: [BIP322 - Full (Proof of Funds); PSBT creator](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0322.mediawiki#full-proof-of-funds)
 - Note: Not applicable to a PSBT with one input.
 
@@ -396,7 +402,7 @@ An output with PSBT_OUT_SP_V0_LABEL MUST also have PSBT_OUT_SP_V0_INFO.
   - passes: vectors/roles.json #11
 - From: [BIP375 - Invalid Psbts](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
 
-#### GEN-SP-2 (MUST)
+#### GEN-SP-2 (MUST, derived)
 
 Once a silent-payment output has PSBT_OUT_SCRIPT, PSBT_GLOBAL_TX_MODIFIABLE MUST have Inputs Modifiable and Outputs Modifiable clear.
 
@@ -407,6 +413,7 @@ Once a silent-payment output has PSBT_OUT_SCRIPT, PSBT_GLOBAL_TX_MODIFIABLE MUST
   - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
   - passes: vectors/roles.json #11
 - Enforced by: Signer
+- Basis: derived. Merges the BIP375 PSBT Structure invalid case with the Signer's duty to clear both flags when it sets the output scripts.
 - From: [BIP375 - Invalid Psbts (PSBT Structure); Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
 - Note: BIP375 publishes this as a PSBT Structure failure. It also covers the Signer's duty to clear both flags when it sets the scripts.
 
@@ -439,7 +446,7 @@ A PSBT with silent-payment outputs MUST pass the ECDH coverage check REF-8 descr
 - From: [BIP375 - Invalid Psbts (ECDH Coverage)](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
 - Note: Bound once per subcheck, in REF-8's order; the failure detail names the subcheck. DLEQ proofs are verified with BIP374 VerifyProof.
 
-#### GEN-SP-4 (MUST)
+#### GEN-SP-4 (MUST, derived)
 
 A PSBT with silent-payment outputs MUST pass the input eligibility check REF-9 describes.
 
@@ -458,10 +465,11 @@ A PSBT with silent-payment outputs MUST pass the input eligibility check REF-9 d
   - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
   - passes: vectors/roles.json #11
 - Enforced by: Creator and Constructor, Signer
+- Basis: derived. Merges the BIP375 Signer's sighash check, the Input Eligibility invalid cases and the Constructor's eligibility check into one check, REF-9.
 - From: [BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
 - Note: Bound once per subcheck. The Signer section allows SIGHASH_DEFAULT on a taproot input in both sighash sentences: it fails if a provided sighash type is not "SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input", and signs using "SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input" when none is provided.
 
-#### GEN-SP-5 (MUST)
+#### GEN-SP-5 (MUST, derived)
 
 A PSBT with silent-payment outputs MUST pass the output script check REF-10 describes.
 
@@ -476,10 +484,11 @@ A PSBT with silent-payment outputs MUST pass the output script check REF-10 desc
   - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
   - passes: vectors/roles.json #11
 - Enforced by: Signer, Transaction Extractor
+- Basis: derived. Merges the BIP375 Output Scripts invalid cases with the Signer's and Transaction Extractor's output script checks into one check, REF-10.
 - From: [BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
 - Note: Bound twice: the derivation context first, then the scripts. With GEN-SP-3 the shares a set script needs are present, so the check decides rather than reporting missing context.
 
-#### GEN-SP-6 (MUST)
+#### GEN-SP-6 (MUST, derived)
 
 Every input MUST pass the BIP376 spend-field check REF-11 describes.
 
@@ -495,6 +504,7 @@ Every input MUST pass the BIP376 spend-field check REF-11 describes.
   - isolates: vectors/bip376.json #12: Spend key that does not produce the output key
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
 - Enforced by: Updater, Signer, Input Finalizer
+- Basis: derived. Merges the BIP376 field rules of its Specification, Updater, Signer and Input Finalizer sections into one check, REF-11.
 - From: [BIP376 - Specification; Updater; Signer; Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#specification)
 - Note: Bound once per subcheck, in REF-11's order, when BIP376 is enabled.
 
@@ -745,13 +755,14 @@ The Signer MUST NOT create a non-witness signature for an input with PSBT_IN_WIT
 - From: [BIP174 - Data Signers Check For](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#data-signers-check-for)
 - Note: Run by evaluate_for_signing with the input and signature kind the caller selects; evaluate_signing infers the kind from the spent script. Without a spent output, or a P2SH spend without its redeemScript, it is Incomplete.
 
-#### ROLE-S-6 (MUST)
+#### ROLE-S-6 (MUST, derived)
 
 A Signer that validates a PSBT_OUT_DNSSEC_PROOF MUST validate it as REF-6 describes.
 
 - Phase: Precondition
 - Coverage: Full
 - Vectors: tests only
+- Basis: derived. Merges BIP353's PSBT types and Resolution sections into one procedure, REF-6.
 - From: [BIP353 - PSBT types; Resolution](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0353.mediawiki#psbt-types)
 - Note: Run by evaluate_dnssec_proofs with a supplied time; without one it is Incomplete. Uses dnssec-prover, which enforces the DNSSEC algorithm policy and resolves CNAME and DNAME. TXT character-strings are concatenated in RDATA order.
 
@@ -868,10 +879,11 @@ BIP372 (Draft): Signers SHOULD remove PSBT_IN_P2C_TWEAK after PSBT_IN_PARTIAL_SI
 
 - From: [BIP372 - Specification (Draft)](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0372.mediawiki#specification)
 
-#### GUIDE-26 (SHOULD) SP DLEQ verification
+#### GUIDE-26 (SHOULD, resolution) SP DLEQ verification
 
-BIP375: the Signer SHOULD verify the DLEQ proofs of eligible inputs it has no private keys for, or the global DLEQ proof if it is set, as REF-3 describes.
+BIP375: at minimum, the Signer SHOULD verify the DLEQ proofs of eligible inputs it has no private keys for, or the global DLEQ proof if it is set, as REF-3 describes. Verifying the proofs of inputs it has the private keys for as well is acceptable.
 
+- Basis: resolution. BIP375's Signer section limits per-input verification to inputs the Signer has no private keys for, while the reference validator and the ECDH coverage vectors verify every eligible input's proof. The BIP's scope is read as the minimum, so a Signer that also verifies its own inputs, as GEN-SP-3 requires of the PSBT it receives, conforms.
 - From: [BIP375 - Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
 
 ## Input Finalizer
@@ -904,7 +916,7 @@ Before finalizing an input with PSBT_IN_SP_TWEAK, the Finalizer MUST require PSB
 - From: [BIP376 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#input-finalizer)
 - Note: Checks the input the Finalizer receives: one with PSBT_IN_SP_TWEAK must have PSBT_IN_TAP_KEY_SIG.
 
-#### ROLE-F-3 (MUST)
+#### ROLE-F-3 (MUST, derived)
 
 Before finalizing an input, the Finalizer MUST verify each PSBT_IN_TAP_KEY_SIG and PSBT_IN_TAP_SCRIPT_SIG it uses as REF-5 describes.
 
@@ -914,10 +926,11 @@ Before finalizing an input, the Finalizer MUST verify each PSBT_IN_TAP_KEY_SIG a
   - isolates: vectors/roles.json #23: 64-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_DEFAULT
   - isolates: vectors/roles.json #24: 65-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL
   - isolates: vectors/roles.json #28: Silent payment tweak with a taproot key path signature
-- From: [BIP174 - Input Finalizer; BIP371](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
+- Basis: derived. BIP174 finalizes an input only when it has enough data to pass validation. A Taproot signature that does not verify under BIP341 cannot pass validation.
+- From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer), [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Signature validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#signature-validation-rules)
 - Note: Performed with BIP340 through crate::signature. The BIP341 signature message is computed from the unsigned transaction and every input's spent output (only this input's for ANYONECANPAY); missing data returns Incomplete.
 
-#### ROLE-F-4 (MUST)
+#### ROLE-F-4 (MUST, derived)
 
 Before finalizing an input, the Finalizer MUST verify each PSBT_IN_PARTIAL_SIG it uses as REF-5 describes.
 
@@ -927,18 +940,20 @@ Before finalizing an input, the Finalizer MUST verify each PSBT_IN_PARTIAL_SIG i
   - isolates: vectors/roles.json #21: SIGHASH_ALL signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL
   - isolates: vectors/roles.json #22: SIGHASH_SINGLE signature without PSBT_IN_SIGHASH_TYPE
   - passes: vectors/roles.json #20
+- Basis: derived. BIP174 finalizes an input only when it has enough data to pass validation. An ECDSA signature that does not verify cannot pass validation.
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
 - Note: Performed with ECDSA (k256) over the BIP143 signature message for a P2WPKH or P2WSH spend, bare or inside P2SH, and the legacy message otherwise. The signature must be strict DER; a high S is accepted, as consensus does. A missing UTXO, redeem script or witness script, a script code with OP_CODESEPARATOR, or a witness version above 0 returns Incomplete. Runs after ROLE-F-3 and ROLE-F-5.
 
-#### ROLE-F-5 (MUST)
+#### ROLE-F-5 (MUST, derived)
 
-Before finalizing an input, the Finalizer MUST verify each PSBT_IN_MUSIG2_PARTIAL_SIG it would aggregate as REF-5 describes.
+A signature the Finalizer produces with PartialSigAgg MUST verify as REF-5 describes for PSBT_IN_TAP_KEY_SIG or PSBT_IN_TAP_SCRIPT_SIG.
 
 - Phase: Precondition
 - Coverage: Partial
 - Vectors: tests only
-- From: [BIP373 - Finalizer; BIP327](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0373.mediawiki#finalizer)
-- Note: Performed with BIP327 PartialSigVerify (the musig2 crate) for every session with no aggregated signature. A session missing a participant's nonce, or whose plain key cannot be related to a listed aggregate key, is Incomplete.
+- Basis: derived. BIP373 lets a Finalizer run PartialSigAgg and says to treat the result as a BIP340 signature, and BIP174 finalizes an input only when it can pass validation. BIP327 makes PartialSigVerify optional, so a Finalizer may check the aggregate signature instead of each partial signature.
+- From: [BIP373 - Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0373.mediawiki#finalizer), [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer), [BIP327 - Identifying Disruptive Signers](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0327.mediawiki#identifying-disruptive-signers)
+- Note: Performed with BIP327 PartialSigVerify (the musig2 crate) on the PSBT the Finalizer received, for every session with no aggregated signature: if a partial signature fails, the aggregate signature cannot verify. A session missing a participant's nonce, or whose plain key cannot be related to a listed aggregate key, is Incomplete.
 - Not decided: A BIP328 derivation is found only through a PSBT_IN_TAP_BIP32_DERIVATION with the aggregate key's fingerprint, not a synthetic PSBT_GLOBAL_XPUB.
 
 ### Result
@@ -974,24 +989,26 @@ For an input with PSBT_IN_SP_TWEAK, the Finalizer MUST construct a single-elemen
 - From: [BIP376 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#input-finalizer)
 - Note: Compares the input before and after finalizing. The final witness must be exactly one element equal to the PSBT_IN_TAP_KEY_SIG it had, with no annex, and that field must be gone. GEN-SP-6 rejects a finalized input that keeps PSBT_IN_SP_TWEAK or PSBT_IN_SP_SPEND_BIP32_DERIVATION.
 
-#### ROLE-F-9 (MUST)
+#### ROLE-F-9 (MUST, derived)
 
 For an input finalized via script path, the final witness MUST consist of the script inputs, followed by the leaf script and control block.
 
 - Phase: Result
 - Coverage: Full
 - Vectors: tests only
-- From: [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification)
+- Basis: derived. BIP371 does not describe the final witness. BIP341 gives the script path witness: the script's inputs, then the leaf script, then the control block.
+- From: [BIP341 - Constructing and spending Taproot outputs](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#constructing-and-spending-taproot-outputs), [BIP341 - Script validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#script-validation-rules)
 - Note: After removing an annex, a P2TR final witness with two or more elements must end with a leaf script and a control block that commit to the spent output key. Field cleanup is BIP174 guidance and is not checked here.
 
-#### ROLE-F-10 (MUST)
+#### ROLE-F-10 (MUST, derived)
 
 For a P2TR input finalized via key path, the final witness MUST be a single signature, followed by any annex, that verifies against the spent output key.
 
 - Phase: Result
 - Coverage: Full
 - Vectors: tests only
-- From: [BIP341 - Script validation rules; BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#script-validation-rules)
+- Basis: derived. BIP174 asks for a final witness that passes validation, and BIP341 defines a key path witness as one signature, followed by any annex, valid for the output key.
+- From: [BIP341 - Script validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#script-validation-rules), [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
 - Note: Applies to a P2TR final witness with one element after removing any annex. The signature is checked against the spent output key with the annex committed; missing transaction data returns Incomplete.
 
 ### Guidance

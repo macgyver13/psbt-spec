@@ -25,7 +25,7 @@ use crate::encoding::{Map, Psbt};
 use crate::check;
 use crate::silent_payments::has_sp_outputs;
 
-pub use crate::catalog::{Coverage, Specification, Statement, Strength};
+pub use crate::catalog::{Basis, Coverage, Evidence, Specification, Statement, Strength};
 
 /// Evidence: a section of a BIP at the pinned bitcoin/bips revision.
 macro_rules! bip {
@@ -89,17 +89,24 @@ pub const TRANSACTION: DeclaredSection = DeclaredSection { category: "general", 
 
 #[rustfmt::skip]
 pub const TAPROOT: DeclaredSection = DeclaredSection { category: "general", title: "Taproot", entries: &[
-    Declaration::rule("GEN-TR-1", Must, Full, bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"),
+    Declaration::rule("GEN-TR-1", Must, Full, bip!("BIP371 - PSBT_IN_TAP_LEAF_SCRIPT", "bip-0371.mediawiki#specification"),
         "For each input with PSBT_IN_TAP_LEAF_SCRIPT, every control block MUST reconstruct to the spent P2TR key.")
+        .cite(&[bip!("BIP341 - Script validation rules", "bip-0341.mediawiki#script-validation-rules")])
+        .derived("BIP371 describes the control block only as specified in BIP341. A control block that does not reconstruct to the spent output key fails BIP341 script path validation.")
         .note("Applies only to inputs with PSBT_IN_TAP_LEAF_SCRIPT. Takes the spent output from either UTXO field; a missing spent output returns Incomplete. The control block leaf version must equal the leaf script version."),
-    Declaration::rule("GEN-TR-2", Must, Full, bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"),
+    Declaration::rule("GEN-TR-2", Must, Full, bip!("BIP371 - PSBT_IN_TAP_INTERNAL_KEY and PSBT_IN_TAP_MERKLE_ROOT", "bip-0371.mediawiki#specification"),
         "PSBT_IN_TAP_INTERNAL_KEY, tweaked by PSBT_IN_TAP_MERKLE_ROOT or, without it, by some script tree, MUST produce the spent P2TR output key.")
+        .cite(&[bip!("BIP341 - Constructing and spending Taproot outputs", "bip-0341.mediawiki#constructing-and-spending-taproot-outputs")])
+        .derived("BIP371 gives the internal key and merkle root of the spent output. BIP341 defines the output key as the internal key tweaked by that root, so fields that do not produce it do not describe the output.")
         .note("Without PSBT_IN_TAP_MERKLE_ROOT, a key-only tweak that matches is Verified and a mismatch is Incomplete, since the PSBT may omit the script tree. A missing spent output returns Incomplete."),
-    Declaration::rule("GEN-TR-3", Must, Full, bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"),
+    Declaration::rule("GEN-TR-3", Must, Full, bip!("BIP371 - PSBT_OUT_TAP_INTERNAL_KEY and PSBT_OUT_TAP_TREE", "bip-0371.mediawiki#specification"),
         "PSBT_OUT_TAP_INTERNAL_KEY, tweaked by the root of PSBT_OUT_TAP_TREE or, without it, by some script tree, MUST produce the output's P2TR key.")
+        .cite(&[bip!("BIP341 - Constructing and spending Taproot outputs", "bip-0341.mediawiki#constructing-and-spending-taproot-outputs")])
+        .derived("BIP371 gives the internal key and script tree of the output. BIP341 defines the output key as the internal key tweaked by the tree's root, so fields that do not produce it do not describe the output.")
         .note("Uses PSBT_OUT_SCRIPT (v2) or the unsigned transaction's output (v0). Without PSBT_OUT_TAP_TREE, a key-only match is Verified and a mismatch is Incomplete. An output with no script yet returns Incomplete."),
-    Declaration::rule("GEN-TR-4", Must, Full, bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"),
+    Declaration::rule("GEN-TR-4", Must, Full, bip!("BIP371 - PSBT_OUT_TAP_BIP32_DERIVATION", "bip-0371.mediawiki#specification"),
         "Each leaf hash in PSBT_OUT_TAP_BIP32_DERIVATION MUST be a leaf of PSBT_OUT_TAP_TREE.")
+        .derived("BIP371 says the leaf hashes are of the leaves which involve this public key. Read as a requirement, each one is a leaf of the output's tree.")
         .note("Without PSBT_OUT_TAP_TREE, leaf hashes cannot be checked and the rule returns Incomplete. Input derivation leaf hashes are not checked, because inputs list only the leaves signers can sign."),
 ]};
 
@@ -108,8 +115,9 @@ pub const MUSIG2: DeclaredSection = DeclaredSection { category: "general", title
     Declaration::rule("GEN-MS-1", Must, Full, bip!("BIP373 - Specification", "bip-0373.mediawiki#specification"),
         "In PSBT_IN_MUSIG2_PUB_NONCE and PSBT_IN_MUSIG2_PARTIAL_SIG key data, the plain public key MUST be the Taproot output key when the tapleaf hash is omitted, and MUST be found in that leaf's script when it is present.")
         .note("Applies to inputs with PSBT_IN_MUSIG2_PUB_NONCE or PSBT_IN_MUSIG2_PARTIAL_SIG. A missing spent output, or a tapleaf hash without a matching PSBT_IN_TAP_LEAF_SCRIPT, returns Incomplete."),
-    Declaration::rule("GEN-MS-2", Must, Full, bip!("BIP373 - Specification; BIP327 - Key Aggregation", "bip-0373.mediawiki#specification"),
+    Declaration::rule("GEN-MS-2", Must, Full, bip!("BIP373 - Specification", "bip-0373.mediawiki#specification"),
         "The key of each PSBT_IN_MUSIG2_PARTICIPANT_PUBKEYS and PSBT_OUT_MUSIG2_PARTICIPANT_PUBKEYS MUST be the BIP327 KeyAgg result of its participant keys in the listed order.")
+        .cite(&[bip!("BIP327 - Key Aggregation", "bip-0327.mediawiki#key-aggregation")])
         .note("Runs BIP327 KeyAgg with the musig2 crate over the listed keys in order and compares the untweaked aggregate key. Keys listed in a different order produce a different key and fail."),
 ]};
 
@@ -124,10 +132,12 @@ pub const DNS: DeclaredSection = DeclaredSection { category: "general", title: "
 pub const SIGNED_MESSAGES: DeclaredSection = DeclaredSection { category: "general", title: "Generic signed messages", entries: &[
     Declaration::rule("GEN-MSG-1", Must, Full, bip!("BIP322 - PSBT creator; Full", "bip-0322.mediawiki#psbt-creator"),
         "In a BIP322 PSBT, the first input's PSBT_IN_WITNESS_UTXO, when present, MUST be output 0 of to_spend, whose amount is 0.")
+        .derived("Merges BIP322's PSBT creator section with its Full format, which makes to_spend's output 0 the spent output at amount 0.")
         .note("Not applicable without PSBT_IN_WITNESS_UTXO; a non-witness UTXO is checked against the prevout by ROLE-S-1 and recognition.")
         .roles(&["Creator and Constructor"]),
     Declaration::rule("GEN-MSG-2", Must, Full, bip!("BIP322 - Full (Proof of Funds); PSBT creator", "bip-0322.mediawiki#full-proof-of-funds"),
         "In a BIP322 PSBT, every input after the first MUST have PSBT_IN_WITNESS_UTXO or PSBT_IN_NON_WITNESS_UTXO; the non-witness UTXO may be omitted when an earlier input spending the same transaction has it.")
+        .derived("Merges the inputs of BIP322's Full (Proof of Funds) format with its PSBT creator section.")
         .note("Not applicable to a PSBT with one input.")
         .roles(&["Creator and Constructor"]),
     Declaration::rule("GEN-MSG-3", Must, Partial, bip!("BIP322 - Verification Process (required rules)", "bip-0322.mediawiki#verification-process"),
@@ -153,6 +163,7 @@ pub const SILENT_PAYMENTS: DeclaredSection = DeclaredSection { category: "genera
         "An output with PSBT_OUT_SP_V0_LABEL MUST also have PSBT_OUT_SP_V0_INFO."),
     Declaration::rule("GEN-SP-2", Must, Full, bip375!("BIP375 - Invalid Psbts (PSBT Structure); Signer", "bip-0375.mediawiki#invalid-psbts"),
         "Once a silent-payment output has PSBT_OUT_SCRIPT, PSBT_GLOBAL_TX_MODIFIABLE MUST have Inputs Modifiable and Outputs Modifiable clear.")
+        .derived("Merges the BIP375 PSBT Structure invalid case with the Signer's duty to clear both flags when it sets the output scripts.")
         .note("BIP375 publishes this as a PSBT Structure failure. It also covers the Signer's duty to clear both flags when it sets the scripts.")
         .roles(&["Signer"]),
     Declaration::rule("GEN-SP-3", Must, Full, bip375!("BIP375 - Invalid Psbts (ECDH Coverage)", "bip-0375.mediawiki#invalid-psbts"),
@@ -161,14 +172,17 @@ pub const SILENT_PAYMENTS: DeclaredSection = DeclaredSection { category: "genera
         .roles(&["Signer", "Transaction Extractor"]),
     Declaration::rule("GEN-SP-4", Must, Full, bip375!("BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor", "bip-0375.mediawiki#signer"),
         "A PSBT with silent-payment outputs MUST pass the input eligibility check REF-9 describes.")
+        .derived("Merges the BIP375 Signer's sighash check, the Input Eligibility invalid cases and the Constructor's eligibility check into one check, REF-9.")
         .note("Bound once per subcheck. The Signer section allows SIGHASH_DEFAULT on a taproot input in both sighash sentences: it fails if a provided sighash type is not \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\", and signs using \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\" when none is provided.")
         .roles(&["Creator and Constructor", "Signer"]),
     Declaration::rule("GEN-SP-5", Must, Full, bip375!("BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor", "bip-0375.mediawiki#invalid-psbts"),
         "A PSBT with silent-payment outputs MUST pass the output script check REF-10 describes.")
+        .derived("Merges the BIP375 Output Scripts invalid cases with the Signer's and Transaction Extractor's output script checks into one check, REF-10.")
         .note("Bound twice: the derivation context first, then the scripts. With GEN-SP-3 the shares a set script needs are present, so the check decides rather than reporting missing context.")
         .roles(&["Signer", "Transaction Extractor"]),
     Declaration::rule("GEN-SP-6", Must, Full, bip!("BIP376 - Specification; Updater; Signer; Input Finalizer", "bip-0376.mediawiki#specification"),
         "Every input MUST pass the BIP376 spend-field check REF-11 describes.")
+        .derived("Merges the BIP376 field rules of its Specification, Updater, Signer and Input Finalizer sections into one check, REF-11.")
         .note("Bound once per subcheck, in REF-11's order, when BIP376 is enabled.")
         .roles(&["Updater", "Signer", "Input Finalizer"]),
     Declaration::rule("GEN-SP-7", MustNot, Full, bip375!("BIP375 - Signer", "bip-0375.mediawiki#signer"),
@@ -231,6 +245,7 @@ pub const SIGNER: DeclaredSection = DeclaredSection { category: "role", title: "
         .note("Not observable in the PSBT: the check uses the Signer's private key. GEN-SP-6 checks a supplied spend public key the same way."),
     Declaration::rule("ROLE-S-6", Must, Full, bip!("BIP353 - PSBT types; Resolution", "bip-0353.mediawiki#psbt-types"),
         "A Signer that validates a PSBT_OUT_DNSSEC_PROOF MUST validate it as REF-6 describes.")
+        .derived("Merges BIP353's PSBT types and Resolution sections into one procedure, REF-6.")
         .note("Run by evaluate_dnssec_proofs with a supplied time; without one it is Incomplete. Uses dnssec-prover, which enforces the DNSSEC algorithm policy and resolves CNAME and DNAME. TXT character-strings are concatenated in RDATA order."),
     Declaration::rule("ROLE-S-7", Must, Declared, bip!("BIP353 - Resolution", "bip-0353.mediawiki#resolution"),
         "A Signer that displays a BIP353 name without homograph precautions MUST display non-ASCII user and domain identifiers as raw punycode.")
@@ -259,15 +274,20 @@ pub const INPUT_FINALIZER: DeclaredSection = DeclaredSection { category: "role",
     Declaration::rule("ROLE-F-2", Must, Full, bip!("BIP376 - Input Finalizer", "bip-0376.mediawiki#input-finalizer"),
         "Before finalizing an input with PSBT_IN_SP_TWEAK, the Finalizer MUST require PSBT_IN_TAP_KEY_SIG.")
         .note("Checks the input the Finalizer receives: one with PSBT_IN_SP_TWEAK must have PSBT_IN_TAP_KEY_SIG."),
-    Declaration::rule("ROLE-F-3", Must, Full, bip!("BIP174 - Input Finalizer; BIP371", "bip-0174.mediawiki#input-finalizer"),
+    Declaration::rule("ROLE-F-3", Must, Full, bip!("BIP174 - Input Finalizer", "bip-0174.mediawiki#input-finalizer"),
         "Before finalizing an input, the Finalizer MUST verify each PSBT_IN_TAP_KEY_SIG and PSBT_IN_TAP_SCRIPT_SIG it uses as REF-5 describes.")
+        .cite(&[bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"), bip!("BIP341 - Signature validation rules", "bip-0341.mediawiki#signature-validation-rules")])
+        .derived("BIP174 finalizes an input only when it has enough data to pass validation. A Taproot signature that does not verify under BIP341 cannot pass validation.")
         .note("Performed with BIP340 through crate::signature. The BIP341 signature message is computed from the unsigned transaction and every input's spent output (only this input's for ANYONECANPAY); missing data returns Incomplete."),
     Declaration::rule("ROLE-F-4", Must, Full, bip!("BIP174 - Input Finalizer", "bip-0174.mediawiki#input-finalizer"),
         "Before finalizing an input, the Finalizer MUST verify each PSBT_IN_PARTIAL_SIG it uses as REF-5 describes.")
+        .derived("BIP174 finalizes an input only when it has enough data to pass validation. An ECDSA signature that does not verify cannot pass validation.")
         .note("Performed with ECDSA (k256) over the BIP143 signature message for a P2WPKH or P2WSH spend, bare or inside P2SH, and the legacy message otherwise. The signature must be strict DER; a high S is accepted, as consensus does. A missing UTXO, redeem script or witness script, a script code with OP_CODESEPARATOR, or a witness version above 0 returns Incomplete. Runs after ROLE-F-3 and ROLE-F-5."),
-    Declaration::rule("ROLE-F-5", Must, Partial, bip!("BIP373 - Finalizer; BIP327", "bip-0373.mediawiki#finalizer"),
-        "Before finalizing an input, the Finalizer MUST verify each PSBT_IN_MUSIG2_PARTIAL_SIG it would aggregate as REF-5 describes.")
-        .note("Performed with BIP327 PartialSigVerify (the musig2 crate) for every session with no aggregated signature. A session missing a participant's nonce, or whose plain key cannot be related to a listed aggregate key, is Incomplete.")
+    Declaration::rule("ROLE-F-5", Must, Partial, bip!("BIP373 - Finalizer", "bip-0373.mediawiki#finalizer"),
+        "A signature the Finalizer produces with PartialSigAgg MUST verify as REF-5 describes for PSBT_IN_TAP_KEY_SIG or PSBT_IN_TAP_SCRIPT_SIG.")
+        .cite(&[bip!("BIP174 - Input Finalizer", "bip-0174.mediawiki#input-finalizer"), bip!("BIP327 - Identifying Disruptive Signers", "bip-0327.mediawiki#identifying-disruptive-signers")])
+        .derived("BIP373 lets a Finalizer run PartialSigAgg and says to treat the result as a BIP340 signature, and BIP174 finalizes an input only when it can pass validation. BIP327 makes PartialSigVerify optional, so a Finalizer may check the aggregate signature instead of each partial signature.")
+        .note("Performed with BIP327 PartialSigVerify (the musig2 crate) on the PSBT the Finalizer received, for every session with no aggregated signature: if a partial signature fails, the aggregate signature cannot verify. A session missing a participant's nonce, or whose plain key cannot be related to a listed aggregate key, is Incomplete.")
         .gap("A BIP328 derivation is found only through a PSBT_IN_TAP_BIP32_DERIVATION with the aggregate key's fingerprint, not a synthetic PSBT_GLOBAL_XPUB."),
     Declaration::rule("ROLE-F-6", Must, Partial, bip!("BIP174 - Input Finalizer", "bip-0174.mediawiki#input-finalizer"),
         "For each input with enough data to pass validation, the Finalizer MUST construct its finalized scriptSig and scriptWitness fields as applicable.")
@@ -279,11 +299,15 @@ pub const INPUT_FINALIZER: DeclaredSection = DeclaredSection { category: "role",
     Declaration::rule("ROLE-F-8", Must, Full, bip!("BIP376 - Input Finalizer", "bip-0376.mediawiki#input-finalizer"),
         "For an input with PSBT_IN_SP_TWEAK, the Finalizer MUST construct a single-element PSBT_IN_FINAL_SCRIPTWITNESS from its PSBT_IN_TAP_KEY_SIG, and remove PSBT_IN_TAP_KEY_SIG.")
         .note("Compares the input before and after finalizing. The final witness must be exactly one element equal to the PSBT_IN_TAP_KEY_SIG it had, with no annex, and that field must be gone. GEN-SP-6 rejects a finalized input that keeps PSBT_IN_SP_TWEAK or PSBT_IN_SP_SPEND_BIP32_DERIVATION."),
-    Declaration::rule("ROLE-F-9", Must, Full, bip!("BIP371 - Specification", "bip-0371.mediawiki#specification"),
+    Declaration::rule("ROLE-F-9", Must, Full, bip!("BIP341 - Constructing and spending Taproot outputs", "bip-0341.mediawiki#constructing-and-spending-taproot-outputs"),
         "For an input finalized via script path, the final witness MUST consist of the script inputs, followed by the leaf script and control block.")
+        .cite(&[bip!("BIP341 - Script validation rules", "bip-0341.mediawiki#script-validation-rules")])
+        .derived("BIP371 does not describe the final witness. BIP341 gives the script path witness: the script's inputs, then the leaf script, then the control block.")
         .note("After removing an annex, a P2TR final witness with two or more elements must end with a leaf script and a control block that commit to the spent output key. Field cleanup is BIP174 guidance and is not checked here."),
-    Declaration::rule("ROLE-F-10", Must, Full, bip!("BIP341 - Script validation rules; BIP174 - Input Finalizer", "bip-0341.mediawiki#script-validation-rules"),
+    Declaration::rule("ROLE-F-10", Must, Full, bip!("BIP341 - Script validation rules", "bip-0341.mediawiki#script-validation-rules"),
         "For a P2TR input finalized via key path, the final witness MUST be a single signature, followed by any annex, that verifies against the spent output key.")
+        .cite(&[bip!("BIP174 - Input Finalizer", "bip-0174.mediawiki#input-finalizer")])
+        .derived("BIP174 asks for a final witness that passes validation, and BIP341 defines a key path witness as one signature, followed by any annex, valid for the output key.")
         .note("Applies to a P2TR final witness with one element after removing any annex. The signature is checked against the spent output key with the annex committed; missing transaction data returns Incomplete."),
 ]};
 
@@ -454,7 +478,8 @@ pub const GUIDANCE: DeclaredSection = DeclaredSection { category: "guidance", ti
         "BIP372 (Draft): Signers SHOULD remove PSBT_IN_P2C_TWEAK after PSBT_IN_PARTIAL_SIG is constructed.")
         .role("Signer"),
     Declaration::guidance("GUIDE-26", Should, "SP DLEQ verification", bip375!("BIP375 - Signer", "bip-0375.mediawiki#signer"),
-        "BIP375: the Signer SHOULD verify the DLEQ proofs of eligible inputs it has no private keys for, or the global DLEQ proof if it is set, as REF-3 describes.")
+        "BIP375: at minimum, the Signer SHOULD verify the DLEQ proofs of eligible inputs it has no private keys for, or the global DLEQ proof if it is set, as REF-3 describes. Verifying the proofs of inputs it has the private keys for as well is acceptable.")
+        .resolution("BIP375's Signer section limits per-input verification to inputs the Signer has no private keys for, while the reference validator and the ECDH coverage vectors verify every eligible input's proof. The BIP's scope is read as the minimum, so a Signer that also verifies its own inputs, as GEN-SP-3 requires of the PSBT it receives, conforms.")
         .role("Signer"),
 ]};
 
