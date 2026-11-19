@@ -9,6 +9,14 @@ BIP-375 and BIP-376. Extension rules cover
 Taproot (BIP-371), MuSig2 (BIP-373), DNS payment proofs (BIP-353), message
 signing (BIP-322), and pay-to-contract (BIP-372, Draft).
 
+The `evaluate`, `vectors` and `attribute` commands run a project against the
+vectors through an adapter ([`docs/adapter.md`](docs/adapter.md)) and write a
+per-rule report ([`docs/report.md`](docs/report.md)). The rulebook
+(`spec.html`, `rules.json`), the vectors and these commands are the product.
+The Rust reference checks described below prove that each vector isolates the
+rule it claims and trace which rules a PSBT fails. They are not a public
+checking API.
+
 [`PRINCIPLES.md`](PRINCIPLES.md) states how the specification decides what a
 rule is and how it is worded, checked, tested and audited.
 
@@ -135,6 +143,28 @@ check can be vacuous. Each fixture's expectation names the rule its entry
 point stops at; other rules' outcomes are observed, not asserted. Missing role intent or transition data is shown explicitly. Cases
 constructed or mutated inside Rust tests are outside the report. Regenerate it
 after changing rules or vectors; the HTML is a local artifact, not checked in.
+
+## Evaluate a project
+
+`psbt-spec` (`rust/src/bin/psbt-spec/`) has three commands. The contract an
+adapter speaks is in [`docs/adapter.md`](docs/adapter.md), the report in
+[`docs/report.md`](docs/report.md) and `attribute` in
+[`docs/attribute.md`](docs/attribute.md).
+
+```bash
+cd rust
+cargo run --release --bin psbt-spec -- evaluate --out DIR --corpus ../vectors/bip375.json -- ADAPTER [ARGS ...]
+cargo run --release --bin psbt-spec -- vectors ../vectors/bip375.json
+echo '{"task": "deserialize", "bips": [370], "psbt": "..."}' | cargo run --release --bin psbt-spec -- attribute
+```
+
+`evaluate` puts every vector of the corpus files to the adapter and writes
+`DIR/report.json` and `DIR/report.md`, one verdict per (rule, operation).
+`vectors` audits corpus files: the rules each vector fails against its label,
+and whether it isolates its rule; it exits 1 for a vector that neither isolates
+its label nor carries a triage note. `attribute` reads JSON lines and answers
+which rules a PSBT fails. [`adapters/bip375-reference/`](adapters/bip375-reference)
+is an adapter for the bips BIP-375 reference validator.
 
 ## Layout
 

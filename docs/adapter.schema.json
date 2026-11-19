@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "psbt-spec adapter contract v1 (psbt-spec.adapter/1)",
+  "description": "One JSON object per line. The evaluator writes hello_request and request lines to the adapter's stdin; the adapter writes one hello_response or response line to stdout for each. See docs/adapter.md.",
+  "oneOf": [
+    { "$ref": "#/$defs/hello_request" },
+    { "$ref": "#/$defs/hello_response" },
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/response" }
+  ],
+  "$defs": {
+    "id": {
+      "description": "Chosen by the evaluator, echoed by the adapter. 0 for hello, then 1, 2, ... in order.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "task": {
+      "description": "A role operation. deserialize covers the General rules alone.",
+      "enum": ["deserialize", "sign", "finalize", "extract", "combine"]
+    },
+    "bips": {
+      "description": "BIP numbers. 174 stands for PSBT version 0 and 370 for version 2; the others are extensions (371, 372, 373, 375, 376, ...).",
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "base64": {
+      "description": "A PSBT in standard base64 (RFC 4648 section 4) with padding.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+    },
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+(-[A-Z0-9]+)*-[0-9]+$"
+    },
+    "hello_request": {
+      "type": "object",
+      "required": ["id", "task", "protocol"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "const": 0 },
+        "task": { "const": "hello" },
+        "protocol": { "description": "The protocol the evaluator speaks.", "const": "psbt-spec.adapter/1" }
+      }
+    },
+    "hello_response": {
+      "type": "object",
+      "required": ["id", "protocol", "project", "adapter", "tasks", "bips"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "const": 0 },
+        "protocol": { "description": "The protocol the adapter speaks. The evaluator stops on any other value.", "const": "psbt-spec.adapter/1" },
+        "project": {
+          "description": "The implementation under evaluation, pinned for the report.",
+          "type": "object",
+          "required": ["name", "version", "revision"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 },
+            "revision": { "description": "Source commit, or firmware build when there is none.", "type": "string", "minLength": 1 }
+          }
+        },
+        "adapter": {
+          "description": "The adapter program itself, when it is separate from the project.",
+          "type": "object",
+          "required": ["name", "version"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 }
+          }
+        },
+        "tasks": {
+          "description": "Tasks the adapter answers. Vectors for any other task are withheld (NOT IMPLEMENTED).",
+          "type": "array",
+          "items": { "$ref": "#/$defs/task" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "bips": {
+          "$ref": "#/$defs/bips",
+          "description": "BIPs the project supports. A vector needing any other is withheld (NOT IMPLEMENTED)."
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": ["id", "task", "bips"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "integer", "minimum": 1 },
+        "task": { "$ref": "#/$defs/task" },
+        "bips": { "$ref": "#/$defs/bips", "description": "Every BIP the vector exercises. The adapter enables these extensions and no others." },
+        "psbt": { "$ref": "#/$defs/base64", "description": "The PSBT the role is given. Every task except combine." },
+        "sources": {
+          "description": "combine only: the PSBTs to combine, in order.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/base64" },
+          "minItems": 1
+        }
+      },
+      "if": { "properties": { "task": { "const": "combine" } } },
+      "then": { "required": ["sources"], "not": { "required": ["psbt"] } },
+      "else": { "required": ["psbt"], "not": { "required": ["sources"] } }
+    },
+    "response": {
+      "type": "object",
+      "required": ["id", "verdict"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "integer", "minimum": 1 },
+        "verdict": {
+          "description": "accept: the project performed the task. reject: the project refused the PSBT. n/a: the adapter cannot pose this vector to the project. error: the adapter failed.",
+          "enum": ["accept", "reject", "n/a", "error"]
+        },
+        "reason": { "description": "Free text, recorded in the report.", "type": "string" },
+        "rule": { "$ref": "#/$defs/rule_id", "description": "reject only, optional: the psbt-spec rule ID whose property made the project refuse, mapped from the project's own error, and only when that mapping is certain. Omit it otherwise. A refusal of an invalid vector counts as MATCH only when this names the vector's rule or is omitted (docs/report.md, Named rules)." },
+        "psbt": { "$ref": "#/$defs/base64", "description": "accept only: the PSBT the project returned. Required for finalize and combine, optional for sign (enforced by the evaluator, which knows the task)." }
+      },
+      "allOf": [
+        { "if": { "properties": { "verdict": { "enum": ["n/a", "error"] } } }, "then": { "required": ["reason"] } },
+        { "if": { "properties": { "verdict": { "not": { "const": "reject" } } } }, "then": { "not": { "required": ["rule"] } } },
+        { "if": { "properties": { "verdict": { "not": { "const": "accept" } } } }, "then": { "not": { "required": ["psbt"] } } }
+      ]
+    }
+  }
+}

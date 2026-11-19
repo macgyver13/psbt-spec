@@ -35,7 +35,7 @@ a.field { text-decoration-style: dotted; }
 </style>
 </head>
 <body>
-<nav class=toc><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
+<nav class=toc><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
 <h1>PSBT Conformance Specification</h1>
 <p><strong>Status:</strong> Draft. Rule IDs may change until version 1.0.</p>
 <p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source.</p>
@@ -51,7 +51,30 @@ a.field { text-decoration-style: dotted; }
 <dt>Pending</dt><dd>Coverage: there is no check yet.</dd>
 </dl>
 <p><a href="rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="PRINCIPLES.md">Principles</a></p>
-<p id="vector-coverage">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule, so the corpus tests it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>
+<h2 id="evaluate">Evaluate your project</h2>
+<p>A project judges its own compliance by rule ID. <code>psbt-spec evaluate</code> puts every corpus vector to the project through an adapter and writes a report with one verdict per rule and operation. <code>psbt-spec attribute</code> reads a PSBT, with the task that produced it, and lists the rules it fails.</p>
+<p>To run an evaluation, build <code>psbt-spec</code> from source and point it at your adapter and one or more corpus files:</p>
+<pre>git clone https://github.com/macgyver13/psbt-spec
+cd psbt-spec/rust
+cargo run --release --bin psbt-spec -- evaluate --out DIR \
+    --corpus ../vectors/roles.json --corpus ../vectors/bip375.json \
+    -- ADAPTER [ARGS ...]</pre>
+<p>The report is written to <code>DIR/report.json</code> and <code>DIR/report.md</code>. Each row gives one verdict for a rule at one task:</p>
+<dl class=legend>
+<dt>MATCH</dt><dd>The project accepts and rejects what the rule does. A MATCH from a refusal that named no rule is marked unconfirmed.</dd>
+<dt>STRICTER</dt><dd>The project rejects something the rule accepts.</dd>
+<dt>LOOSER</dt><dd>The project accepts something the rule rejects, or has no check.</dd>
+<dt>NOT IMPLEMENTED</dt><dd>The project does not declare the task or BIP the vectors need.</dd>
+<dt>NOT RUN</dt><dd>No vector gave evidence: the corpus has none for the rule, or the project answered <code>n/a</code> or failed. NOT RUN is not a pass.</dd>
+</dl>
+<ul>
+<li><a href="docs/adapter.md">Adapter contract</a>: the JSON lines an adapter reads and answers.</li>
+<li><a href="docs/report.md">Report format</a>: verdicts and how they are decided.</li>
+<li><a href="docs/attribute.md">The attribute command</a>: which rules a PSBT fails.</li>
+<li>Example adapters: <a href="adapters/bip375-reference">bip375-reference</a> (Python, 138 lines), <a href="adapters/rust-psbt">rust-psbt</a> (Rust, 325 lines) and <a href="adapters/spdk">spdk</a> (Rust, 265 lines). A minimal adapter is a loop of a few dozen lines; see the skeleton in the adapter contract.</li>
+</ul>
+<p>This page publishes no project's results. Cross-implementation results are seen in the interoperability harnesses: bip375-interop-v2 and <a href="https://github.com/GautamBytes/psbt-interop-lab">psbt-interop-lab</a>.</p>
+<p id="vector-coverage">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule, so <code>evaluate</code> judges projects on it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>
 <h2 id="questions">Open questions</h2>
 <ul>
 <li><strong>SP output ordering.</strong> REF-4 follows the BIP375 prose ordering of silent-payment codes; the published helper uses output-map ordering, which can produce different scripts.</li>

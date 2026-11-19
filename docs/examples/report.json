@@ -1,0 +1,2097 @@
+{
+  "format": "psbt-spec.report/2",
+  "spec": {
+    "revision": "e536919afd9605fa2ff2b54f05d4b5ef0061d6c7",
+    "dirty": false,
+    "status": "Draft. Rule IDs may change until version 1.0."
+  },
+  "project": {
+    "name": "example-wallet",
+    "version": "0.1.0",
+    "revision": "0000000000000000000000000000000000000000"
+  },
+  "adapter": {
+    "name": "example-wallet-adapter",
+    "version": "0.1.0",
+    "protocol": "psbt-spec.adapter/1"
+  },
+  "declared": {
+    "tasks": [
+      "deserialize",
+      "finalize",
+      "extract",
+      "combine"
+    ],
+    "bips": [
+      174,
+      370,
+      371
+    ]
+  },
+  "corpus": [
+    {
+      "file": "vectors/roles.json",
+      "sha256": "426fe38765133d10985cb486cbe15dee25244cda47ad37e0a615bb8cf1770e4c",
+      "bip_revision": "5aadddb",
+      "vectors": 50
+    }
+  ],
+  "started": "2026-11-11T12:00:00Z",
+  "finished": "2026-11-11T12:00:04Z",
+  "summary": {
+    "confounded": [
+      "vectors/roles.json#25"
+    ],
+    "rejects": {
+      "confirmed": 2,
+      "other_rule": 1,
+      "unconfirmed": 12,
+      "unknown_rule": 1
+    },
+    "rows": {
+      "LOOSER": 3,
+      "MATCH": 6,
+      "NOT IMPLEMENTED": 18,
+      "NOT RUN": 42,
+      "STRICTER": 1
+    },
+    "stages": {
+      "accepted": 0,
+      "not_run": 0,
+      "rejected": 0,
+      "total": 6,
+      "withheld": 6
+    },
+    "triage": [],
+    "valid": {
+      "passed": 14,
+      "total": 18
+    },
+    "vectors": {
+      "accepted": 18,
+      "not_run": 4,
+      "rejected": 20,
+      "total": 50,
+      "withheld": 8
+    }
+  },
+  "rows": [
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-F-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-F-2",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-F-3",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-F-4",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-F-5",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-ST-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#13",
+          "verdict": "MATCH"
+        }
+      ],
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#13",
+      "rule": "GEN-ST-2",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#44",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#46",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#48",
+          "verdict": "MATCH"
+        }
+      ],
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#44, vectors/roles.json#46, vectors/roles.json#48",
+      "rule": "GEN-ST-2",
+      "stale": [],
+      "task": "combine",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-ST-3",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-T-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#6",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#7",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#8",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#9",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#10",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "notes": "adapter does not declare sign; deserialize (informational, the BIP assigns this duty to Signer): rejected vectors/roles.json#6, vectors/roles.json#7, vectors/roles.json#8, vectors/roles.json#10; accepted vectors/roles.json#9",
+      "rule": "GEN-T-2",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-TR-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-TR-2",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-TR-3",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-TR-4",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-MS-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-MS-2",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-DNS-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no create task",
+      "rule": "GEN-MSG-1",
+      "stale": [],
+      "task": "create",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "GEN-MSG-1",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no create task",
+      "rule": "GEN-MSG-2",
+      "stale": [],
+      "task": "create",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "GEN-MSG-2",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-MSG-3",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-MSG-4",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-P2C-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-SP-1",
+      "stale": [],
+      "task": "deserialize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-2",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-3",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-SP-3",
+      "stale": [],
+      "task": "extract",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no create task",
+      "rule": "GEN-SP-4",
+      "stale": [],
+      "task": "create",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "GEN-SP-4",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-4",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-5",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-SP-5",
+      "stale": [],
+      "task": "extract",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no update task",
+      "rule": "GEN-SP-6",
+      "stale": [],
+      "task": "update",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-6",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "GEN-SP-6",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#12",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "notes": "adapter does not declare sign",
+      "rule": "GEN-SP-7",
+      "stale": [
+        {
+          "bip": 375,
+          "corpus": "5aadddb",
+          "evidence": "9c5b825e4ba43fab0431fa042ddb00afdf251a95",
+          "file": "vectors/roles.json"
+        }
+      ],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no create task",
+      "rule": "ROLE-C-1",
+      "stale": [],
+      "task": "create",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no create task",
+      "rule": "ROLE-C-2",
+      "stale": [],
+      "task": "create",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "ROLE-C-3",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "ROLE-C-4",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "ROLE-C-5",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no construct task",
+      "rule": "ROLE-C-6",
+      "stale": [],
+      "task": "construct",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter contract v1 has no update task; coverage Declared: needs evidence outside the PSBT",
+      "rule": "ROLE-U-1",
+      "stale": [],
+      "task": "update",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-1",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-2",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-3",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-4",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign; coverage Declared: needs evidence outside the PSBT",
+      "rule": "ROLE-S-5",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-6",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign; coverage Declared: needs evidence outside the PSBT",
+      "rule": "ROLE-S-7",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign; coverage Declared: needs evidence outside the PSBT",
+      "rule": "ROLE-S-8",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-9",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-10",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "adapter does not declare sign",
+      "rule": "ROLE-S-11",
+      "stale": [],
+      "task": "sign",
+      "verdicts": [
+        "NOT IMPLEMENTED"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#25",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#26",
+          "verdict": "LOOSER"
+        }
+      ],
+      "rule": "ROLE-F-1",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "LOOSER"
+      ]
+    },
+    {
+      "bips": [
+        370,
+        376
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#29",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#30",
+          "verdict": "MATCH"
+        }
+      ],
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#30",
+      "rule": "ROLE-F-2",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [
+        370,
+        376
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#23",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#24",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#26",
+          "verdict": "LOOSER"
+        },
+        {
+          "vector": "vectors/roles.json#28",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "notes": "vectors/roles.json#22: project names ROLE-F-3 on rejecting it, but attribution finds ROLE-F-4 failing there, not ROLE-F-3 (no evidence); unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#23, vectors/roles.json#24",
+      "rule": "ROLE-F-3",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "LOOSER"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#21",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#22",
+          "verdict": "NOT RUN"
+        }
+      ],
+      "notes": "vectors/roles.json#22 rejected naming ROLE-F-3, not this rule (NOT RUN); confounded vector vectors/roles.json#25 rejected naming ROLE-F-1 (no evidence)",
+      "rule": "ROLE-F-4",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-5",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-6",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-7",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-8",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-9",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [],
+      "evidence": [],
+      "notes": "no vector",
+      "rule": "ROLE-F-10",
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "NOT RUN"
+      ]
+    },
+    {
+      "bips": [
+        174,
+        370,
+        375
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#15",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#16",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#17",
+          "verdict": "NOT IMPLEMENTED"
+        },
+        {
+          "vector": "vectors/roles.json#19",
+          "verdict": "MATCH"
+        }
+      ],
+      "notes": "vectors/roles.json#16: project names ROLE-X-99, not in rules.json (treated as no rule); unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#15, vectors/roles.json#16, vectors/roles.json#19",
+      "rule": "ROLE-X-1",
+      "stale": [],
+      "task": "extract",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [
+        174,
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#38",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#39",
+          "verdict": "MATCH"
+        }
+      ],
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#38, vectors/roles.json#39",
+      "rule": "ROLE-B-1",
+      "stale": [],
+      "task": "combine",
+      "verdicts": [
+        "MATCH"
+      ]
+    },
+    {
+      "bips": [
+        174,
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#40",
+          "verdict": "MATCH"
+        },
+        {
+          "vector": "vectors/roles.json#41",
+          "verdict": "NOT RUN"
+        },
+        {
+          "vector": "vectors/roles.json#42",
+          "verdict": "LOOSER"
+        }
+      ],
+      "rule": "ROLE-B-2",
+      "stale": [],
+      "task": "combine",
+      "verdicts": [
+        "LOOSER"
+      ]
+    },
+    {
+      "bips": [
+        370
+      ],
+      "evidence": [
+        {
+          "vector": "vectors/roles.json#27",
+          "verdict": "STRICTER"
+        }
+      ],
+      "notes": "vectors/roles.json#27: project says \"signature sighash differs from PSBT_IN_SIGHASH_TYPE\"",
+      "rule": null,
+      "stale": [],
+      "task": "finalize",
+      "verdicts": [
+        "STRICTER"
+      ]
+    }
+  ],
+  "vectors": [
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "SIGHASH_ALL signature without PSBT_GLOBAL_TX_MODIFIABLE",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#0",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "SIGHASH_ALL signature with every flag cleared",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#1",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "SIGHASH_ALL|ANYONECANPAY signature with Inputs Modifiable set",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#2",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "SIGHASH_NONE signature with Outputs Modifiable set",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#3",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "SIGHASH_SINGLE signature with Has SIGHASH_SINGLE set",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#4",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "No signatures with every flag set",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#5",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_ALL signature with Inputs Modifiable set",
+      "evidence": [],
+      "failed": [
+        "GEN-T-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#6",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-T-2",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-T-2"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_DEFAULT taproot key path signature with Inputs Modifiable set",
+      "evidence": [],
+      "failed": [
+        "GEN-T-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#7",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-T-2",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-T-2"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "Finalized P2WPKH input signed with SIGHASH_ALL with Inputs Modifiable set",
+      "evidence": [],
+      "failed": [
+        "GEN-T-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#8",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-T-2",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-T-2"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_ALL|ANYONECANPAY signature with Outputs Modifiable set",
+      "evidence": [],
+      "failed": [
+        "GEN-T-2"
+      ],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#9",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-T-2",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-T-2"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_SINGLE|ANYONECANPAY signature with Has SIGHASH_SINGLE clear",
+      "evidence": [],
+      "failed": [
+        "GEN-T-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#10",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-T-2",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-T-2"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "valid",
+      "description": "Silent payment output without a script and no signatures",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#11",
+      "task": "deserialize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "isolated",
+      "description": "Signed input while a silent payment output has no script",
+      "evidence": [],
+      "failed": [
+        "GEN-SP-7"
+      ],
+      "incomplete": [],
+      "note": "The Signer duty BIP375 states (\"must not yet add a signature\") is General rule GEN-SP-7, so the lone PSBT fails it.",
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#12",
+      "stages": [
+        {
+          "class": "isolated",
+          "evidence": [
+            {
+              "rule": "GEN-SP-7",
+              "verdict": "NOT IMPLEMENTED"
+            }
+          ],
+          "failed": [
+            "GEN-SP-7"
+          ],
+          "incomplete": [],
+          "outcome": "withheld",
+          "reason": "task sign not declared",
+          "task": "sign"
+        }
+      ],
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "Signed input while a silent payment output has no script, BIP-375 not enabled",
+      "evidence": [
+        {
+          "rule": "GEN-ST-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "GEN-ST-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#13",
+      "task": "deserialize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "PSBTv2 with a finalized input and an output script",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#14",
+      "task": "extract",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "PSBTv2 with an input that is signed but not finalized",
+      "evidence": [
+        {
+          "rule": "ROLE-X-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-X-1"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#15",
+      "task": "extract",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "PSBTv2 with an empty PSBT_OUT_SCRIPT",
+      "evidence": [
+        {
+          "rule": "ROLE-X-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-X-1"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#16",
+      "rule": "ROLE-X-99",
+      "task": "extract",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "isolated",
+      "description": "PSBTv2 with a finalized unsigned input and a silent payment output without a script",
+      "evidence": [
+        {
+          "rule": "ROLE-X-1",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "failed": [
+        "ROLE-X-1"
+      ],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#17",
+      "task": "extract",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 input finalizer result",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "n/a",
+      "reason": "multisig P2SH extraction not supported",
+      "ref": "vectors/roles.json#18",
+      "task": "extract",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "isolated",
+      "description": "BIP-174 combiner result, not finalized",
+      "evidence": [
+        {
+          "rule": "ROLE-X-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-X-1"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#19",
+      "task": "extract",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 combiner result, whose signatures use its SIGHASH_ALL sighash types",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "n/a",
+      "reason": "multisig P2SH finalizing not supported",
+      "ref": "vectors/roles.json#20",
+      "task": "finalize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_ALL signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL",
+      "evidence": [
+        {
+          "rule": "ROLE-F-4",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-F-4"
+      ],
+      "incomplete": [],
+      "note": "Its partial signature is a placeholder, so ROLE-F-1 passes and ROLE-F-4 then fails the ECDSA check.",
+      "outcome": "reject",
+      "reason": "partial signature does not verify",
+      "ref": "vectors/roles.json#21",
+      "rule": "ROLE-F-4",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "SIGHASH_SINGLE signature without PSBT_IN_SIGHASH_TYPE",
+      "evidence": [
+        {
+          "rule": "ROLE-F-4",
+          "verdict": "NOT RUN"
+        }
+      ],
+      "failed": [
+        "ROLE-F-4"
+      ],
+      "incomplete": [],
+      "note": "Its partial signature is a placeholder, so ROLE-F-1 passes and ROLE-F-4 then fails the ECDSA check.",
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#22",
+      "rule": "ROLE-F-3",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "64-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_DEFAULT",
+      "evidence": [
+        {
+          "rule": "ROLE-F-3",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-F-3"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#23",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "65-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL",
+      "evidence": [
+        {
+          "rule": "ROLE-F-3",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-F-3"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#24",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "confounded",
+      "description": "SIGHASH_ALL signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL|ANYONECANPAY",
+      "evidence": [
+        {
+          "rule": "ROLE-F-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-F-1",
+        "ROLE-F-4"
+      ],
+      "incomplete": [],
+      "note": "confounded: also fails ROLE-F-4.",
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#25",
+      "rule": "ROLE-F-1",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "confounded",
+      "description": "64-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL",
+      "evidence": [
+        {
+          "rule": "ROLE-F-1",
+          "verdict": "LOOSER"
+        },
+        {
+          "rule": "ROLE-F-3",
+          "verdict": "LOOSER"
+        }
+      ],
+      "failed": [
+        "ROLE-F-1",
+        "ROLE-F-3"
+      ],
+      "incomplete": [],
+      "note": "confounded: also fails ROLE-F-3.",
+      "outcome": "accept",
+      "ref": "vectors/roles.json#26",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "Final witness signed with SIGHASH_NONE while PSBT_IN_SIGHASH_TYPE is SIGHASH_ALL",
+      "evidence": [
+        {
+          "rule": null,
+          "verdict": "STRICTER"
+        }
+      ],
+      "failed": [],
+      "incomplete": [],
+      "note": "Its input is already finalized, so the Finalizer's ROLE-F-1 precondition does not apply.",
+      "outcome": "reject",
+      "reason": "signature sighash differs from PSBT_IN_SIGHASH_TYPE",
+      "ref": "vectors/roles.json#27",
+      "task": "finalize",
+      "valid": true
+    },
+    {
+      "bips": [
+        370,
+        376
+      ],
+      "class": "isolated",
+      "description": "Silent payment tweak with a taproot key path signature",
+      "evidence": [
+        {
+          "rule": "ROLE-F-3",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "failed": [
+        "ROLE-F-3"
+      ],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 376 not declared",
+      "ref": "vectors/roles.json#28",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        376
+      ],
+      "class": "isolated",
+      "description": "Silent payment tweak without a taproot key path signature",
+      "evidence": [
+        {
+          "rule": "ROLE-F-2",
+          "verdict": "NOT IMPLEMENTED"
+        }
+      ],
+      "failed": [
+        "ROLE-F-2"
+      ],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 376 not declared",
+      "ref": "vectors/roles.json#29",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "Silent payment tweak without a taproot key path signature, BIP-376 not enabled",
+      "evidence": [
+        {
+          "rule": "ROLE-F-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-F-2"
+      ],
+      "incomplete": [],
+      "note": "Role rules are not gated on a BIP: a Finalizer that meets PSBT_IN_SP_TWEAK acts on it.",
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#30",
+      "task": "finalize",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 combiner test vector",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#31",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 combiner test vector, inputs reversed",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#32",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 unknown key-value pairs combiner test vector",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#33",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 unknown key-value pairs combiner test vector, inputs reversed",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#34",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "BIP-174 PSBT_IN_SIGHASH_TYPE combiner test vector",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#35",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "A single PSBT combined into itself",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#36",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "valid",
+      "description": "PSBTv2s whose PSBT_IN_SEQUENCE conflicts, combined to one of the sequences",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#37",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "isolated",
+      "description": "PSBTs for different transactions",
+      "evidence": [
+        {
+          "rule": "ROLE-B-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-B-1",
+        "ROLE-B-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#38",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "PSBTv2s with different required lock times",
+      "evidence": [
+        {
+          "rule": "ROLE-B-1",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-B-1",
+        "ROLE-B-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#39",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "result",
+      "description": "Combined PSBT drops the second signer's partial signatures",
+      "evidence": [
+        {
+          "rule": "ROLE-B-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "ROLE-B-2"
+      ],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#40",
+      "returned": {
+        "failed": [],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "result",
+      "description": "Combined PSBT adds partial signatures neither PSBT holds",
+      "error": "crashed",
+      "evidence": [
+        {
+          "rule": "ROLE-B-2",
+          "verdict": "NOT RUN"
+        }
+      ],
+      "failed": [
+        "ROLE-B-2"
+      ],
+      "incomplete": [],
+      "outcome": "error",
+      "reason": "adapter exited with status 101",
+      "ref": "vectors/roles.json#41",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "result",
+      "description": "PSBTv2s whose PSBT_IN_SEQUENCE conflicts, combined to a third sequence",
+      "evidence": [
+        {
+          "rule": "ROLE-B-2",
+          "verdict": "LOOSER"
+        }
+      ],
+      "failed": [
+        "ROLE-B-2"
+      ],
+      "incomplete": [],
+      "outcome": "accept",
+      "ref": "vectors/roles.json#42",
+      "returned": {
+        "failed": [
+          "ROLE-B-2"
+        ],
+        "incomplete": []
+      },
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "valid",
+      "description": "BIP-375 Single-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#43",
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "BIP-375 Single-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled",
+      "evidence": [
+        {
+          "rule": "GEN-ST-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "GEN-ST-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#44",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "valid",
+      "description": "BIP-375 Two-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#45",
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "BIP-375 Two-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled",
+      "evidence": [
+        {
+          "rule": "GEN-ST-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "GEN-ST-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#46",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        370,
+        375
+      ],
+      "class": "valid",
+      "description": "BIP-375 Two-input P2WPKH to silent payment workflow (per-input-share): Updater and Signer PSBTs",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "withheld",
+      "reason": "BIP 375 not declared",
+      "ref": "vectors/roles.json#47",
+      "task": "combine",
+      "valid": true
+    },
+    {
+      "bips": [
+        370
+      ],
+      "class": "isolated",
+      "description": "BIP-375 Two-input P2WPKH to silent payment workflow (per-input-share): Updater and Signer PSBTs, BIP-375 not enabled",
+      "evidence": [
+        {
+          "rule": "GEN-ST-2",
+          "verdict": "MATCH"
+        }
+      ],
+      "failed": [
+        "GEN-ST-2"
+      ],
+      "incomplete": [],
+      "outcome": "reject",
+      "reason": "refused",
+      "ref": "vectors/roles.json#48",
+      "task": "combine",
+      "valid": false
+    },
+    {
+      "bips": [
+        174
+      ],
+      "class": "valid",
+      "description": "Finalized taproot script path input with leaf script and control block",
+      "evidence": [],
+      "failed": [],
+      "incomplete": [],
+      "outcome": "n/a",
+      "reason": "script path finalizing not supported",
+      "ref": "vectors/roles.json#49",
+      "task": "finalize",
+      "valid": true
+    }
+  ]
+}

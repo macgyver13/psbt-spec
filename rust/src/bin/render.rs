@@ -551,9 +551,37 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
     })
 }
 
-/// How to read each rule's corpus coverage.
+/// How a project evaluates itself, and where cross-implementation results are.
 fn evaluate_section() -> String {
-    "<p id=\"vector-coverage\">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule, so the corpus tests it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>\n".to_owned()
+    let base = esc(&source_base());
+    // TODO: link bip375-interop-v2 once it has a public URL; its interop-v2
+    // branch is not on github.com/macgyver13/bip375-interop.
+    format!(
+        "<h2 id=\"evaluate\">Evaluate your project</h2>\n\
+<p>A project judges its own compliance by rule ID. <code>psbt-spec evaluate</code> puts every corpus vector to the project through an adapter and writes a report with one verdict per rule and operation. <code>psbt-spec attribute</code> reads a PSBT, with the task that produced it, and lists the rules it fails.</p>\n\
+<p>To run an evaluation, build <code>psbt-spec</code> from source and point it at your adapter and one or more corpus files:</p>\n\
+<pre>git clone https://github.com/macgyver13/psbt-spec\n\
+cd psbt-spec/rust\n\
+cargo run --release --bin psbt-spec -- evaluate --out DIR \\\n\
+\x20   --corpus ../vectors/roles.json --corpus ../vectors/bip375.json \\\n\
+\x20   -- ADAPTER [ARGS ...]</pre>\n\
+<p>The report is written to <code>DIR/report.json</code> and <code>DIR/report.md</code>. Each row gives one verdict for a rule at one task:</p>\n\
+<dl class=legend>\n\
+<dt>MATCH</dt><dd>The project accepts and rejects what the rule does. A MATCH from a refusal that named no rule is marked unconfirmed.</dd>\n\
+<dt>STRICTER</dt><dd>The project rejects something the rule accepts.</dd>\n\
+<dt>LOOSER</dt><dd>The project accepts something the rule rejects, or has no check.</dd>\n\
+<dt>NOT IMPLEMENTED</dt><dd>The project does not declare the task or BIP the vectors need.</dd>\n\
+<dt>NOT RUN</dt><dd>No vector gave evidence: the corpus has none for the rule, or the project answered <code>n/a</code> or failed. NOT RUN is not a pass.</dd>\n\
+</dl>\n\
+<ul>\n\
+<li><a href=\"docs/adapter.md\">Adapter contract</a>: the JSON lines an adapter reads and answers.</li>\n\
+<li><a href=\"docs/report.md\">Report format</a>: verdicts and how they are decided.</li>\n\
+<li><a href=\"docs/attribute.md\">The attribute command</a>: which rules a PSBT fails.</li>\n\
+<li>Example adapters: <a href=\"{base}adapters/bip375-reference\">bip375-reference</a> (Python, 138 lines), <a href=\"{base}adapters/rust-psbt\">rust-psbt</a> (Rust, 325 lines) and <a href=\"{base}adapters/spdk\">spdk</a> (Rust, 265 lines). A minimal adapter is a loop of a few dozen lines; see the skeleton in the adapter contract.</li>\n\
+</ul>\n\
+<p>This page publishes no project's results. Cross-implementation results are seen in the interoperability harnesses: bip375-interop-v2 and <a href=\"https://github.com/GautamBytes/psbt-interop-lab\">psbt-interop-lab</a>.</p>\n\
+<p id=\"vector-coverage\">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule, so <code>evaluate</code> judges projects on it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>\n"
+    )
 }
 
 /// A rule, definition or procedure as Markdown, under a heading at `level`.
@@ -743,7 +771,7 @@ a.field {{ text-decoration-style: dotted; }}
 </style>
 </head>
 <body>
-<nav class=toc><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
+<nav class=toc><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
 <h1>{title}</h1>
 <p><strong>Status:</strong> {status}</p>
 <p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source.</p>
