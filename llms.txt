@@ -1,0 +1,33 @@
+# psbt-spec
+
+> A rulebook and evaluation tool for the PSBT BIPs: BIP174 (version 0), BIP370 (version 2), and the extensions BIP371 (Taproot), BIP373 (MuSig2), BIP353 (DNS payment proofs), BIP322 (message signing), BIP372 (pay-to-contract, Draft), BIP375 and BIP376 (silent payments). Every requirement is a rule with a stable ID, its BIP evidence, a strength (MUST, MUST NOT, SHOULD, MAY) and a coverage value. A PSBT is well formed if it passes every General rule (GEN-*). A role (Creator, Constructor, Updater, Signer, Input Finalizer, Transaction Extractor, Combiner) conforms if its rules (ROLE-*) hold on the PSBT it received and the PSBT it returned. Status: draft; rule IDs may change until 1.0.
+
+## Rules
+
+- [spec.html](spec.html): the specification. Each rule is anchored at `#<ID>`, each definition at `#term-<slug>`. Field names link to the field registry at `#field-<NAME>`.
+- [rules.json](rules.json): every rule, guidance entry, definition and procedure, with wording, strength, coverage, phase, gates, evidence and corpus coverage.
+- [docs/rules.md](docs/rules.md) and [docs/rules.schema.json](docs/rules.schema.json): what each key of rules.json means.
+- [rules.md](rules.md): every entry as Markdown, General rules first, then each role, then Definitions and Procedures.
+
+## Vectors
+
+- [vectors/corpus.schema.json](vectors/corpus.schema.json): the corpus format. Each invalid vector names the rule ID its entry point stops at.
+- [vectors/bip174.json](vectors/bip174.json), [vectors/bip370.json](vectors/bip370.json), [vectors/bip371.json](vectors/bip371.json), [vectors/bip373.json](vectors/bip373.json), [vectors/bip375.json](vectors/bip375.json), [vectors/bip376.json](vectors/bip376.json), [vectors/roles.json](vectors/roles.json): the corpus files. Each pins the bitcoin/bips revision it was labeled against.
+
+## Check a PSBT
+
+Build from source (`cargo build --release --manifest-path rust/Cargo.toml`), then send one JSON request per line to `psbt-spec attribute`. It answers with the rule IDs the PSBT fails (`failed`) and those it lacks the context to decide (`incomplete`); look each ID up in rules.json or at `spec.html#<ID>`.
+
+```
+echo '{"task": "deserialize", "bips": [370], "psbt": "<base64>"}' | rust/target/release/psbt-spec attribute
+```
+
+Tasks: `deserialize` (General rules on one PSBT), `create`, `construct`, `sign`, `finalize`, `extract` and `combine` (a role's rules on what it received and returned). `bips` lists the PSBT version BIP (174 or 370) and the extensions in use.
+
+## Docs
+
+- [docs/attribute.md](docs/attribute.md): the attribute command, request and answer fields per task.
+- [docs/adapter.md](docs/adapter.md): the adapter contract `psbt-spec evaluate` uses to run a project against the corpus.
+- [docs/report.md](docs/report.md): the evaluation report, one verdict per rule and operation.
+- [PRINCIPLES.md](PRINCIPLES.md): how the specification decides what a rule is and how it is worded, checked and tested.
+- [ROADMAP.md](ROADMAP.md): planned work, including test keys in vectors and more implementations.

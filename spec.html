@@ -35,7 +35,7 @@ a.field { text-decoration-style: dotted; }
 </style>
 </head>
 <body>
-<nav class=toc><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
+<nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
 <h1>PSBT Conformance Specification</h1>
 <p><strong>Status:</strong> Draft. Rule IDs may change until version 1.0.</p>
 <p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source.</p>
@@ -50,7 +50,26 @@ a.field { text-decoration-style: dotted; }
 <dt>Declared</dt><dd>Coverage: this reference cannot decide it, because it needs cryptography the reference does not carry or behavior a PSBT does not show.</dd>
 <dt>Pending</dt><dd>Coverage: there is no check yet.</dd>
 </dl>
-<p><a href="rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="PRINCIPLES.md">Principles</a></p>
+<p><a href="rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="llms.txt">llms.txt</a> &middot; <a href="PRINCIPLES.md">Principles</a> &middot; <a href="ROADMAP.md">Roadmap</a></p>
+<h2 id="version">Version</h2>
+<p><strong>Revision:</strong> 0.1.0. <strong>Status:</strong> Draft. Rule IDs may change until version 1.0. From 1.0, rule IDs are append-only: never reused or redefined.</p>
+<p>Each corpus file pins the bitcoin/bips revision it was labeled against.</p>
+<div class=scroll><table class=pins><tr><th>Corpus</th><th>bips revision</th><th>BIPs</th><th>Vectors</th></tr>
+<tr><td><a href="vectors/bip174.json">bip174.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>set per vector</td><td>34</td></tr>
+<tr><td><a href="vectors/bip370.json">bip370.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>BIP370</td><td>38</td></tr>
+<tr><td><a href="vectors/bip371.json">bip371.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>BIP371</td><td>17</td></tr>
+<tr><td><a href="vectors/bip373.json">bip373.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>BIP373</td><td>24</td></tr>
+<tr><td><a href="vectors/bip375.json">bip375.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/9c5b825"><code>9c5b825</code></a></td><td>BIP375</td><td>94</td></tr>
+<tr><td><a href="vectors/bip376.json">bip376.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>BIP375, BIP376</td><td>19</td></tr>
+<tr><td><a href="vectors/roles.json">roles.json</a></td><td><a href="https://github.com/bitcoin/bips/tree/5aadddb"><code>5aadddb</code></a></td><td>set per vector</td><td>50</td></tr>
+</table></div>
+<details><summary>Changelog</summary><ul>
+<li>2026-11-12: Per-rule corpus coverage, the Markdown export (rules.md), the rules.json schema and llms.txt.</li>
+<li>2026-11-12: Signer rules renumbered to close the ID gaps; the Creator, Constructor and Updater sections say how to evaluate them.</li>
+<li>2026-11-11: BIP375 pinned to bips 9c5b825 (v1.2.2); the signing-order duty becomes General rule GEN-SP-7.</li>
+<li>2026-11-11: The evaluate, vectors and attribute commands, the adapter contract and corpus schema v1.</li>
+<li>2026-10-29: Every rule, definition, procedure and guidance entry declared once in spec.rs; rules.json added.</li>
+</ul></details>
 <h2 id="evaluate">Evaluate your project</h2>
 <p>A project judges its own compliance by rule ID. <code>psbt-spec evaluate</code> puts every corpus vector to the project through an adapter and writes a report with one verdict per rule and operation. <code>psbt-spec attribute</code> reads a PSBT, with the task that produced it, and lists the rules it fails.</p>
 <p>To run an evaluation, build <code>psbt-spec</code> from source and point it at your adapter and one or more corpus files:</p>

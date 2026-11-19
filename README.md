@@ -15,7 +15,7 @@ per-rule report ([`docs/report.md`](docs/report.md)). The rulebook
 (`spec.html`, `rules.json`), the vectors and these commands are the product.
 The Rust reference checks described below prove that each vector isolates the
 rule it claims and trace which rules a PSBT fails. They are not a public
-checking API.
+checking API. [`ROADMAP.md`](ROADMAP.md) lists what is next.
 
 [`PRINCIPLES.md`](PRINCIPLES.md) states how the specification decides what a
 rule is and how it is worded, checked, tested and audited.
@@ -104,7 +104,7 @@ naming each field. `rules.json` holds every declared entry (ID, wording,
 strength, coverage, phase, gates, checks, evidence, note, gap, corpus) for
 machine audits; [`docs/rules.md`](docs/rules.md) and its JSON Schema describe
 it. `rules.md` is the same catalog as Markdown, grouped General first and then
-by role. Each rule's
+by role, and [`llms.txt`](llms.txt) points agents at these files. Each rule's
 corpus coverage (the vectors that isolate it, the valid vectors that pass it,
 and a status) is computed by the certifier at render time. Function links are relative to the repository; set
 `PSBT_SPEC_SOURCE_BASE` to a blob URL at a pinned commit (ending in `/`) when
@@ -116,6 +116,34 @@ rule ID its entry point stops at. `tests/rule_ids.rs` requires every rule with
 a check to be observed by ID through its entry point, both Verified and Failed.
 
 When changing a rule, edit its declaration in `spec.rs` and regenerate the HTML.
+
+## Publish the site
+
+The public copy is a static site on GitHub Pages at
+https://macgyver13.github.io/psbt-spec/. `.github/workflows/pages.yml` runs
+the tests, renders the site at the pushed commit and deploys it on every push
+to `main` (or by hand from the Actions tab). `render --site DIR` writes it: the page as
+`index.html` and `spec.html`, `rules.json`, `rules.md`, `llms.txt`,
+`PRINCIPLES.md`, `docs/` and the corpus files under `vectors/`. The site has
+no `rust/` or `adapters/` directory, so it needs `PSBT_SPEC_SOURCE_BASE` for
+the source links; set it to the published commit:
+
+```bash
+cd rust
+PSBT_SPEC_SOURCE_BASE=https://github.com/macgyver13/psbt-spec/blob/$(git rev-parse HEAD)/ PSBT_SPEC_REVISION=$(git rev-parse --short HEAD) cargo run --release --bin render -- --site ../site
+```
+
+`site/` is built, not committed (`.gitignore`). A rebuild overwrites files but
+does not remove ones an earlier build wrote, so start from an empty `site/`
+when the file list changes. Preview it locally at http://localhost:8000:
+
+```bash
+python3 -m http.server -d site 8000
+```
+
+Pages must use GitHub Actions as its source (Settings, Pages, Build and
+deployment). `tests/render.rs` builds the site and checks that every relative link in it
+resolves.
 
 ## Rule and vector report
 

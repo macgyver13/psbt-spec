@@ -263,3 +263,75 @@ fn rules_json_follows_its_schema() {
     matches_schema(&rules, &schema, &schema, "rules.json", &mut problems);
     assert!(problems.is_empty(), "{}", problems.join("\n"));
 }
+
+/// Every relative link in llms.txt names a file in the repository.
+#[test]
+fn llms_txt_links_exist() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("..");
+    let text = fs::read_to_string(root.join("llms.txt")).unwrap();
+    for link in text.split("](").skip(1) {
+        let target = &link[..link.find(')').unwrap()];
+        assert!(target.contains("://") || root.join(target).exists(), "llms.txt links missing {target}");
+    }
+}
+
+/// The relative links in a site file: `href` values in HTML, `](...)` targets
+/// in Markdown and llms.txt. Absolute URLs and in-page anchors are skipped.
+fn relative_links(path: &Path, text: &str) -> Vec<String> {
+    let (open, close) = match path.extension().and_then(|e| e.to_str()) {
+        Some("html") => ("href=\"", '"'),
+        Some("md" | "txt") => ("](", ')'),
+        _ => return Vec::new(),
+    };
+    text.split(open).skip(1)
+        .map(|rest| rest[..rest.find(close).unwrap()].to_owned())
+        .filter(|link| !link.contains("://") && !link.starts_with('#') && !link.starts_with("mailto:"))
+        .collect()
+}
+
+/// `render --site` writes the published files, and every relative link in
+/// them resolves to a file in the site.
+#[test]
+fn site_links_resolve() {
+    let site = Path::new(env!("CARGO_TARGET_TMPDIR")).join("site");
+    let output = Command::new(env!("CARGO_BIN_EXE_render"))
+        .args(["--site", site.to_str().unwrap()])
+        .env("PSBT_SPEC_SOURCE_BASE", "https://github.com/macgyver13/psbt-spec/blob/0000000/")
+        .env_remove("PSBT_SPEC_REVISION")
+        .output()
+        .expect("run render --site");
+    assert!(output.status.success(), "render --site failed: {}", String::from_utf8_lossy(&output.stderr));
+    for required in ["index.html", "spec.html", "rules.json", "rules.md", "llms.txt", "docs/rules.schema.json", "vectors/corpus.schema.json", "vectors/bip375.json"] {
+        assert!(site.join(required).is_file(), "site is missing {required}");
+    }
+    assert_eq!(fs::read_to_string(site.join("rules.json")).unwrap(), render_with(&["--json"]));
+    let mut pending = vec![site.clone()];
+    let mut problems = Vec::new();
+    while let Some(dir) = pending.pop() {
+        for entry in fs::read_dir(&dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.is_dir() {
+                pending.push(path);
+                continue;
+            }
+            let Ok(text) = fs::read_to_string(&path) else { continue };
+            for link in relative_links(&path, &text) {
+                let file = link.split('#').next().unwrap();
+                if !path.parent().unwrap().join(file).exists() {
+                    problems.push(format!("{}: {link}", path.strip_prefix(&site).unwrap().display()));
+                }
+            }
+        }
+    }
+    assert!(problems.is_empty(), "unresolved site links:\n{}", problems.join("\n"));
+}
+
+#[test]
+fn site_needs_a_source_base() {
+    let output = Command::new(env!("CARGO_BIN_EXE_render"))
+        .args(["--site", Path::new(env!("CARGO_TARGET_TMPDIR")).join("site-without-base").to_str().unwrap()])
+        .env_remove("PSBT_SPEC_SOURCE_BASE")
+        .output()
+        .expect("run render --site");
+    assert!(!output.status.success());
+}

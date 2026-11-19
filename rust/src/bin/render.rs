@@ -2,6 +2,7 @@
 //! Usage: cargo run --bin render > ../spec.html
 //!        cargo run --bin render -- --json > ../rules.json
 //!        cargo run --bin render -- --markdown > ../rules.md
+//!        PSBT_SPEC_SOURCE_BASE=... cargo run --bin render -- --site ../site
 //! Function links are relative to the repository root; set
 //! PSBT_SPEC_SOURCE_BASE (for example a GitHub blob URL at a pinned commit,
 //! ending in "/") to publish the page with absolute, pinned links, and
@@ -15,6 +16,15 @@ use psbt_spec::registry::{Field, FIELDS};
 use psbt_spec::spec;
 use psbt_spec::spec::{Specification, Statement};
 use serde_json::json;
+
+/// Notable changes, newest first: (date, change).
+const CHANGELOG: &[(&str, &str)] = &[
+    ("2026-11-12", "Per-rule corpus coverage, the Markdown export (rules.md), the rules.json schema and llms.txt."),
+    ("2026-11-12", "Signer rules renumbered to close the ID gaps; the Creator, Constructor and Updater sections say how to evaluate them."),
+    ("2026-11-11", "BIP375 pinned to bips 9c5b825 (v1.2.2); the signing-order duty becomes General rule GEN-SP-7."),
+    ("2026-11-11", "The evaluate, vectors and attribute commands, the adapter contract and corpus schema v1."),
+    ("2026-10-29", "Every rule, definition, procedure and guidance entry declared once in spec.rs; rules.json added."),
+];
 
 /// A corpus vector, as `psbt-spec vectors` numbers it.
 struct VectorRef {
@@ -551,6 +561,19 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
     })
 }
 
+/// The version, status, corpus pins and changelog.
+fn version_block(specification: &Specification) -> String {
+    let pins: String = corpora().into_iter().map(|(file, bip_revision, bips, vectors)| format!(
+        "<tr><td><a href=\"vectors/{file}.json\">{file}.json</a></td><td><a href=\"https://github.com/bitcoin/bips/tree/{bip_revision}\"><code>{bip_revision}</code></a></td><td>{}</td><td>{vectors}</td></tr>\n",
+        if bips.is_empty() { "set per vector".to_owned() } else { bips.iter().map(|b| format!("BIP{b}")).collect::<Vec<_>>().join(", ") }
+    )).collect();
+    let changes: String = CHANGELOG.iter().map(|(date, change)| format!("<li>{date}: {}</li>\n", esc(change))).collect();
+    format!(
+        "<h2 id=\"version\">Version</h2>\n<p><strong>Revision:</strong> {}. <strong>Status:</strong> {} From 1.0, rule IDs are append-only: never reused or redefined.</p>\n<p>Each corpus file pins the bitcoin/bips revision it was labeled against.</p>\n<div class=scroll><table class=pins><tr><th>Corpus</th><th>bips revision</th><th>BIPs</th><th>Vectors</th></tr>\n{pins}</table></div>\n<details><summary>Changelog</summary><ul>\n{changes}</ul></details>\n",
+        esc(&revision()), esc(specification.status)
+    )
+}
+
 /// How a project evaluates itself, and where cross-implementation results are.
 fn evaluate_section() -> String {
     let base = esc(&source_base());
@@ -709,6 +732,44 @@ const SCRIPT: &str = r#"<script>
 })();
 </script>"#;
 
+/// Repository files the published site serves unchanged, by site path.
+const SITE_FILES: &[(&str, &str)] = &[
+    ("llms.txt", include_str!("../../../llms.txt")),
+    ("PRINCIPLES.md", include_str!("../../../PRINCIPLES.md")),
+    ("ROADMAP.md", include_str!("../../../ROADMAP.md")),
+    ("docs/adapter.md", include_str!("../../../docs/adapter.md")),
+    ("docs/adapter.schema.json", include_str!("../../../docs/adapter.schema.json")),
+    ("docs/attribute.md", include_str!("../../../docs/attribute.md")),
+    ("docs/attribute.schema.json", include_str!("../../../docs/attribute.schema.json")),
+    ("docs/report.md", include_str!("../../../docs/report.md")),
+    ("docs/report.schema.json", include_str!("../../../docs/report.schema.json")),
+    ("docs/rules.md", include_str!("../../../docs/rules.md")),
+    ("docs/rules.schema.json", include_str!("../../../docs/rules.schema.json")),
+    ("docs/examples/adapter-session.jsonl", include_str!("../../../docs/examples/adapter-session.jsonl")),
+    ("docs/examples/attribute-session.jsonl", include_str!("../../../docs/examples/attribute-session.jsonl")),
+    ("docs/examples/report.json", include_str!("../../../docs/examples/report.json")),
+    ("docs/examples/report.md", include_str!("../../../docs/examples/report.md")),
+    ("vectors/corpus.schema.json", include_str!("../../../vectors/corpus.schema.json")),
+];
+
+/// Writes the static site to `dir`: the page as index.html (and spec.html,
+/// the name llms.txt and the repository use), rules.json, rules.md, the
+/// corpus files and SITE_FILES. Existing files are overwritten; files from an
+/// earlier build that are no longer produced are left in place.
+fn write_site(dir: &std::path::Path, page: &str, rules: &str, markdown: &str) -> std::io::Result<()> {
+    let corpus = corpus::FILES.iter().map(|(name, text)| (format!("vectors/{name}.json"), *text));
+    let generated = [("index.html", page), ("spec.html", page), ("rules.json", rules), ("rules.md", markdown)]
+        .into_iter()
+        .map(|(path, text)| (path.to_owned(), text));
+    let fixed = SITE_FILES.iter().map(|(path, text)| ((*path).to_owned(), *text));
+    for (path, text) in generated.chain(corpus).chain(fixed) {
+        let target = dir.join(&path);
+        std::fs::create_dir_all(target.parent().unwrap())?;
+        std::fs::write(target, text)?;
+    }
+    Ok(())
+}
+
 fn main() {
     let specification = spec::specification();
     let corpus = corpus_coverage();
@@ -720,6 +781,21 @@ fn main() {
     }
     if args.iter().any(|arg| arg == "--markdown") {
         print!("{}", markdown(&specification, &corpus));
+        return;
+    }
+    if let Some(at) = args.iter().position(|arg| arg == "--site") {
+        let Some(dir) = args.get(at + 1) else {
+            eprintln!("usage: render --site DIR");
+            std::process::exit(2);
+        };
+        if source_base().is_empty() {
+            eprintln!("--site needs PSBT_SPEC_SOURCE_BASE (a blob URL at the published commit, ending in /): the site has no rust/ or adapters/ directory");
+            std::process::exit(2);
+        }
+        if let Err(e) = write_site(std::path::Path::new(dir), &page(&specification, &corpus), &rules, &markdown(&specification, &corpus)) {
+            eprintln!("cannot write {dir}: {e}");
+            std::process::exit(1);
+        }
         return;
     }
     print!("{}", page(&specification, &corpus));
@@ -771,7 +847,7 @@ a.field {{ text-decoration-style: dotted; }}
 </style>
 </head>
 <body>
-<nav class=toc><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
+<nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
 <h1>{title}</h1>
 <p><strong>Status:</strong> {status}</p>
 <p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source.</p>
@@ -786,8 +862,8 @@ a.field {{ text-decoration-style: dotted; }}
 <dt>Declared</dt><dd>Coverage: this reference cannot decide it, because it needs cryptography the reference does not carry or behavior a PSBT does not show.</dd>
 <dt>Pending</dt><dd>Coverage: there is no check yet.</dd>
 </dl>
-<p><a href="{source}rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="PRINCIPLES.md">Principles</a></p>
-{evaluate}{questions}{preamble}
+<p><a href="{source}rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="llms.txt">llms.txt</a> &middot; <a href="PRINCIPLES.md">Principles</a> &middot; <a href="ROADMAP.md">Roadmap</a></p>
+{version}{evaluate}{questions}{preamble}
 <div class=filters><label>Strength <select id=filter-strength><option value="">All</option><option>MUST</option><option>MUST NOT</option><option>SHOULD</option><option>MAY</option></select></label><label>BIP <select id=filter-bip><option value="">All</option>{bip_options}</select></label><label>Search <input id=filter-text type=search></label></div>
 {catalog}
 <h2 id="fields">Field registry</h2>
@@ -802,6 +878,7 @@ a.field {{ text-decoration-style: dotted; }}
         questions = open_questions(specification),
         preamble = preamble(specification),
         catalog = catalog(specification, corpus),
+        version = version_block(specification),
         evaluate = evaluate_section(),
         fields = field_tables(specification),
         script = SCRIPT,
