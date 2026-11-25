@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "psbt-spec corpus file, schema v1",
-  "description": "One file per BIP: the BIP revision it was labeled against, the BIPs it exercises, and its vectors. Applies to bip174, bip370, bip371, bip373, bip375 and bip376. Known-answer and non-PSBT files (bip322_basic, bip341_wallet_vectors, bip353_proofs, bip370_locktime, bitcoin_core_sighash, bip340_vectors.csv) are outside this schema. Whether a vector isolates its rule is decided by the all-failures evaluation (tests/corpus.rs), not by this label.",
+  "description": "One file per BIP: the BIP revision it was labeled against, the BIPs it exercises, and its vectors. Applies to bip174, bip370, bip371, bip373 and bip375, whose PSBTs the BIPs publish, and to the files in derived/, whose vectors are written for psbt-spec (derived/bip376). Known-answer and non-PSBT files (bip322_basic, bip341_wallet_vectors, bip353_proofs, bip370_locktime, bitcoin_core_sighash, bip340_vectors.csv) are outside this schema. Whether a vector isolates its rule is decided by the all-failures evaluation (tests/corpus.rs), not by this label.",
   "type": "object",
   "required": ["bip_revision", "bips", "vectors"],
   "additionalProperties": false,
   "properties": {
     "bip_revision": {
-      "description": "Short commit of bitcoin/bips the file was labeled against.",
+      "description": "Short commit of bitcoin/bips the file was labeled against. For a file in derived/, the BIP text its vectors were written against.",
       "type": "string",
       "pattern": "^[0-9a-f]{7,40}$"
     },

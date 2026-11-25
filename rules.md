@@ -21,7 +21,7 @@ A PSBT MUST begin with the five-byte header 70 73 62 74 FF: ASCII psbt followed 
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 #### GEN-F-2 (MUST)
@@ -35,7 +35,7 @@ Each key-value record MUST be complete and use its declared lengths; the key typ
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 - Note: The linked parser also requires minimally encoded outer CompactSize lengths.
 
@@ -50,7 +50,7 @@ A PSBT MUST contain a global map, and each map MUST end with 00.
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 #### GEN-F-4 (MUST)
@@ -65,7 +65,7 @@ Keys MUST be unique within each map.
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Handling Duplicated Keys](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#handling-duplicated-keys)
 
 #### GEN-F-5 (MUST)
@@ -122,16 +122,16 @@ Every present known field MUST conform to the key-data and value format the fiel
   - isolates: vectors/bip375.json #7: psbt structure: PSBT_IN_SP_ECDH_SHARE value is not a valid point
   - isolates: vectors/bip375.json #8: psbt structure: PSBT_OUT_SP_V0_INFO scan key is not a valid point
   - isolates: vectors/bip375.json #9: psbt structure: PSBT_OUT_SP_V0_INFO spend key is not a valid point
-  - isolates: vectors/bip376.json #13: Tweak of 31 bytes
-  - isolates: vectors/bip376.json #14: Spend key derivation with a 32-byte x-only key
-  - isolates: vectors/bip376.json #15: Spend key derivation with an uncompressed key
-  - isolates: vectors/bip376.json #16: Spend key derivation with a partial path element
+  - isolates: vectors/derived/bip376.json #13: Tweak of 31 bytes
+  - isolates: vectors/derived/bip376.json #14: Spend key derivation with a 32-byte x-only key
+  - isolates: vectors/derived/bip376.json #15: Spend key derivation with an uncompressed key
+  - isolates: vectors/derived/bip376.json #16: Spend key derivation with a partial path element
   - passes: vectors/bip174.json #20 #21 #22 #23 #24 #25 #26 #27 #28 #29
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 - Note: Bound three times: the global map first, then each input map and each output map once the map count assigns them. The field registry below is the table it enforces, including the unsigned transaction's empty scriptSigs and the required-locktime ranges. It checks structure and the relations the field tables state, not every property a value may need, such as xpub version bytes or ECDSA signature validity.
 
@@ -148,7 +148,7 @@ The PSBT version MUST be 0 or 2.
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Version Numbers](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#version-numbers)
 
 #### GEN-ST-2 (MUST)
@@ -180,14 +180,14 @@ Each map MUST include the fields its PSBT version requires and exclude the field
   - isolates: vectors/bip370.json #19: PSBTv2 missing PSBT_OUT_AMOUNT.
   - isolates: vectors/bip370.json #20: PSBTv2 missing PSBT_OUT_SCRIPT.
   - isolates: vectors/bip375.json #10: psbt structure: missing PSBT_OUT_SCRIPT field when sending to non-sp output
-  - isolates: vectors/bip376.json #17: PSBTv0 with PSBT_IN_SP_TWEAK
-  - isolates: vectors/bip376.json #18: PSBTv0 with PSBT_IN_SP_SPEND_BIP32_DERIVATION
+  - isolates: vectors/derived/bip376.json #17: PSBTv0 with PSBT_IN_SP_TWEAK
+  - isolates: vectors/derived/bip376.json #18: PSBTv0 with PSBT_IN_SP_SPEND_BIP32_DERIVATION
   - passes: vectors/bip174.json #20 #21 #22 #23 #24 #25 #26 #27 #28 #29
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP370 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#specification)
 - Note: Bound three times: the global map before the map count is known, then each input map and each output map. The field registry's Required and Excluded columns are the table it enforces.
 
@@ -204,7 +204,7 @@ Input maps MUST follow the global map, followed by output maps, with one map for
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 ### Transaction
@@ -218,7 +218,7 @@ The inputs’ required locktimes MUST permit nLockTime to be determined by the B
 - Vectors: tests only
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - From: [BIP370 - Determining Lock Time](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#determining-lock-time)
 
 #### GEN-T-2 (MUST)
@@ -230,7 +230,7 @@ A PSBT's signatures MUST agree with PSBT_GLOBAL_TX_MODIFIABLE: Inputs Modifiable
 - Vectors: tests only
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - Enforced by: Signer
 - From: [BIP370 - Signer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#signer)
 - Note: Bound three times, one per flag. It also covers the Signer's BIP370 flag duties: a Signer that leaves a flag wrong returns a PSBT that fails this rule. Signatures are found as input_signatures finds them, including those in finalized key-path and legacy fields.
@@ -484,14 +484,14 @@ Every input MUST pass the BIP376 spend-field check REF-11 describes.
 - Applies when: From BIP-376
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/bip376.json #6: Finalized input that keeps PSBT_IN_SP_TWEAK
-  - isolates: vectors/bip376.json #7: Finalized input that keeps PSBT_IN_SP_SPEND_BIP32_DERIVATION
-  - isolates: vectors/bip376.json #8: Spend key derivation without a tweak
-  - isolates: vectors/bip376.json #9: Tweak without a witness UTXO
-  - isolates: vectors/bip376.json #10: Tweak on an input whose witness UTXO is P2WPKH
-  - isolates: vectors/bip376.json #11: Tweak that does not produce the output key
-  - isolates: vectors/bip376.json #12: Spend key that does not produce the output key
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
+  - isolates: vectors/derived/bip376.json #6: Finalized input that keeps PSBT_IN_SP_TWEAK
+  - isolates: vectors/derived/bip376.json #7: Finalized input that keeps PSBT_IN_SP_SPEND_BIP32_DERIVATION
+  - isolates: vectors/derived/bip376.json #8: Spend key derivation without a tweak
+  - isolates: vectors/derived/bip376.json #9: Tweak without a witness UTXO
+  - isolates: vectors/derived/bip376.json #10: Tweak on an input whose witness UTXO is P2WPKH
+  - isolates: vectors/derived/bip376.json #11: Tweak that does not produce the output key
+  - isolates: vectors/derived/bip376.json #12: Spend key that does not produce the output key
+  - passes: vectors/derived/bip376.json #0 #1 #2 #3 #4 #5
 - Enforced by: Updater, Signer, Input Finalizer
 - Basis: derived. Merges the BIP376 field rules of its Specification, Updater, Signer and Input Finalizer sections into one check, REF-11.
 - From: [BIP376 - Specification; Updater; Signer; Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#specification)

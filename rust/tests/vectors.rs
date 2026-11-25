@@ -43,8 +43,8 @@ fn bip375_vectors() {
 
 #[test]
 fn bip376_vectors() {
-    run("bip376", &[Bip::Bip376]);
-    assert_disabled_results("bip376");
+    run("derived/bip376", &[Bip::Bip376]);
+    assert_disabled_results("derived/bip376");
 }
 
 /// Without the extension enabled, every registered field is still known and

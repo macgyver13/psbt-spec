@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generates vectors/bip376.json. BIP-376 publishes no test vectors yet.
+"""Generates vectors/derived/bip376.json. BIP-376 publishes no test vectors yet.
 
-Usage: PYTHONPATH=<secp256k1lab>/src python3 gen_bip376.py > ../bip376.json
+Usage: PYTHONPATH=<secp256k1lab>/src python3 gen_bip376.py > ../derived/bip376.json
 
 Each vector is a PSBT with one input spending a silent payment P2TR output and
 one P2WPKH output. Keys are fixed, so the output is deterministic.

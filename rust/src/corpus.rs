@@ -14,7 +14,7 @@ pub const FILES: [(&str, &str); 6] = [
     ("bip371", include_str!("../../vectors/bip371.json")),
     ("bip373", include_str!("../../vectors/bip373.json")),
     ("bip375", include_str!("../../vectors/bip375.json")),
-    ("bip376", include_str!("../../vectors/bip376.json")),
+    ("derived/bip376", include_str!("../../vectors/derived/bip376.json")),
 ];
 
 pub struct File {

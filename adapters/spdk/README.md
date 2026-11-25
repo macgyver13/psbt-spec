@@ -25,7 +25,7 @@ evaluation; `--psbt-v2-revision` records which psbt-v2 it was built against
 (it goes into the report's project version).
 
 ```bash
-rust/target/release/psbt-spec evaluate --out audits/spdk --corpus vectors/bip174.json --corpus vectors/bip370.json --corpus vectors/bip371.json --corpus vectors/bip373.json --corpus vectors/bip375.json --corpus vectors/bip376.json -- adapters/spdk/target/release/psbt-spec-adapter-spdk --revision COMMIT --psbt-v2-revision COMMIT
+rust/target/release/psbt-spec evaluate --out audits/spdk --corpus vectors/bip174.json --corpus vectors/bip370.json --corpus vectors/bip371.json --corpus vectors/bip373.json --corpus vectors/bip375.json --corpus vectors/derived/bip376.json -- adapters/spdk/target/release/psbt-spec-adapter-spdk --revision COMMIT --psbt-v2-revision COMMIT
 ```
 
 ## What it declares

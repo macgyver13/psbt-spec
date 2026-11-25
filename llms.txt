@@ -12,7 +12,8 @@
 ## Vectors
 
 - [vectors/corpus.schema.json](vectors/corpus.schema.json): the corpus format. Each invalid vector names the rule ID its entry point stops at.
-- [vectors/bip174.json](vectors/bip174.json), [vectors/bip370.json](vectors/bip370.json), [vectors/bip371.json](vectors/bip371.json), [vectors/bip373.json](vectors/bip373.json), [vectors/bip375.json](vectors/bip375.json), [vectors/bip376.json](vectors/bip376.json): the corpus files. Each pins the bitcoin/bips revision it was labeled against, except bip376.json: BIP376 publishes no test vectors, so vectors/tools/gen_bip376.py generates these locally.
+- [vectors/bip174.json](vectors/bip174.json), [vectors/bip370.json](vectors/bip370.json), [vectors/bip371.json](vectors/bip371.json), [vectors/bip373.json](vectors/bip373.json), [vectors/bip375.json](vectors/bip375.json): the corpus files, from vectors the BIPs publish. Each pins the bitcoin/bips revision it was labeled against.
+- [vectors/derived/bip376.json](vectors/derived/bip376.json): vectors written for psbt-spec, not published by a BIP. BIP376 publishes no test vectors; vectors/tools/gen_bip376.py generates these from fixed keys.
 
 ## Check a PSBT
 

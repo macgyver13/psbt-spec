@@ -19,6 +19,7 @@ use serde_json::json;
 
 /// Notable changes, newest first: (date, change).
 const CHANGELOG: &[(&str, &str)] = &[
+    ("2026-11-25", "vectors/derived/ holds vectors written for psbt-spec rather than published by a BIP, starting with bip376.json. The Version table lists one row per BIP, with its published and derived files."),
     ("2026-11-25", "Page layout: the introduction no longer names bips revisions, which the Version table lists; the legend is a collapsible section; artifacts and docs are listed under Version; the Definitions, Procedures and unassigned Guidance tables drop the empty Check column."),
     ("2026-11-25", "BIP375 pinned to bips 21e48c11 (v0.3.0, tag psbt-spec-bip375-21e48c11 on macgyver13/bips), which accepts SIGHASH_DEFAULT in place of SIGHASH_ALL on a taproot input; bip375.json re-imported from it with vectors/tools/import_bip375.py. Input eligibility excludes uncompressed P2PKH inputs and P2SH inputs whose redeemScript does not match. The synthetic roles.json corpus became a test fixture, with its BIP174 and BIP375 role vectors moved into those corpora. The SP output ordering open question is closed, and bip376.json is marked as generated locally."),
     ("2026-11-12", "Per-rule corpus coverage, the Markdown export (rules.md), the rules.json schema and llms.txt."),
@@ -605,19 +606,33 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
 /// The version, status, corpus pins, artifacts and changelog.
 fn version_block(specification: &Specification) -> String {
     let base = esc(&source_base());
-    let pins: String = corpora().into_iter().map(|(file, bip_revision, bips, vectors)| format!(
-        "<tr><td><a href=\"vectors/{file}.json\">{file}.json</a></td><td>{}</td><td>{}</td><td>{vectors}</td></tr>\n",
-        if file == "bip376" {
-            "none: generated locally by vectors/tools/gen_bip376.py; BIP376 publishes no test vectors".to_owned()
-        } else {
-            let repo = if file == "bip375" { "macgyver13/bips" } else { "bitcoin/bips" };
-            format!("<a href=\"https://github.com/{repo}/tree/{bip_revision}\"><code>{bip_revision}</code></a>")
-        },
-        if bips.is_empty() { "set per vector".to_owned() } else { bips.iter().map(|b| format!("BIP{b}")).collect::<Vec<_>>().join(", ") }
-    )).collect();
+    let files = corpora();
+    let stem = |file: &str| file.trim_start_matches("derived/").to_owned();
+    let mut stems: Vec<String> = Vec::new();
+    for (file, ..) in &files {
+        if !stems.contains(&stem(file)) {
+            stems.push(stem(file));
+        }
+    }
+    let find = |name: &str| files.iter().find(|(file, ..)| *file == name);
+    let cell = |found: Option<&(&str, String, Vec<u64>, usize)>| found.map(|(file, _, _, vectors)| format!("<a href=\"vectors/{file}.json\">{}.json</a> ({vectors})", stem(file)));
+    let pins: String = stems.iter().map(|s| {
+        let published = find(s);
+        let derived = find(&format!("derived/{s}"));
+        let revision = published.or(derived).map(|(_, rev, ..)| {
+            let repo = if s == "bip375" { "macgyver13/bips" } else { "bitcoin/bips" };
+            format!("<a href=\"https://github.com/{repo}/tree/{rev}\"><code>{rev}</code></a>")
+        }).unwrap_or_default();
+        format!(
+            "<tr><td>{}</td><td>{}</td><td>{revision}</td><td>{}</td></tr>\n",
+            s.to_uppercase(),
+            cell(published).unwrap_or_else(|| "none: the BIP publishes no test vectors".to_owned()),
+            cell(derived).unwrap_or_default(),
+        )
+    }).collect();
     let changes: String = CHANGELOG.iter().map(|(date, change)| format!("<li>{date}: {}</li>\n", esc(change))).collect();
     format!(
-        "<h2 id=\"version\">Version</h2>\n<p><strong>Revision:</strong> {}. <strong>Status:</strong> {} From 1.0, rule IDs are append-only: never reused or redefined.</p>\n<p>Each corpus file pins the bitcoin/bips revision it was labeled against.</p>\n<div class=scroll><table class=pins><tr><th>Corpus</th><th>bips revision</th><th>BIPs</th><th>Vectors</th></tr>\n{pins}</table></div>\n<h3>Artifacts and docs</h3>\n<ul>\n<li><a href=\"{base}rust/src/spec.rs\">Rust specification source</a>: single declaration source of truth for rules, definitions, procedures and bindings.</li>\n<li><a href=\"rules.json\">rules.json</a> (<a href=\"docs/rules.schema.json\">JSON Schema</a>, <a href=\"docs/rules.md\">format docs</a>): machine-readable rule catalog.</li>\n<li><a href=\"rules.md\">rules.md</a>: full catalog as Markdown.</li>\n<li><a href=\"llms.txt\">For AI agents (llms.txt)</a>: site index for LLMs and automated tools.</li>\n<li><a href=\"PRINCIPLES.md\">Principles</a>: how the specification decides what a rule is and how it is worded, checked, tested and audited.</li>\n<li><a href=\"ROADMAP.md\">Roadmap</a>: what is next.</li>\n</ul>\n<details><summary>Changelog</summary><ul>\n{changes}</ul></details>\n",
+        "<h2 id=\"version\">Version</h2>\n<p><strong>Revision:</strong> {}. <strong>Status:</strong> {} From 1.0, rule IDs are append-only: never reused or redefined.</p>\n<p>Each corpus file pins the bitcoin/bips revision it was labeled against. Published files hold the vectors a BIP publishes; derived files hold vectors written for psbt-spec. Counts are vectors per file.</p>\n<div class=scroll><table class=pins><tr><th>BIP</th><th>Published</th><th>bips revision</th><th>Derived</th></tr>\n{pins}</table></div>\n<h3>Artifacts and docs</h3>\n<ul>\n<li><a href=\"{base}rust/src/spec.rs\">Rust specification source</a>: single declaration source of truth for rules, definitions, procedures and bindings.</li>\n<li><a href=\"rules.json\">rules.json</a> (<a href=\"docs/rules.schema.json\">JSON Schema</a>, <a href=\"docs/rules.md\">format docs</a>): machine-readable rule catalog.</li>\n<li><a href=\"rules.md\">rules.md</a>: full catalog as Markdown.</li>\n<li><a href=\"llms.txt\">For AI agents (llms.txt)</a>: site index for LLMs and automated tools.</li>\n<li><a href=\"PRINCIPLES.md\">Principles</a>: how the specification decides what a rule is and how it is worded, checked, tested and audited.</li>\n<li><a href=\"ROADMAP.md\">Roadmap</a>: what is next.</li>\n</ul>\n<details><summary>Changelog</summary><ul>\n{changes}</ul></details>\n",
         esc(&revision()), esc(specification.status)
     )
 }

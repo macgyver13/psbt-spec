@@ -45,7 +45,7 @@
       "bips": [
         376
       ],
-      "file": "vectors/bip376.json",
+      "file": "vectors/derived/bip376.json",
       "vectors": 19
     }
   ],
@@ -490,27 +490,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -970,27 +970,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -1450,27 +1450,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -1936,27 +1936,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -2234,22 +2234,22 @@
           },
           {
             "description": "Tweak of 31 bytes",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 13
           },
           {
             "description": "Spend key derivation with a 32-byte x-only key",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 14
           },
           {
             "description": "Spend key derivation with an uncompressed key",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 15
           },
           {
             "description": "Spend key derivation with a partial path element",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 16
           }
         ],
@@ -2679,27 +2679,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -3159,27 +3159,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -3332,12 +3332,12 @@
           },
           {
             "description": "PSBTv0 with PSBT_IN_SP_TWEAK",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 17
           },
           {
             "description": "PSBTv0 with PSBT_IN_SP_SPEND_BIP32_DERIVATION",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 18
           }
         ],
@@ -3767,27 +3767,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -4258,27 +4258,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -4618,27 +4618,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -4982,27 +4982,27 @@
             "index": 113
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],
@@ -7310,63 +7310,63 @@
         "isolating": [
           {
             "description": "Finalized input that keeps PSBT_IN_SP_TWEAK",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 6
           },
           {
             "description": "Finalized input that keeps PSBT_IN_SP_SPEND_BIP32_DERIVATION",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 7
           },
           {
             "description": "Spend key derivation without a tweak",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 8
           },
           {
             "description": "Tweak without a witness UTXO",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 9
           },
           {
             "description": "Tweak on an input whose witness UTXO is P2WPKH",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 10
           },
           {
             "description": "Tweak that does not produce the output key",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 11
           },
           {
             "description": "Spend key that does not produce the output key",
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 12
           }
         ],
         "passing": [
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 0
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 1
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 2
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 3
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 4
           },
           {
-            "file": "bip376",
+            "file": "derived/bip376",
             "index": 5
           }
         ],

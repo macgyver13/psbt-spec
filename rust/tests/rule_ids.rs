@@ -41,7 +41,7 @@ const CORPORA: [(&str, &[Bip]); 7] = [
     ("bip371", &[]),
     ("bip373", &[]),
     ("bip375", &[Bip::Bip375]),
-    ("bip376", &[Bip::Bip376]),
+    ("derived/bip376", &[Bip::Bip376]),
 ];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]

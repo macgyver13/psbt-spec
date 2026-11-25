@@ -190,7 +190,7 @@ fn named_rule_decides_whether_a_refusal_is_match() {
 
 #[test]
 fn vectors_accepts_the_corpus() {
-    let files = ["bip174", "bip370", "bip371", "bip373", "bip375", "bip376"].map(|n| format!("vectors/{n}.json"));
+    let files = ["bip174", "bip370", "bip371", "bip373", "bip375", "derived/bip376"].map(|n| format!("vectors/{n}.json"));
     let output = Command::new(env!("CARGO_BIN_EXE_psbt-spec")).current_dir(ROOT).arg("vectors").args(&files).output().unwrap();
     let text = String::from_utf8_lossy(&output.stdout);
     assert!(output.status.success(), "{text}");

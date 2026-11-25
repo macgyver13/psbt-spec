@@ -219,7 +219,7 @@ fn vector_report(corpus: &str, index: usize, vector: &Value, rules: &[Value]) ->
     } else {
         match corpus {
             "bip375" => vec![Bip::Bip375],
-            "bip376" => vec![Bip::Bip375, Bip::Bip376],
+            "derived/bip376" => vec![Bip::Bip376],
             _ => vec![],
         }
     };
@@ -426,7 +426,7 @@ fn report(root: &Path) -> Value {
         "bip371",
         "bip373",
         "bip375",
-        "bip376",
+        "derived/bip376",
     ] {
         let path = root.join(format!("{corpus}.json"));
         let file: Value = serde_json::from_str(&std::fs::read_to_string(path).expect("read vector corpus"))

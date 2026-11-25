@@ -208,13 +208,14 @@ is an adapter for the bips BIP-375 reference validator.
 
 ## Vector generators
 
-The local BIP-376 corpus is generated from fixed keys.
+`vectors/derived/` holds vectors written for psbt-spec rather than published by
+a BIP. The BIP-376 corpus there is generated from fixed keys.
 
 FIXME: `gen_bip376.py` still writes the pre-schema-v1 shape (`error`, no
 `valid`, no `bip_revision` wrapper); convert its output before regenerating.
 
 ```bash
-PYTHONPATH=<secp256k1lab>/src python3 vectors/tools/gen_bip376.py > vectors/bip376.json
+PYTHONPATH=<secp256k1lab>/src python3 vectors/tools/gen_bip376.py > vectors/derived/bip376.json
 ```
 
 The BIP-375 corpus follows the BIP's `bip375_test_vectors.json`. When the
