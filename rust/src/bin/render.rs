@@ -19,6 +19,7 @@ use serde_json::json;
 
 /// Notable changes, newest first: (date, change).
 const CHANGELOG: &[(&str, &str)] = &[
+    ("2026-11-25", "Page layout: the introduction no longer names bips revisions, which the Version table lists; the legend is a collapsible section; artifacts and docs are listed under Version; the Definitions, Procedures and unassigned Guidance tables drop the empty Check column."),
     ("2026-11-25", "BIP375 pinned to bips 21e48c11 (v0.3.0, tag psbt-spec-bip375-21e48c11 on macgyver13/bips), which accepts SIGHASH_DEFAULT in place of SIGHASH_ALL on a taproot input; bip375.json re-imported from it with vectors/tools/import_bip375.py. Input eligibility excludes uncompressed P2PKH inputs and P2SH inputs whose redeemScript does not match. The synthetic roles.json corpus became a test fixture, with its BIP174 and BIP375 role vectors moved into those corpora. The SP output ordering open question is closed, and bip376.json is marked as generated locally."),
     ("2026-11-12", "Per-rule corpus coverage, the Markdown export (rules.md), the rules.json schema and llms.txt."),
     ("2026-11-12", "Signer rules renumbered to close the ID gaps; the Creator, Constructor and Updater sections say how to evaluate them."),
@@ -329,27 +330,38 @@ fn bips(statement: &Statement) -> String {
     found.join(" ")
 }
 
-fn statement_row(statement: &Statement, show_topic: bool, corpus: &BTreeMap<String, RuleCorpus>) -> String {
+fn statement_row(statement: &Statement, show_topic: bool, with_check: bool, corpus: &BTreeMap<String, RuleCorpus>) -> String {
     let anchor = if statement.id.is_empty() { term_anchor(statement.topic) } else { statement.id.to_owned() };
-    let topic = if show_topic { format!("<strong>{}.</strong> ", esc(statement.topic)) } else { String::new() };
-    let id = if statement.id.is_empty() {
-        String::new()
+    let (first_cell, topic) = if statement.id.is_empty() {
+        (
+            format!("<td class=term><a href=\"#{0}\">{1}</a></td>", esc(&anchor), esc(statement.topic)),
+            String::new(),
+        )
     } else {
-        format!("<a href=\"#{0}\">{0}</a>", esc(statement.id))
+        let id = format!("<a href=\"#{0}\">{0}</a>", esc(statement.id));
+        (
+            format!("<td class=id>{id}{}{}{}</td>", strength_tag(statement), basis_tag(statement), phase_tag(statement)),
+            if show_topic { format!("<strong>{}.</strong> ", esc(statement.topic)) } else { String::new() },
+        )
     };
     let evidence = if statement.evidence.label.is_empty() {
         String::new()
     } else {
         format!("<span class=evidence>From {}</span>", evidence_link(statement))
     };
+    let check_cell = if with_check {
+        let corpus_html = if statement.coverage.is_some() { corpus_cell(statement, corpus.get(statement.id)) } else { String::new() };
+        format!("<td class=validation>{}{corpus_html}</td>", validation_cell(statement))
+    } else {
+        String::new()
+    };
     format!(
-        "<tr id=\"{}\" data-rule data-strength=\"{}\" data-bips=\"{}\"><td class=id>{id}{}{}{}</td><td>{topic}<span class=statement-text>{}</span>{}{evidence}{}</td><td class=validation>{}</td></tr>\n",
+        "<tr id=\"{}\" data-rule data-strength=\"{}\" data-bips=\"{}\">{first_cell}<td>{topic}<span class=statement-text>{}</span>{}{evidence}{}</td>{check_cell}</tr>\n",
         esc(&anchor),
         statement.strength.map(|s| s.label()).unwrap_or(""),
         bips(statement),
-        strength_tag(statement), basis_tag(statement), phase_tag(statement), linked_text(statement.text),
-        reading(statement), implementation_note(statement), validation_cell(statement)
-            + &if statement.coverage.is_some() { corpus_cell(statement, corpus.get(statement.id)) } else { String::new() }
+        linked_text(statement.text),
+        reading(statement), implementation_note(statement)
     )
 }
 
@@ -361,7 +373,7 @@ fn band(label: &str, html: &str) -> String {
 /// Precondition rules, rules a PSBT cannot show, Result rules and guidance.
 fn role_section(title: &str, entries: &[Statement], general: &[&Statement], guidance: &[&Statement], corpus: &BTreeMap<String, RuleCorpus>) -> String {
     let rows = |pick: &dyn Fn(&Statement) -> bool| -> String {
-        entries.iter().filter(|s| pick(s)).map(|s| statement_row(s, false, corpus)).collect()
+        entries.iter().filter(|s| pick(s)).map(|s| statement_row(s, false, true, corpus)).collect()
     };
     let mut html = format!(
         "<tr class=section id=\"role-{}\"><td colspan=3>{}</td></tr>\n<tr class=band><td colspan=3>Receives a PSBT that satisfies the <a href=\"#general\">General rules</a></td></tr>\n",
@@ -396,15 +408,16 @@ fn role_section(title: &str, entries: &[Statement], general: &[&Statement], guid
             html += &band(label, &part);
         }
     }
-    let advice: String = guidance.iter().map(|s| statement_row(s, true, corpus)).collect();
+    let advice: String = guidance.iter().map(|s| statement_row(s, true, true, corpus)).collect();
     if !advice.is_empty() {
         html += &band("Guidance", &advice);
     }
     html
 }
 
-fn table(id: &str, heading: &str, description: &str, column: &str, check: &str, body: &str) -> String {
-    format!("<h2 id=\"{id}\">{heading}</h2>\n<p>{description}</p>\n<div class=scroll><table class=rules><tr><th>ID</th><th>{column}</th><th>{check}</th></tr>\n{body}</table></div>\n")
+fn table(id: &str, heading: &str, description: &str, headers: &[&str], body: &str) -> String {
+    let head: String = headers.iter().map(|h| format!("<th>{h}</th>")).collect();
+    format!("<h2 id=\"{id}\">{heading}</h2>\n<p>{description}</p>\n<div class=scroll><table class=rules><tr>{head}</tr>\n{body}</table></div>\n")
 }
 
 fn catalog(specification: &Specification, corpus: &BTreeMap<String, RuleCorpus>) -> String {
@@ -414,7 +427,7 @@ fn catalog(specification: &Specification, corpus: &BTreeMap<String, RuleCorpus>)
     let general_rules: Vec<&Statement> = sections("general").flat_map(|s| &s.entries).collect();
 
     let general: String = sections("general")
-        .map(|s| format!("<tr class=section><td colspan=3>{}</td></tr>\n{}", esc(s.title), s.entries.iter().map(|e| statement_row(e, false, corpus)).collect::<String>()))
+        .map(|s| format!("<tr class=section><td colspan=3>{}</td></tr>\n{}", esc(s.title), s.entries.iter().map(|e| statement_row(e, false, true, corpus)).collect::<String>()))
         .collect();
     let strip: String = sections("role")
         .map(|s| format!("<a href=\"#role-{}\">{} <span class=count>{}</span></a>", slug(s.title), esc(s.title), s.entries.len()))
@@ -427,18 +440,18 @@ fn catalog(specification: &Specification, corpus: &BTreeMap<String, RuleCorpus>)
         })
         .collect();
     let rows = |category: &'static str| -> String {
-        sections(category).flat_map(|s| &s.entries).map(|e| statement_row(e, true, corpus)).collect()
+        sections(category).flat_map(|s| &s.entries).map(|e| statement_row(e, true, false, corpus)).collect()
     };
-    let unassigned: String = guidance.iter().filter(|g| !role_titles.contains(&g.role)).map(|g| statement_row(g, true, corpus)).collect();
+    let unassigned: String = guidance.iter().filter(|g| !role_titles.contains(&g.role)).map(|g| statement_row(g, true, false, corpus)).collect();
 
-    let mut html = table("general", "General rules", "Properties a PSBT must satisfy under the applicable version and extensions. They are the precondition of every role.", "Rule", "Check", &general);
+    let mut html = table("general", "General rules", "Properties a PSBT must satisfy under the applicable version and extensions. They are the precondition of every role.", &["ID", "Rule", "Check"], &general);
     html += &format!(
         "<h2 id=\"roles\">Role obligations</h2>\n<p>Requirements that apply when performing the named operation. A <em>Precondition</em> is checked on the PSBT the role received. Failing it means the role must refuse. A <em>Result</em> is checked on the PSBT the role returned, alone or against what it received. Each role's SHOULD and MAY guidance follows its rules.</p>\n<p class=strip>{strip}</p>\n<div class=scroll><table class=rules><tr><th>ID</th><th>Obligation</th><th>Check</th></tr>\n{roles}</table></div>\n"
     );
-    html += &table("definitions", "Definitions", "Terms the rules use.", "Definition", "", &rows("definition"));
-    html += &table("procedures", "Procedures", "Procedures the rules cite.", "Procedure", "", &rows("reference"));
+    html += &table("definitions", "Definitions", "Terms the rules use.", &["Term", "Definition"], &rows("definition"));
+    html += &table("procedures", "Procedures", "Procedures the rules cite.", &["ID", "Procedure"], &rows("reference"));
     if !unassigned.is_empty() {
-        html += &table("guidance", "Guidance", "Recommendations and permitted actions not tied to one role.", "Guidance", "", &unassigned);
+        html += &table("guidance", "Guidance", "Recommendations and permitted actions not tied to one role.", &["ID", "Guidance"], &unassigned);
     }
     html
 }
@@ -589,8 +602,9 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
     })
 }
 
-/// The version, status, corpus pins and changelog.
+/// The version, status, corpus pins, artifacts and changelog.
 fn version_block(specification: &Specification) -> String {
+    let base = esc(&source_base());
     let pins: String = corpora().into_iter().map(|(file, bip_revision, bips, vectors)| format!(
         "<tr><td><a href=\"vectors/{file}.json\">{file}.json</a></td><td>{}</td><td>{}</td><td>{vectors}</td></tr>\n",
         if file == "bip376" {
@@ -603,7 +617,7 @@ fn version_block(specification: &Specification) -> String {
     )).collect();
     let changes: String = CHANGELOG.iter().map(|(date, change)| format!("<li>{date}: {}</li>\n", esc(change))).collect();
     format!(
-        "<h2 id=\"version\">Version</h2>\n<p><strong>Revision:</strong> {}. <strong>Status:</strong> {} From 1.0, rule IDs are append-only: never reused or redefined.</p>\n<p>Each corpus file pins the bitcoin/bips revision it was labeled against.</p>\n<div class=scroll><table class=pins><tr><th>Corpus</th><th>bips revision</th><th>BIPs</th><th>Vectors</th></tr>\n{pins}</table></div>\n<details><summary>Changelog</summary><ul>\n{changes}</ul></details>\n",
+        "<h2 id=\"version\">Version</h2>\n<p><strong>Revision:</strong> {}. <strong>Status:</strong> {} From 1.0, rule IDs are append-only: never reused or redefined.</p>\n<p>Each corpus file pins the bitcoin/bips revision it was labeled against.</p>\n<div class=scroll><table class=pins><tr><th>Corpus</th><th>bips revision</th><th>BIPs</th><th>Vectors</th></tr>\n{pins}</table></div>\n<h3>Artifacts and docs</h3>\n<ul>\n<li><a href=\"{base}rust/src/spec.rs\">Rust specification source</a>: single declaration source of truth for rules, definitions, procedures and bindings.</li>\n<li><a href=\"rules.json\">rules.json</a> (<a href=\"docs/rules.schema.json\">JSON Schema</a>, <a href=\"docs/rules.md\">format docs</a>): machine-readable rule catalog.</li>\n<li><a href=\"rules.md\">rules.md</a>: full catalog as Markdown.</li>\n<li><a href=\"llms.txt\">For AI agents (llms.txt)</a>: site index for LLMs and automated tools.</li>\n<li><a href=\"PRINCIPLES.md\">Principles</a>: how the specification decides what a rule is and how it is worded, checked, tested and audited.</li>\n<li><a href=\"ROADMAP.md\">Roadmap</a>: what is next.</li>\n</ul>\n<details><summary>Changelog</summary><ul>\n{changes}</ul></details>\n",
         esc(&revision()), esc(specification.status)
     )
 }
@@ -767,6 +781,10 @@ const SCRIPT: &str = r#"<script>
     }
   };
   for (const control of [strength, bip, text]) control.addEventListener('input', apply);
+  const toc = document.querySelector('nav.toc');
+  const pad = () => { if (toc) document.documentElement.style.scrollPaddingTop = `${toc.offsetHeight + 12}px`; };
+  pad();
+  addEventListener('resize', pad);
 })();
 </script>"#;
 
@@ -854,9 +872,11 @@ fn page(specification: &Specification, corpus: &BTreeMap<String, RuleCorpus>) ->
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1">
 <title>{title}</title>
+<link rel="alternate" type="text/plain" href="llms.txt">
 <style>
 :root {{ --bg: #fff; --fg: #1d1d1f; --muted: #6e6e73; --line: #d2d2d7; --band: #f5f5f7; --accent: #8a5a00; }}
 @media (prefers-color-scheme: dark) {{ :root {{ --bg: #161617; --fg: #f5f5f7; --muted: #a1a1a6; --line: #3a3a3c; --band: #232325; --accent: #f0b450; }} }}
+html {{ scroll-padding-top: 3.25rem; }}
 body {{ background: var(--bg); color: var(--fg); font: 15px/1.5 -apple-system, system-ui, sans-serif; max-width: 1100px; margin: 0 auto; padding: 0 16px 24px; }}
 nav.toc {{ position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 0; z-index: 1; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; }}
 .filters {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; font-size: 14px; }}
@@ -866,6 +886,7 @@ th, td {{ border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: le
 tr.section td {{ font-weight: 600; background: var(--band); }}
 tr.band td {{ font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }}
 td.id {{ font-family: ui-monospace, monospace; white-space: nowrap; }}
+td.term {{ font-weight: 600; white-space: nowrap; }}
 .gate {{ color: var(--accent); font-weight: 600; }}
 .strength, .phase, .coverage, .evidence {{ display: block; font: 12px/1.4 -apple-system, system-ui, sans-serif; color: var(--muted); }}
 .strength, .phase {{ white-space: nowrap; }}
@@ -890,8 +911,9 @@ a.field {{ text-decoration-style: dotted; }}
 <nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a></nav>
 <h1>{title}</h1>
 <p><strong>Status:</strong> {status}</p>
-<p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source. A rule marked Derived or Resolution is the project's reading, not BIP wording, and says why.</p>
-<p>Silent payments: BIP375 covers sending to a silent payment address with a PSBT, and BIP376 covers spending a silent payment output. Both build on <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0352.mediawiki">BIP352</a> (silent payments) and <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0374.mediawiki">BIP374</a> (DLEQ proofs); the silent payment terms are in <a href="#definitions">Definitions</a>.</p>
+<p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372, BIP373, BIP353, BIP322, BIP375 and BIP376. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source. A rule marked Derived or Resolution is the project's reading rather than BIP wording. It says why.</p>
+{version}{evaluate}{questions}{preamble}
+<details><summary>Reading the rule tables: outcomes, coverage and basis</summary>
 <dl class=legend>
 <dt>Verified</dt><dd>The check found the property holds.</dd>
 <dt>Failed</dt><dd>The check found it does not; the rule's ID is the error code.</dd>
@@ -904,8 +926,7 @@ a.field {{ text-decoration-style: dotted; }}
 <dt>Derived</dt><dd>Basis: the rule follows from BIP text but does not restate one sentence; it merges sentences, or reads a requirement from a field description or another BIP. An unmarked rule restates one BIP sentence.</dd>
 <dt>Resolution</dt><dd>Basis: the BIP text is ambiguous or silent and the project decided. The reading gives the basis.</dd>
 </dl>
-<p><a href="{source}rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="llms.txt">llms.txt</a> &middot; <a href="PRINCIPLES.md">Principles</a> &middot; <a href="ROADMAP.md">Roadmap</a></p>
-{version}{evaluate}{questions}{preamble}
+</details>
 <div class=filters><label>Strength <select id=filter-strength><option value="">All</option><option>MUST</option><option>MUST NOT</option><option>SHOULD</option><option>MAY</option></select></label><label>BIP <select id=filter-bip><option value="">All</option>{bip_options}</select></label><label>Search <input id=filter-text type=search></label></div>
 {catalog}
 <h2 id="fields">Field registry</h2>
@@ -924,6 +945,5 @@ a.field {{ text-decoration-style: dotted; }}
         evaluate = evaluate_section(),
         fields = field_tables(specification),
         script = SCRIPT,
-        source = esc(&source_base()),
     )
 }

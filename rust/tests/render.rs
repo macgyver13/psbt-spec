@@ -58,6 +58,7 @@ fn rendered_catalog_matches_rust_statements() {
     for statement in &specification.preamble {
         assert!(html.contains(&format!("<div id=\"context-{}\">", statement.sheet_row)), "preamble {}", statement.topic);
     }
+    let role_titles: Vec<&str> = specification.sections.iter().filter(|s| s.category == "role").map(|s| s.title).collect();
     let mut count = specification.preamble.len();
     for section in &specification.sections {
         for statement in &section.entries {
@@ -72,7 +73,12 @@ fn rendered_catalog_matches_rust_statements() {
             };
             assert_eq!(html.matches(&format!("<tr id=\"{anchor}\"")).count(), 1, "one row for {anchor}");
             let row = row(&html, &anchor);
-            assert_eq!(row.matches("<td").count(), 3, "three columns for {anchor}");
+            let cols = match section.category {
+                "definition" | "reference" => 2,
+                "guidance" if !role_titles.contains(&statement.role) => 2,
+                _ => 3,
+            };
+            assert_eq!(row.matches("<td").count(), cols, "{cols} columns for {anchor}");
             let wording = row.split_once("<span class=statement-text>").expect("statement text").1;
             let wording = &wording[..wording.find("</span><").unwrap_or(wording.len())];
             assert_eq!(text(wording), statement.text, "wording for {anchor}");
@@ -92,10 +98,12 @@ fn rendered_catalog_matches_rust_statements() {
             if let Some(strength) = statement.strength {
                 assert!(row.contains(&format!("<span class=strength>{}</span>", strength.label())), "strength for {anchor}");
             }
-            match (statement.coverage, statement.implementations.is_empty()) {
-                (Some(coverage), false) => assert!(row.contains(&format!("<span class=coverage>{}</span>", coverage.label())), "coverage for {anchor}"),
-                (Some(coverage), true) => assert!(row.contains(&format!("<td class=validation>{}<", coverage.label())), "coverage for {anchor}"),
-                (None, _) => assert!(row.contains("<td class=validation>-</td>"), "no check for {anchor}"),
+            match (statement.coverage, statement.implementations.is_empty(), cols) {
+                (Some(coverage), false, _) => assert!(row.contains(&format!("<span class=coverage>{}</span>", coverage.label())), "coverage for {anchor}"),
+                (Some(coverage), true, _) => assert!(row.contains(&format!("<td class=validation>{}<", coverage.label())), "coverage for {anchor}"),
+                (None, _, 3) => assert!(row.contains("<td class=validation>-</td>"), "no check for {anchor}"),
+                (None, _, 2) => assert!(!row.contains("<td class=validation>"), "no check column for {anchor}"),
+                _ => unreachable!(),
             }
             for implementation in &statement.implementations {
                 let (module, function) = implementation.func
