@@ -2,9 +2,11 @@
   "corpora": [
     {
       "bip_revision": "5aadddb",
-      "bips": [],
+      "bips": [
+        174
+      ],
       "file": "vectors/bip174.json",
-      "vectors": 34
+      "vectors": 41
     },
     {
       "bip_revision": "5aadddb",
@@ -31,27 +33,20 @@
       "vectors": 24
     },
     {
-      "bip_revision": "9c5b825",
+      "bip_revision": "21e48c11",
       "bips": [
         375
       ],
       "file": "vectors/bip375.json",
-      "vectors": 94
+      "vectors": 120
     },
     {
       "bip_revision": "5aadddb",
       "bips": [
-        375,
         376
       ],
       "file": "vectors/bip376.json",
       "vectors": 19
-    },
-    {
-      "bip_revision": "5aadddb",
-      "bips": [],
-      "file": "vectors/roles.json",
-      "vectors": 50
     }
   ],
   "entries": [
@@ -248,66 +243,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -416,6 +351,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -471,6 +410,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -493,34 +512,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "corpus"
@@ -732,66 +723,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -900,6 +831,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -955,6 +890,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -977,34 +992,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "tests only"
@@ -1216,66 +1203,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -1384,6 +1311,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -1439,6 +1370,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -1461,34 +1472,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "tests only"
@@ -1706,66 +1689,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -1874,6 +1797,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -1929,6 +1856,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -1951,34 +1958,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "corpus"
@@ -2224,9 +2203,34 @@
             "index": 3
           },
           {
-            "description": "psbt structure: incorrect byte length for PSBT_IN_SP_DLEQ field",
+            "description": "psbt structure: incorrect byte length for PSBT_IN_SP_ECDH_SHARE scan key",
             "file": "bip375",
             "index": 4
+          },
+          {
+            "description": "psbt structure: incorrect byte length for PSBT_IN_SP_DLEQ field",
+            "file": "bip375",
+            "index": 5
+          },
+          {
+            "description": "psbt structure: PSBT_IN_SP_ECDH_SHARE scan key is not a valid point",
+            "file": "bip375",
+            "index": 6
+          },
+          {
+            "description": "psbt structure: PSBT_IN_SP_ECDH_SHARE value is not a valid point",
+            "file": "bip375",
+            "index": 7
+          },
+          {
+            "description": "psbt structure: PSBT_OUT_SP_V0_INFO scan key is not a valid point",
+            "file": "bip375",
+            "index": 8
+          },
+          {
+            "description": "psbt structure: PSBT_OUT_SP_V0_INFO spend key is not a valid point",
+            "file": "bip375",
+            "index": 9
           },
           {
             "description": "Tweak of 31 bytes",
@@ -2428,66 +2432,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -2596,6 +2540,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -2651,6 +2599,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -2673,34 +2701,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "corpus"
@@ -2912,66 +2912,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -3080,6 +3020,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -3135,6 +3079,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -3157,34 +3181,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "tests only"
@@ -3332,7 +3328,7 @@
           {
             "description": "psbt structure: missing PSBT_OUT_SCRIPT field when sending to non-sp output",
             "file": "bip375",
-            "index": 6
+            "index": 10
           },
           {
             "description": "PSBTv0 with PSBT_IN_SP_TWEAK",
@@ -3343,26 +3339,6 @@
             "description": "PSBTv0 with PSBT_IN_SP_SPEND_BIP32_DERIVATION",
             "file": "bip376",
             "index": 18
-          },
-          {
-            "description": "Signed input while a silent payment output has no script, BIP-375 not enabled",
-            "file": "roles",
-            "index": 13
-          },
-          {
-            "description": "BIP-375 Single-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled",
-            "file": "roles",
-            "index": 44
-          },
-          {
-            "description": "BIP-375 Two-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled",
-            "file": "roles",
-            "index": 46
-          },
-          {
-            "description": "BIP-375 Two-input P2WPKH to silent payment workflow (per-input-share): Updater and Signer PSBTs, BIP-375 not enabled",
-            "file": "roles",
-            "index": 48
           }
         ],
         "passing": [
@@ -3544,66 +3520,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -3712,6 +3628,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -3767,6 +3687,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -3789,34 +3789,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "corpus"
@@ -4039,66 +4011,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -4207,6 +4119,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -4262,6 +4178,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -4284,34 +4280,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "corpus"
@@ -4403,66 +4371,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -4571,6 +4479,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -4626,6 +4538,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -4648,34 +4640,6 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
         "status": "tests only"
@@ -4711,33 +4675,7 @@
         "rules::input_output::validate_sighash_single_flag"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "SIGHASH_ALL signature with Inputs Modifiable set",
-            "file": "roles",
-            "index": 6
-          },
-          {
-            "description": "SIGHASH_DEFAULT taproot key path signature with Inputs Modifiable set",
-            "file": "roles",
-            "index": 7
-          },
-          {
-            "description": "Finalized P2WPKH input signed with SIGHASH_ALL with Inputs Modifiable set",
-            "file": "roles",
-            "index": 8
-          },
-          {
-            "description": "SIGHASH_ALL|ANYONECANPAY signature with Outputs Modifiable set",
-            "file": "roles",
-            "index": 9
-          },
-          {
-            "description": "SIGHASH_SINGLE|ANYONECANPAY signature with Has SIGHASH_SINGLE clear",
-            "file": "roles",
-            "index": 10
-          }
-        ],
+        "isolating": [],
         "passing": [
           {
             "file": "bip370",
@@ -4797,66 +4735,6 @@
           },
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -4965,6 +4843,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -5020,6 +4902,86 @@
             "index": 93
           },
           {
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
+          },
+          {
             "file": "bip376",
             "index": 0
           },
@@ -5042,37 +5004,9 @@
           {
             "file": "bip376",
             "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 0
-          },
-          {
-            "file": "roles",
-            "index": 1
-          },
-          {
-            "file": "roles",
-            "index": 2
-          },
-          {
-            "file": "roles",
-            "index": 3
-          },
-          {
-            "file": "roles",
-            "index": 4
-          },
-          {
-            "file": "roles",
-            "index": 5
-          },
-          {
-            "file": "roles",
-            "index": 11
           }
         ],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Full",
       "evidence": [
@@ -5126,6 +5060,10 @@
           {
             "file": "bip373",
             "index": 8
+          },
+          {
+            "file": "bip375",
+            "index": 78
           }
         ],
         "status": "tests only"
@@ -5225,31 +5163,31 @@
           },
           {
             "file": "bip375",
-            "index": 49
+            "index": 66
           },
           {
             "file": "bip375",
-            "index": 61
+            "index": 78
           },
           {
             "file": "bip375",
-            "index": 68
+            "index": 92
           },
           {
             "file": "bip375",
-            "index": 69
+            "index": 93
           },
           {
             "file": "bip375",
-            "index": 70
+            "index": 94
           },
           {
             "file": "bip375",
-            "index": 74
+            "index": 98
           },
           {
             "file": "bip375",
-            "index": 75
+            "index": 99
           }
         ],
         "status": "tests only"
@@ -5737,66 +5675,6 @@
         "passing": [
           {
             "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
-          {
-            "file": "bip375",
             "index": 52
           },
           {
@@ -5905,6 +5783,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -5960,32 +5842,84 @@
             "index": 93
           },
           {
-            "file": "bip376",
-            "index": 0
+            "file": "bip375",
+            "index": 94
           },
           {
-            "file": "bip376",
-            "index": 1
+            "file": "bip375",
+            "index": 95
           },
           {
-            "file": "bip376",
-            "index": 2
+            "file": "bip375",
+            "index": 96
           },
           {
-            "file": "bip376",
-            "index": 3
+            "file": "bip375",
+            "index": 97
           },
           {
-            "file": "bip376",
-            "index": 4
+            "file": "bip375",
+            "index": 98
           },
           {
-            "file": "bip376",
-            "index": 5
+            "file": "bip375",
+            "index": 99
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -5994,7 +5928,7 @@
       "evidence": [
         {
           "label": "BIP375 - Invalid Psbts",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts"
         }
       ],
       "gap": "",
@@ -6021,72 +5955,12 @@
       "corpus": {
         "isolating": [
           {
-            "description": "psbt structure: PSBT_GLOBAL_TX_MODIFIABLE field is non-zero when PSBT_OUT_SCRIPT set for sp output",
+            "description": "input eligibility: PSBT_GLOBAL_TX_MODIFIABLE Inputs/Outputs Modifiable flags not cleared when PSBT_OUT_SCRIPT set for sp output",
             "file": "bip375",
-            "index": 5
+            "index": 45
           }
         ],
         "passing": [
-          {
-            "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
           {
             "file": "bip375",
             "index": 52
@@ -6197,6 +6071,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -6252,8 +6130,84 @@
             "index": 93
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -6261,8 +6215,8 @@
       "coverage": "Full",
       "evidence": [
         {
-          "label": "BIP375 - Invalid Psbts (PSBT Structure); Signer",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts"
+          "label": "BIP375 - Invalid Psbts (Input Eligibility); Signer",
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts"
         }
       ],
       "gap": "",
@@ -6271,9 +6225,9 @@
         "Silent payment outputs"
       ],
       "id": "GEN-SP-2",
-      "note": "BIP375 publishes this as a PSBT Structure failure. It also covers the Signer's duty to clear both flags when it sets the scripts.",
+      "note": "BIP375 publishes this as an Input Eligibility failure. It also covers the Signer's duty to clear both flags when it sets the scripts.",
       "phase": null,
-      "reading": "Merges the BIP375 PSBT Structure invalid case with the Signer's duty to clear both flags when it sets the output scripts.",
+      "reading": "Merges the BIP375 Input Eligibility invalid case with the Signer's duty to clear both flags when it sets the output scripts.",
       "role": "",
       "roles": [
         "Signer"
@@ -6300,145 +6254,120 @@
           {
             "description": "ecdh coverage: only one ineligible P2SH multisig input when PSBT_OUT_SCRIPT set for sp output",
             "file": "bip375",
-            "index": 7
+            "index": 11
           },
           {
             "description": "ecdh coverage: missing PSBT_IN_SP_ECDH_SHARE field for input 0 when PSBT_OUT_SCRIPT set for sp output",
             "file": "bip375",
-            "index": 8
-          },
-          {
-            "description": "ecdh coverage: missing PSBT_IN_SP_DLEQ field for input when PSBT_IN_SP_ECDH_SHARE set",
-            "file": "bip375",
-            "index": 9
-          },
-          {
-            "description": "ecdh coverage: missing PSBT_GLOBAL_SP_DLEQ field when PSBT_GLOBAL_SP_ECDH_SHARE set",
-            "file": "bip375",
-            "index": 10
-          },
-          {
-            "description": "ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field",
-            "file": "bip375",
-            "index": 11
-          },
-          {
-            "description": "ecdh coverage: invalid proof in PSBT_GLOBAL_SP_DLEQ field",
-            "file": "bip375",
             "index": 12
           },
           {
-            "description": "ecdh coverage: missing PSBT_IN_BIP32_DERIVATION field for input when PSBT_IN_SP_DLEQ set",
+            "description": "ecdh coverage: input 1 with no PSBT_IN_WITNESS_UTXO or PSBT_IN_NON_WITNESS_UTXO and no ECDH share",
             "file": "bip375",
             "index": 13
           },
           {
-            "description": "ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field when PSBT_OUT_SCRIPT not set",
+            "description": "ecdh coverage: P2SH input 1 with no PSBT_IN_REDEEM_SCRIPT and no ECDH share",
+            "file": "bip375",
+            "index": 14
+          },
+          {
+            "description": "ecdh coverage: missing PSBT_IN_SP_DLEQ field for input when PSBT_IN_SP_ECDH_SHARE set",
             "file": "bip375",
             "index": 15
           },
           {
-            "description": "ecdh coverage: global ECDH share proven over a subset of eligible inputs",
+            "description": "ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field",
             "file": "bip375",
             "index": 16
           },
           {
-            "description": "ecdh coverage: output 1 missing ECDH share for scan key with one input / three sp outputs (different scan keys)",
+            "description": "ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field when PSBT_OUT_SCRIPT not set for sp output",
             "file": "bip375",
             "index": 17
           },
           {
-            "description": "ecdh coverage: input 1 missing ECDH share for output 1 with two inputs / two sp outputs (different scan keys)",
+            "description": "ecdh coverage: missing PSBT_GLOBAL_SP_DLEQ field when PSBT_GLOBAL_SP_ECDH_SHARE set",
             "file": "bip375",
             "index": 18
           },
           {
-            "description": "ecdh coverage: input 1 missing ECDH share for scan key with two inputs / one sp output",
+            "description": "ecdh coverage: invalid proof in PSBT_GLOBAL_SP_DLEQ field",
             "file": "bip375",
             "index": 19
           },
           {
-            "description": "input derivation: P2WPKH BIP32_DERIVATION pubkey does not match prevout script",
+            "description": "ecdh coverage: global ECDH share proven over a subset of eligible inputs",
+            "file": "bip375",
+            "index": 20
+          },
+          {
+            "description": "ecdh coverage: PSBT_GLOBAL_SP_ECDH_SHARE set when the only input is ineligible (P2TR with NUMS internal key)",
+            "file": "bip375",
+            "index": 21
+          },
+          {
+            "description": "ecdh coverage: eligible input keys sum to the point at infinity when PSBT_GLOBAL_SP_ECDH_SHARE set",
+            "file": "bip375",
+            "index": 22
+          },
+          {
+            "description": "ecdh coverage: missing PSBT_IN_BIP32_DERIVATION field for input when PSBT_IN_SP_DLEQ set",
+            "file": "bip375",
+            "index": 23
+          },
+          {
+            "description": "ecdh coverage: output 1 missing ECDH share for scan key with one input / three sp outputs (different scan keys)",
+            "file": "bip375",
+            "index": 24
+          },
+          {
+            "description": "ecdh coverage: input 1 missing ECDH share for output 1 with two inputs / two sp outputs (different scan keys)",
+            "file": "bip375",
+            "index": 25
+          },
+          {
+            "description": "ecdh coverage: input 1 missing ECDH share for scan key with two inputs / one sp output",
+            "file": "bip375",
+            "index": 26
+          },
+          {
+            "description": "ecdh coverage: P2WPKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey",
+            "file": "bip375",
+            "index": 27
+          },
+          {
+            "description": "ecdh coverage: P2PKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey",
+            "file": "bip375",
+            "index": 28
+          },
+          {
+            "description": "ecdh coverage: P2SH-P2WPKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey",
+            "file": "bip375",
+            "index": 29
+          },
+          {
+            "description": "ecdh coverage: global ECDH share computed from a PSBT_IN_BIP32_DERIVATION pubkey not matching scriptPubKey",
+            "file": "bip375",
+            "index": 30
+          },
+          {
+            "description": "ecdh coverage: P2SH-P2WPKH input 1 with a non-P2WPKH PSBT_IN_REDEEM_SCRIPT that does not hash to scriptPubKey and no ECDH share",
+            "file": "bip375",
+            "index": 32
+          },
+          {
+            "description": "ecdh coverage: finalized NUMS script-path witness not committed to prevout, input missing ECDH share",
             "file": "bip375",
             "index": 33
           },
           {
-            "description": "input derivation: P2PKH BIP32_DERIVATION pubkey does not match prevout script",
+            "description": "ecdh coverage: finalized P2SH-P2WPKH input with non-P2WPKH final scriptSig redeem script and no ECDH share",
             "file": "bip375",
             "index": 34
-          },
-          {
-            "description": "input derivation: P2SH-P2WPKH BIP32_DERIVATION pubkey does not match prevout script",
-            "file": "bip375",
-            "index": 35
-          },
-          {
-            "description": "input pubkey mismatch: global ECDH share computed from decoy pubkey not matching prevout script",
-            "file": "bip375",
-            "index": 36
           }
         ],
         "passing": [
-          {
-            "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
           {
             "file": "bip375",
             "index": 52
@@ -6549,6 +6478,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -6604,8 +6537,84 @@
             "index": 93
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -6614,7 +6623,7 @@
       "evidence": [
         {
           "label": "BIP375 - Invalid Psbts (ECDH Coverage)",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts"
         }
       ],
       "gap": "",
@@ -6649,110 +6658,55 @@
           {
             "description": "input eligibility: segwit version greater than 1 in transaction inputs with sp output",
             "file": "bip375",
-            "index": 20
+            "index": 35
           },
           {
             "description": "input eligibility: segwit version greater than 1 supplied via PSBT_IN_NON_WITNESS_UTXO with sp output",
             "file": "bip375",
-            "index": 21
+            "index": 36
           },
           {
             "description": "input eligibility: non-SIGHASH_ALL signature on input with sp output",
             "file": "bip375",
-            "index": 22
+            "index": 37
           },
           {
             "description": "input eligibility: non-SIGHASH_ALL signature on input with sp output and PSBT_IN_SIGHASH_TYPE omitted",
             "file": "bip375",
-            "index": 23
+            "index": 38
           },
           {
             "description": "input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output",
             "file": "bip375",
-            "index": 24
+            "index": 39
           },
           {
             "description": "input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output and PSBT_IN_SIGHASH_TYPE omitted",
             "file": "bip375",
-            "index": 25
-          },
-          {
-            "description": "input eligibility: SIGHASH_ALL|ANYONECANPAY sighash type on input with sp output",
-            "file": "bip375",
-            "index": 26
+            "index": 40
           },
           {
             "description": "input eligibility: non-SIGHASH_ALL signature on taproot input with sp output",
             "file": "bip375",
-            "index": 27
-          },
-          {
-            "description": "input eligibility: SIGHASH_DEFAULT sighash type on non-taproot input with sp output",
-            "file": "bip375",
-            "index": 28
-          }
-        ],
-        "passing": [
-          {
-            "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
             "index": 41
           },
           {
+            "description": "input eligibility: non-SIGHASH_ALL signature on taproot input with sp output and PSBT_IN_SIGHASH_TYPE omitted",
             "file": "bip375",
             "index": 42
           },
           {
+            "description": "input eligibility: SIGHASH_ALL|ANYONECANPAY sighash type on input with sp output",
             "file": "bip375",
             "index": 43
           },
           {
+            "description": "input eligibility: SIGHASH_DEFAULT sighash type on non-taproot input with sp output",
             "file": "bip375",
             "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
+          }
+        ],
+        "passing": [
           {
             "file": "bip375",
             "index": 52
@@ -6863,6 +6817,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -6918,8 +6876,84 @@
             "index": 93
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -6928,7 +6962,7 @@
       "evidence": [
         {
           "label": "BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer"
         }
       ],
       "gap": "",
@@ -6937,7 +6971,7 @@
         "Silent payment outputs"
       ],
       "id": "GEN-SP-4",
-      "note": "Bound once per subcheck. The Signer section allows SIGHASH_DEFAULT on a taproot input in both sighash sentences: it fails if a provided sighash type is not \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\", and signs using \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\" when none is provided.",
+      "note": "Bound once per subcheck. The Signer fails if PSBT_IN_SIGHASH_TYPE is not SIGHASH_ALL, and without it signs using SIGHASH_ALL. \"For a taproot input, SIGHASH_DEFAULT is accepted in place of SIGHASH_ALL in both cases.\"",
       "phase": null,
       "reading": "Merges the BIP375 Signer's sighash check, the Input Eligibility invalid cases and the Constructor's eligibility check into one check, REF-9.",
       "role": "",
@@ -6962,90 +6996,30 @@
           {
             "description": "output scripts: P2TR input with NUMS internal key cannot derive sp output",
             "file": "bip375",
-            "index": 29
+            "index": 47
           },
           {
             "description": "output scripts: PSBT_OUT_SCRIPT does not match derived sp output",
             "file": "bip375",
-            "index": 30
+            "index": 48
           },
           {
             "description": "output scripts: two sp outputs (same scan / different spend keys) not sorted lexicographically by spend key",
             "file": "bip375",
-            "index": 31
+            "index": 49
           },
           {
             "description": "output scripts: k values assigned to wrong output indices with three sp outputs (same scan / spend keys)",
             "file": "bip375",
-            "index": 32
-          },
-          {
-            "description": "input eligibility: bare OP_2 script is not a segwit v2 witness program",
-            "file": "bip375",
-            "index": 79
-          }
-        ],
-        "passing": [
-          {
-            "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
             "index": 50
           },
           {
+            "description": "output scripts: PSBT_OUT_SCRIPT set for sp output when the eligible input keys sum to the point at infinity",
             "file": "bip375",
             "index": 51
-          },
+          }
+        ],
+        "passing": [
           {
             "file": "bip375",
             "index": 52
@@ -7156,6 +7130,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -7211,8 +7189,84 @@
             "index": 93
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -7221,7 +7275,7 @@
       "evidence": [
         {
           "label": "BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts"
         }
       ],
       "gap": "",
@@ -7353,72 +7407,12 @@
       "corpus": {
         "isolating": [
           {
-            "description": "Signed input while a silent payment output has no script",
-            "file": "roles",
-            "index": 12
+            "description": "input eligibility: input signed before every sp output has PSBT_OUT_SCRIPT",
+            "file": "bip375",
+            "index": 46
           }
         ],
         "passing": [
-          {
-            "file": "bip375",
-            "index": 37
-          },
-          {
-            "file": "bip375",
-            "index": 38
-          },
-          {
-            "file": "bip375",
-            "index": 39
-          },
-          {
-            "file": "bip375",
-            "index": 40
-          },
-          {
-            "file": "bip375",
-            "index": 41
-          },
-          {
-            "file": "bip375",
-            "index": 42
-          },
-          {
-            "file": "bip375",
-            "index": 43
-          },
-          {
-            "file": "bip375",
-            "index": 44
-          },
-          {
-            "file": "bip375",
-            "index": 45
-          },
-          {
-            "file": "bip375",
-            "index": 46
-          },
-          {
-            "file": "bip375",
-            "index": 47
-          },
-          {
-            "file": "bip375",
-            "index": 48
-          },
-          {
-            "file": "bip375",
-            "index": 49
-          },
-          {
-            "file": "bip375",
-            "index": 50
-          },
-          {
-            "file": "bip375",
-            "index": 51
-          },
           {
             "file": "bip375",
             "index": 52
@@ -7529,6 +7523,10 @@
           },
           {
             "file": "bip375",
+            "index": 79
+          },
+          {
+            "file": "bip375",
             "index": 80
           },
           {
@@ -7584,8 +7582,84 @@
             "index": 93
           },
           {
-            "file": "roles",
-            "index": 11
+            "file": "bip375",
+            "index": 94
+          },
+          {
+            "file": "bip375",
+            "index": 95
+          },
+          {
+            "file": "bip375",
+            "index": 96
+          },
+          {
+            "file": "bip375",
+            "index": 97
+          },
+          {
+            "file": "bip375",
+            "index": 98
+          },
+          {
+            "file": "bip375",
+            "index": 99
+          },
+          {
+            "file": "bip375",
+            "index": 100
+          },
+          {
+            "file": "bip375",
+            "index": 101
+          },
+          {
+            "file": "bip375",
+            "index": 102
+          },
+          {
+            "file": "bip375",
+            "index": 103
+          },
+          {
+            "file": "bip375",
+            "index": 104
+          },
+          {
+            "file": "bip375",
+            "index": 105
+          },
+          {
+            "file": "bip375",
+            "index": 106
+          },
+          {
+            "file": "bip375",
+            "index": 107
+          },
+          {
+            "file": "bip375",
+            "index": 108
+          },
+          {
+            "file": "bip375",
+            "index": 109
+          },
+          {
+            "file": "bip375",
+            "index": 110
+          },
+          {
+            "file": "bip375",
+            "index": 111
+          },
+          {
+            "file": "bip375",
+            "index": 112
+          },
+          {
+            "file": "bip375",
+            "index": 113
           }
         ],
         "status": "corpus"
@@ -7594,7 +7668,7 @@
       "evidence": [
         {
           "label": "BIP375 - Signer",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer"
         }
       ],
       "gap": "",
@@ -8187,8 +8261,8 @@
         "isolating": [],
         "passing": [
           {
-            "file": "roles",
-            "index": 20
+            "file": "bip174",
+            "index": 34
           }
         ],
         "status": "tests only"
@@ -8220,20 +8294,9 @@
         "rules::finalizer::validate_sp_finalization_key_sig"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "Silent payment tweak without a taproot key path signature",
-            "file": "roles",
-            "index": 29
-          },
-          {
-            "description": "Silent payment tweak without a taproot key path signature, BIP-376 not enabled",
-            "file": "roles",
-            "index": 30
-          }
-        ],
+        "isolating": [],
         "passing": [],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Full",
       "evidence": [
@@ -8262,25 +8325,9 @@
         "rules::taproot::validate_taproot_signatures"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "64-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_DEFAULT",
-            "file": "roles",
-            "index": 23
-          },
-          {
-            "description": "65-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL",
-            "file": "roles",
-            "index": 24
-          },
-          {
-            "description": "Silent payment tweak with a taproot key path signature",
-            "file": "roles",
-            "index": 28
-          }
-        ],
+        "isolating": [],
         "passing": [],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Full",
       "evidence": [
@@ -8317,25 +8364,26 @@
         "rules::finalizer::validate_finalizer_ecdsa_signatures"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "SIGHASH_ALL signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL",
-            "file": "roles",
-            "index": 21
-          },
-          {
-            "description": "SIGHASH_SINGLE signature without PSBT_IN_SIGHASH_TYPE",
-            "file": "roles",
-            "index": 22
-          }
-        ],
+        "isolating": [],
         "passing": [
           {
-            "file": "roles",
-            "index": 20
+            "file": "bip174",
+            "index": 34
+          },
+          {
+            "file": "bip375",
+            "index": 114
+          },
+          {
+            "file": "bip375",
+            "index": 116
+          },
+          {
+            "file": "bip375",
+            "index": 118
           }
         ],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Full",
       "evidence": [
@@ -8566,39 +8614,26 @@
         "rules::extractor::validate_extraction_readiness"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "PSBTv2 with an input that is signed but not finalized",
-            "file": "roles",
-            "index": 15
-          },
-          {
-            "description": "PSBTv2 with an empty PSBT_OUT_SCRIPT",
-            "file": "roles",
-            "index": 16
-          },
-          {
-            "description": "PSBTv2 with a finalized unsigned input and a silent payment output without a script",
-            "file": "roles",
-            "index": 17
-          },
-          {
-            "description": "BIP-174 combiner result, not finalized",
-            "file": "roles",
-            "index": 19
-          }
-        ],
+        "isolating": [],
         "passing": [
           {
-            "file": "roles",
-            "index": 14
+            "file": "bip174",
+            "index": 35
           },
           {
-            "file": "roles",
-            "index": 18
+            "file": "bip375",
+            "index": 115
+          },
+          {
+            "file": "bip375",
+            "index": 117
+          },
+          {
+            "file": "bip375",
+            "index": 119
           }
         ],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Partial",
       "evidence": [
@@ -8627,61 +8662,30 @@
         "rules::combiner::validate_shared_unique_id"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "PSBTs for different transactions",
-            "file": "roles",
-            "index": 38
-          },
-          {
-            "description": "PSBTv2s with different required lock times",
-            "file": "roles",
-            "index": 39
-          }
-        ],
+        "isolating": [],
         "passing": [
           {
-            "file": "roles",
-            "index": 31
-          },
-          {
-            "file": "roles",
-            "index": 32
-          },
-          {
-            "file": "roles",
-            "index": 33
-          },
-          {
-            "file": "roles",
-            "index": 34
-          },
-          {
-            "file": "roles",
-            "index": 35
-          },
-          {
-            "file": "roles",
+            "file": "bip174",
             "index": 36
           },
           {
-            "file": "roles",
+            "file": "bip174",
             "index": 37
           },
           {
-            "file": "roles",
-            "index": 43
+            "file": "bip174",
+            "index": 38
           },
           {
-            "file": "roles",
-            "index": 45
+            "file": "bip174",
+            "index": 39
           },
           {
-            "file": "roles",
-            "index": 47
+            "file": "bip174",
+            "index": 40
           }
         ],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Full",
       "evidence": [
@@ -8710,66 +8714,30 @@
         "rules::catalog::validate_merge_preservation"
       ],
       "corpus": {
-        "isolating": [
-          {
-            "description": "Combined PSBT drops the second signer's partial signatures",
-            "file": "roles",
-            "index": 40
-          },
-          {
-            "description": "Combined PSBT adds partial signatures neither PSBT holds",
-            "file": "roles",
-            "index": 41
-          },
-          {
-            "description": "PSBTv2s whose PSBT_IN_SEQUENCE conflicts, combined to a third sequence",
-            "file": "roles",
-            "index": 42
-          }
-        ],
+        "isolating": [],
         "passing": [
           {
-            "file": "roles",
-            "index": 31
-          },
-          {
-            "file": "roles",
-            "index": 32
-          },
-          {
-            "file": "roles",
-            "index": 33
-          },
-          {
-            "file": "roles",
-            "index": 34
-          },
-          {
-            "file": "roles",
-            "index": 35
-          },
-          {
-            "file": "roles",
+            "file": "bip174",
             "index": 36
           },
           {
-            "file": "roles",
+            "file": "bip174",
             "index": 37
           },
           {
-            "file": "roles",
-            "index": 43
+            "file": "bip174",
+            "index": 38
           },
           {
-            "file": "roles",
-            "index": 45
+            "file": "bip174",
+            "index": 39
           },
           {
-            "file": "roles",
-            "index": 47
+            "file": "bip174",
+            "index": 40
           }
         ],
-        "status": "corpus"
+        "status": "tests only"
       },
       "coverage": "Partial",
       "evidence": [
@@ -9000,7 +8968,7 @@
       "evidence": [
         {
           "label": "BIP375 - Specification",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#specification"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#specification"
         }
       ],
       "gap": "",
@@ -9100,7 +9068,7 @@
       "evidence": [
         {
           "label": "BIP375 - Specification",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#specification"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#specification"
         }
       ],
       "gap": "",
@@ -9200,7 +9168,7 @@
       "evidence": [
         {
           "label": "BIP375 - Computing The Output Scripts",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#computing-the-output-scripts"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#computing-the-output-scripts"
         }
       ],
       "gap": "",
@@ -9225,7 +9193,7 @@
       "evidence": [
         {
           "label": "BIP375 - Verifying The Dleq Proof",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#verifying-the-dleq-proof"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#verifying-the-dleq-proof"
         }
       ],
       "gap": "",
@@ -9250,13 +9218,13 @@
       "evidence": [
         {
           "label": "BIP375 - Computing The Output Scripts",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#computing-the-output-scripts"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#computing-the-output-scripts"
         }
       ],
       "gap": "",
       "gates": [],
       "id": "REF-4",
-      "note": "The ordering stated here follows BIP375 prose. The published helper uses output-map ordering, which can produce different results.",
+      "note": "",
       "phase": null,
       "reading": "",
       "role": "",
@@ -9350,7 +9318,7 @@
       "evidence": [
         {
           "label": "BIP375 - Test Vectors",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors"
         }
       ],
       "gap": "",
@@ -9375,7 +9343,7 @@
       "evidence": [
         {
           "label": "BIP375 - Test Vectors",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors"
         }
       ],
       "gap": "",
@@ -9400,7 +9368,7 @@
       "evidence": [
         {
           "label": "BIP375 - Test Vectors",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors"
         }
       ],
       "gap": "",
@@ -9600,7 +9568,7 @@
       "evidence": [
         {
           "label": "BIP375 - Updater",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#updater"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#updater"
         }
       ],
       "gap": "",
@@ -9625,7 +9593,7 @@
       "evidence": [
         {
           "label": "BIP375 - Change Detection",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#change-detection"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#change-detection"
         }
       ],
       "gap": "",
@@ -9675,7 +9643,7 @@
       "evidence": [
         {
           "label": "BIP375 - Signer",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer"
         }
       ],
       "gap": "",
@@ -10075,7 +10043,7 @@
       "evidence": [
         {
           "label": "BIP375 - Signer",
-          "url": "https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer"
+          "url": "https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer"
         }
       ],
       "gap": "",

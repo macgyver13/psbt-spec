@@ -30,7 +30,7 @@
   },
   "corpus": [
     {
-      "file": "vectors/roles.json",
+      "file": "rust/tests/fixtures/roles.json",
       "sha256": "426fe38765133d10985cb486cbe15dee25244cda47ad37e0a615bb8cf1770e4c",
       "bip_revision": "5aadddb",
       "vectors": 50
@@ -40,7 +40,7 @@
   "finished": "2026-11-11T12:00:04Z",
   "summary": {
     "confounded": [
-      "vectors/roles.json#25"
+      "rust/tests/fixtures/roles.json#25"
     ],
     "rejects": {
       "confirmed": 2,
@@ -148,11 +148,11 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#13",
+          "vector": "rust/tests/fixtures/roles.json#13",
           "verdict": "MATCH"
         }
       ],
-      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#13",
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#13",
       "rule": "GEN-ST-2",
       "stale": [],
       "task": "deserialize",
@@ -166,19 +166,19 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#44",
+          "vector": "rust/tests/fixtures/roles.json#44",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#46",
+          "vector": "rust/tests/fixtures/roles.json#46",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#48",
+          "vector": "rust/tests/fixtures/roles.json#48",
           "verdict": "MATCH"
         }
       ],
-      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#44, vectors/roles.json#46, vectors/roles.json#48",
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#44, rust/tests/fixtures/roles.json#46, rust/tests/fixtures/roles.json#48",
       "rule": "GEN-ST-2",
       "stale": [],
       "task": "combine",
@@ -214,27 +214,27 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#6",
+          "vector": "rust/tests/fixtures/roles.json#6",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#7",
+          "vector": "rust/tests/fixtures/roles.json#7",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#8",
+          "vector": "rust/tests/fixtures/roles.json#8",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#9",
+          "vector": "rust/tests/fixtures/roles.json#9",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#10",
+          "vector": "rust/tests/fixtures/roles.json#10",
           "verdict": "NOT IMPLEMENTED"
         }
       ],
-      "notes": "adapter does not declare sign; deserialize (informational, the BIP assigns this duty to Signer): rejected vectors/roles.json#6, vectors/roles.json#7, vectors/roles.json#8, vectors/roles.json#10; accepted vectors/roles.json#9",
+      "notes": "adapter does not declare sign; deserialize (informational, the BIP assigns this duty to Signer): rejected rust/tests/fixtures/roles.json#6, rust/tests/fixtures/roles.json#7, rust/tests/fixtures/roles.json#8, rust/tests/fixtures/roles.json#10; accepted rust/tests/fixtures/roles.json#9",
       "rule": "GEN-T-2",
       "stale": [],
       "task": "sign",
@@ -535,7 +535,7 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#12",
+          "vector": "rust/tests/fixtures/roles.json#12",
           "verdict": "NOT IMPLEMENTED"
         }
       ],
@@ -545,8 +545,8 @@
         {
           "bip": 375,
           "corpus": "5aadddb",
-          "evidence": "9c5b825e4ba43fab0431fa042ddb00afdf251a95",
-          "file": "vectors/roles.json"
+          "evidence": "21e48c1175b966eb2919965692759e0a0f7a2fb1",
+          "file": "rust/tests/fixtures/roles.json"
         }
       ],
       "task": "sign",
@@ -758,11 +758,11 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#25",
+          "vector": "rust/tests/fixtures/roles.json#25",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#26",
+          "vector": "rust/tests/fixtures/roles.json#26",
           "verdict": "LOOSER"
         }
       ],
@@ -780,15 +780,15 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#29",
+          "vector": "rust/tests/fixtures/roles.json#29",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#30",
+          "vector": "rust/tests/fixtures/roles.json#30",
           "verdict": "MATCH"
         }
       ],
-      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#30",
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#30",
       "rule": "ROLE-F-2",
       "stale": [],
       "task": "finalize",
@@ -803,23 +803,23 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#23",
+          "vector": "rust/tests/fixtures/roles.json#23",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#24",
+          "vector": "rust/tests/fixtures/roles.json#24",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#26",
+          "vector": "rust/tests/fixtures/roles.json#26",
           "verdict": "LOOSER"
         },
         {
-          "vector": "vectors/roles.json#28",
+          "vector": "rust/tests/fixtures/roles.json#28",
           "verdict": "NOT IMPLEMENTED"
         }
       ],
-      "notes": "vectors/roles.json#22: project names ROLE-F-3 on rejecting it, but attribution finds ROLE-F-4 failing there, not ROLE-F-3 (no evidence); unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#23, vectors/roles.json#24",
+      "notes": "rust/tests/fixtures/roles.json#22: project names ROLE-F-3 on rejecting it, but attribution finds ROLE-F-4 failing there, not ROLE-F-3 (no evidence); unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#23, rust/tests/fixtures/roles.json#24",
       "rule": "ROLE-F-3",
       "stale": [],
       "task": "finalize",
@@ -833,15 +833,15 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#21",
+          "vector": "rust/tests/fixtures/roles.json#21",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#22",
+          "vector": "rust/tests/fixtures/roles.json#22",
           "verdict": "NOT RUN"
         }
       ],
-      "notes": "vectors/roles.json#22 rejected naming ROLE-F-3, not this rule (NOT RUN); confounded vector vectors/roles.json#25 rejected naming ROLE-F-1 (no evidence)",
+      "notes": "rust/tests/fixtures/roles.json#22 rejected naming ROLE-F-3, not this rule (NOT RUN); confounded vector rust/tests/fixtures/roles.json#25 rejected naming ROLE-F-1 (no evidence)",
       "rule": "ROLE-F-4",
       "stale": [],
       "task": "finalize",
@@ -923,23 +923,23 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#15",
+          "vector": "rust/tests/fixtures/roles.json#15",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#16",
+          "vector": "rust/tests/fixtures/roles.json#16",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#17",
+          "vector": "rust/tests/fixtures/roles.json#17",
           "verdict": "NOT IMPLEMENTED"
         },
         {
-          "vector": "vectors/roles.json#19",
+          "vector": "rust/tests/fixtures/roles.json#19",
           "verdict": "MATCH"
         }
       ],
-      "notes": "vectors/roles.json#16: project names ROLE-X-99, not in rules.json (treated as no rule); unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#15, vectors/roles.json#16, vectors/roles.json#19",
+      "notes": "rust/tests/fixtures/roles.json#16: project names ROLE-X-99, not in rules.json (treated as no rule); unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#15, rust/tests/fixtures/roles.json#16, rust/tests/fixtures/roles.json#19",
       "rule": "ROLE-X-1",
       "stale": [],
       "task": "extract",
@@ -954,15 +954,15 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#38",
+          "vector": "rust/tests/fixtures/roles.json#38",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#39",
+          "vector": "rust/tests/fixtures/roles.json#39",
           "verdict": "MATCH"
         }
       ],
-      "notes": "unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#38, vectors/roles.json#39",
+      "notes": "unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#38, rust/tests/fixtures/roles.json#39",
       "rule": "ROLE-B-1",
       "stale": [],
       "task": "combine",
@@ -977,15 +977,15 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#40",
+          "vector": "rust/tests/fixtures/roles.json#40",
           "verdict": "MATCH"
         },
         {
-          "vector": "vectors/roles.json#41",
+          "vector": "rust/tests/fixtures/roles.json#41",
           "verdict": "NOT RUN"
         },
         {
-          "vector": "vectors/roles.json#42",
+          "vector": "rust/tests/fixtures/roles.json#42",
           "verdict": "LOOSER"
         }
       ],
@@ -1002,11 +1002,11 @@
       ],
       "evidence": [
         {
-          "vector": "vectors/roles.json#27",
+          "vector": "rust/tests/fixtures/roles.json#27",
           "verdict": "STRICTER"
         }
       ],
-      "notes": "vectors/roles.json#27: project says \"signature sighash differs from PSBT_IN_SIGHASH_TYPE\"",
+      "notes": "rust/tests/fixtures/roles.json#27: project says \"signature sighash differs from PSBT_IN_SIGHASH_TYPE\"",
       "rule": null,
       "stale": [],
       "task": "finalize",
@@ -1026,7 +1026,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#0",
+      "ref": "rust/tests/fixtures/roles.json#0",
       "task": "deserialize",
       "valid": true
     },
@@ -1040,7 +1040,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#1",
+      "ref": "rust/tests/fixtures/roles.json#1",
       "task": "deserialize",
       "valid": true
     },
@@ -1054,7 +1054,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#2",
+      "ref": "rust/tests/fixtures/roles.json#2",
       "task": "deserialize",
       "valid": true
     },
@@ -1068,7 +1068,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#3",
+      "ref": "rust/tests/fixtures/roles.json#3",
       "task": "deserialize",
       "valid": true
     },
@@ -1082,7 +1082,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#4",
+      "ref": "rust/tests/fixtures/roles.json#4",
       "task": "deserialize",
       "valid": true
     },
@@ -1096,7 +1096,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#5",
+      "ref": "rust/tests/fixtures/roles.json#5",
       "task": "deserialize",
       "valid": true
     },
@@ -1113,7 +1113,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#6",
+      "ref": "rust/tests/fixtures/roles.json#6",
       "stages": [
         {
           "class": "isolated",
@@ -1148,7 +1148,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#7",
+      "ref": "rust/tests/fixtures/roles.json#7",
       "stages": [
         {
           "class": "isolated",
@@ -1183,7 +1183,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#8",
+      "ref": "rust/tests/fixtures/roles.json#8",
       "stages": [
         {
           "class": "isolated",
@@ -1217,7 +1217,7 @@
       ],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#9",
+      "ref": "rust/tests/fixtures/roles.json#9",
       "stages": [
         {
           "class": "isolated",
@@ -1252,7 +1252,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#10",
+      "ref": "rust/tests/fixtures/roles.json#10",
       "stages": [
         {
           "class": "isolated",
@@ -1286,7 +1286,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#11",
+      "ref": "rust/tests/fixtures/roles.json#11",
       "task": "deserialize",
       "valid": true
     },
@@ -1305,7 +1305,7 @@
       "note": "The Signer duty BIP375 states (\"must not yet add a signature\") is General rule GEN-SP-7, so the lone PSBT fails it.",
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#12",
+      "ref": "rust/tests/fixtures/roles.json#12",
       "stages": [
         {
           "class": "isolated",
@@ -1345,7 +1345,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#13",
+      "ref": "rust/tests/fixtures/roles.json#13",
       "task": "deserialize",
       "valid": false
     },
@@ -1359,7 +1359,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#14",
+      "ref": "rust/tests/fixtures/roles.json#14",
       "task": "extract",
       "valid": true
     },
@@ -1381,7 +1381,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#15",
+      "ref": "rust/tests/fixtures/roles.json#15",
       "task": "extract",
       "valid": false
     },
@@ -1403,7 +1403,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#16",
+      "ref": "rust/tests/fixtures/roles.json#16",
       "rule": "ROLE-X-99",
       "task": "extract",
       "valid": false
@@ -1427,7 +1427,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#17",
+      "ref": "rust/tests/fixtures/roles.json#17",
       "task": "extract",
       "valid": false
     },
@@ -1442,7 +1442,7 @@
       "incomplete": [],
       "outcome": "n/a",
       "reason": "multisig P2SH extraction not supported",
-      "ref": "vectors/roles.json#18",
+      "ref": "rust/tests/fixtures/roles.json#18",
       "task": "extract",
       "valid": true
     },
@@ -1464,7 +1464,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#19",
+      "ref": "rust/tests/fixtures/roles.json#19",
       "task": "extract",
       "valid": false
     },
@@ -1479,7 +1479,7 @@
       "incomplete": [],
       "outcome": "n/a",
       "reason": "multisig P2SH finalizing not supported",
-      "ref": "vectors/roles.json#20",
+      "ref": "rust/tests/fixtures/roles.json#20",
       "task": "finalize",
       "valid": true
     },
@@ -1502,7 +1502,7 @@
       "note": "Its partial signature is a placeholder, so ROLE-F-1 passes and ROLE-F-4 then fails the ECDSA check.",
       "outcome": "reject",
       "reason": "partial signature does not verify",
-      "ref": "vectors/roles.json#21",
+      "ref": "rust/tests/fixtures/roles.json#21",
       "rule": "ROLE-F-4",
       "task": "finalize",
       "valid": false
@@ -1526,7 +1526,7 @@
       "note": "Its partial signature is a placeholder, so ROLE-F-1 passes and ROLE-F-4 then fails the ECDSA check.",
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#22",
+      "ref": "rust/tests/fixtures/roles.json#22",
       "rule": "ROLE-F-3",
       "task": "finalize",
       "valid": false
@@ -1549,7 +1549,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#23",
+      "ref": "rust/tests/fixtures/roles.json#23",
       "task": "finalize",
       "valid": false
     },
@@ -1571,7 +1571,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#24",
+      "ref": "rust/tests/fixtures/roles.json#24",
       "task": "finalize",
       "valid": false
     },
@@ -1595,7 +1595,7 @@
       "note": "confounded: also fails ROLE-F-4.",
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#25",
+      "ref": "rust/tests/fixtures/roles.json#25",
       "rule": "ROLE-F-1",
       "task": "finalize",
       "valid": false
@@ -1623,7 +1623,7 @@
       "incomplete": [],
       "note": "confounded: also fails ROLE-F-3.",
       "outcome": "accept",
-      "ref": "vectors/roles.json#26",
+      "ref": "rust/tests/fixtures/roles.json#26",
       "task": "finalize",
       "valid": false
     },
@@ -1644,7 +1644,7 @@
       "note": "Its input is already finalized, so the Finalizer's ROLE-F-1 precondition does not apply.",
       "outcome": "reject",
       "reason": "signature sighash differs from PSBT_IN_SIGHASH_TYPE",
-      "ref": "vectors/roles.json#27",
+      "ref": "rust/tests/fixtures/roles.json#27",
       "task": "finalize",
       "valid": true
     },
@@ -1667,7 +1667,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 376 not declared",
-      "ref": "vectors/roles.json#28",
+      "ref": "rust/tests/fixtures/roles.json#28",
       "task": "finalize",
       "valid": false
     },
@@ -1690,7 +1690,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 376 not declared",
-      "ref": "vectors/roles.json#29",
+      "ref": "rust/tests/fixtures/roles.json#29",
       "task": "finalize",
       "valid": false
     },
@@ -1713,7 +1713,7 @@
       "note": "Role rules are not gated on a BIP: a Finalizer that meets PSBT_IN_SP_TWEAK acts on it.",
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#30",
+      "ref": "rust/tests/fixtures/roles.json#30",
       "task": "finalize",
       "valid": false
     },
@@ -1727,7 +1727,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#31",
+      "ref": "rust/tests/fixtures/roles.json#31",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1745,7 +1745,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#32",
+      "ref": "rust/tests/fixtures/roles.json#32",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1763,7 +1763,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#33",
+      "ref": "rust/tests/fixtures/roles.json#33",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1781,7 +1781,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#34",
+      "ref": "rust/tests/fixtures/roles.json#34",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1799,7 +1799,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#35",
+      "ref": "rust/tests/fixtures/roles.json#35",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1817,7 +1817,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#36",
+      "ref": "rust/tests/fixtures/roles.json#36",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1835,7 +1835,7 @@
       "failed": [],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#37",
+      "ref": "rust/tests/fixtures/roles.json#37",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1862,7 +1862,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#38",
+      "ref": "rust/tests/fixtures/roles.json#38",
       "task": "combine",
       "valid": false
     },
@@ -1885,7 +1885,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#39",
+      "ref": "rust/tests/fixtures/roles.json#39",
       "task": "combine",
       "valid": false
     },
@@ -1906,7 +1906,7 @@
       ],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#40",
+      "ref": "rust/tests/fixtures/roles.json#40",
       "returned": {
         "failed": [],
         "incomplete": []
@@ -1933,7 +1933,7 @@
       "incomplete": [],
       "outcome": "error",
       "reason": "adapter exited with status 101",
-      "ref": "vectors/roles.json#41",
+      "ref": "rust/tests/fixtures/roles.json#41",
       "task": "combine",
       "valid": false
     },
@@ -1954,7 +1954,7 @@
       ],
       "incomplete": [],
       "outcome": "accept",
-      "ref": "vectors/roles.json#42",
+      "ref": "rust/tests/fixtures/roles.json#42",
       "returned": {
         "failed": [
           "ROLE-B-2"
@@ -1976,7 +1976,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#43",
+      "ref": "rust/tests/fixtures/roles.json#43",
       "task": "combine",
       "valid": true
     },
@@ -1998,7 +1998,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#44",
+      "ref": "rust/tests/fixtures/roles.json#44",
       "task": "combine",
       "valid": false
     },
@@ -2014,7 +2014,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#45",
+      "ref": "rust/tests/fixtures/roles.json#45",
       "task": "combine",
       "valid": true
     },
@@ -2036,7 +2036,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#46",
+      "ref": "rust/tests/fixtures/roles.json#46",
       "task": "combine",
       "valid": false
     },
@@ -2052,7 +2052,7 @@
       "incomplete": [],
       "outcome": "withheld",
       "reason": "BIP 375 not declared",
-      "ref": "vectors/roles.json#47",
+      "ref": "rust/tests/fixtures/roles.json#47",
       "task": "combine",
       "valid": true
     },
@@ -2074,7 +2074,7 @@
       "incomplete": [],
       "outcome": "reject",
       "reason": "refused",
-      "ref": "vectors/roles.json#48",
+      "ref": "rust/tests/fixtures/roles.json#48",
       "task": "combine",
       "valid": false
     },
@@ -2089,7 +2089,7 @@
       "incomplete": [],
       "outcome": "n/a",
       "reason": "script path finalizing not supported",
-      "ref": "vectors/roles.json#49",
+      "ref": "rust/tests/fixtures/roles.json#49",
       "task": "finalize",
       "valid": true
     }

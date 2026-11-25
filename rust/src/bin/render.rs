@@ -19,6 +19,7 @@ use serde_json::json;
 
 /// Notable changes, newest first: (date, change).
 const CHANGELOG: &[(&str, &str)] = &[
+    ("2026-11-25", "BIP375 pinned to bips 21e48c11 (v0.3.0, tag psbt-spec-bip375-21e48c11 on macgyver13/bips), which accepts SIGHASH_DEFAULT in place of SIGHASH_ALL on a taproot input; bip375.json re-imported from it with vectors/tools/import_bip375.py. Input eligibility excludes uncompressed P2PKH inputs and P2SH inputs whose redeemScript does not match. The synthetic roles.json corpus became a test fixture, with its BIP174 and BIP375 role vectors moved into those corpora. The SP output ordering open question is closed, and bip376.json is marked as generated locally."),
     ("2026-11-12", "Per-rule corpus coverage, the Markdown export (rules.md), the rules.json schema and llms.txt."),
     ("2026-11-12", "Signer rules renumbered to close the ID gaps; the Creator, Constructor and Updater sections say how to evaluate them."),
     ("2026-11-11", "BIP375 pinned to bips 9c5b825 (v1.2.2); the signing-order duty becomes General rule GEN-SP-7."),
@@ -512,6 +513,9 @@ fn field_tables(specification: &Specification) -> String {
 }
 
 fn open_questions(specification: &Specification) -> String {
+    if specification.open_questions.is_empty() {
+        return String::new();
+    }
     let items: String = specification.open_questions.iter()
         .map(|q| format!("<li><strong>{}.</strong> {}</li>\n", esc(q.topic), esc(q.text)))
         .collect();
@@ -588,7 +592,13 @@ fn rules_json(specification: &Specification, corpus: &BTreeMap<String, RuleCorpu
 /// The version, status, corpus pins and changelog.
 fn version_block(specification: &Specification) -> String {
     let pins: String = corpora().into_iter().map(|(file, bip_revision, bips, vectors)| format!(
-        "<tr><td><a href=\"vectors/{file}.json\">{file}.json</a></td><td><a href=\"https://github.com/bitcoin/bips/tree/{bip_revision}\"><code>{bip_revision}</code></a></td><td>{}</td><td>{vectors}</td></tr>\n",
+        "<tr><td><a href=\"vectors/{file}.json\">{file}.json</a></td><td>{}</td><td>{}</td><td>{vectors}</td></tr>\n",
+        if file == "bip376" {
+            "none: generated locally by vectors/tools/gen_bip376.py; BIP376 publishes no test vectors".to_owned()
+        } else {
+            let repo = if file == "bip375" { "macgyver13/bips" } else { "bitcoin/bips" };
+            format!("<a href=\"https://github.com/{repo}/tree/{bip_revision}\"><code>{bip_revision}</code></a>")
+        },
         if bips.is_empty() { "set per vector".to_owned() } else { bips.iter().map(|b| format!("BIP{b}")).collect::<Vec<_>>().join(", ") }
     )).collect();
     let changes: String = CHANGELOG.iter().map(|(date, change)| format!("<li>{date}: {}</li>\n", esc(change))).collect();
@@ -610,7 +620,7 @@ fn evaluate_section() -> String {
 <pre>git clone https://github.com/macgyver13/psbt-spec\n\
 cd psbt-spec/rust\n\
 cargo run --release --bin psbt-spec -- evaluate --out DIR \\\n\
-\x20   --corpus ../vectors/roles.json --corpus ../vectors/bip375.json \\\n\
+\x20   --corpus ../vectors/bip174.json --corpus ../vectors/bip375.json \\\n\
 \x20   -- ADAPTER [ARGS ...]</pre>\n\
 <p>The report is written to <code>DIR/report.json</code> and <code>DIR/report.md</code>. Each row gives one verdict for a rule at one task:</p>\n\
 <dl class=legend>\n\
@@ -877,7 +887,7 @@ a.field {{ text-decoration-style: dotted; }}
 </style>
 </head>
 <body>
-<nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a><a href="#questions">Open questions</a></nav>
+<nav class=toc><a href="#version">Version</a><a href="#evaluate">Evaluate</a><a href="#general">General rules</a><a href="#roles">Role obligations</a><a href="#definitions">Definitions</a><a href="#procedures">Procedures</a><a href="#fields">Field registry</a></nav>
 <h1>{title}</h1>
 <p><strong>Status:</strong> {status}</p>
 <p>Covers PSBT versions 0 and 2 (BIP174, BIP370) with the extensions of BIP371, BIP372 (Draft), BIP373, BIP353, BIP322, BIP375 and BIP376, as written at bitcoin/bips <a href="https://github.com/bitcoin/bips/tree/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793"><code>5aadddb</code></a>, except BIP375, which is pinned at <a href="https://github.com/bitcoin/bips/tree/9c5b825e4ba43fab0431fa042ddb00afdf251a95"><code>9c5b825e4b</code></a>. A PSBT is well formed if it satisfies the General rules. A role conforms if its rules hold on the PSBT it received and the PSBT it returned. Each statement keeps its BIP's MUST, SHOULD or MAY and links its source. A rule marked Derived or Resolution is the project's reading, not BIP wording, and says why.</p>

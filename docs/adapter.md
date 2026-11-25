@@ -224,7 +224,7 @@ for line in sys.stdin:
     print(json.dumps({"id": request["id"], **answer(request)}), flush=True)
 ```
 
-Run it with `psbt-spec evaluate --out DIR --corpus ../vectors/roles.json --
+Run it with `psbt-spec evaluate --out DIR --corpus ../vectors/bip174.json --
 python3 adapter.py`. To add a task, declare it in `tasks`, return the
 resulting PSBT on accept where the task table requires one, and set `rule` on
 a refusal when the project's error names one. The example adapters in
@@ -277,7 +277,7 @@ was not produced by an interop case, are not settled yet.
 
 From [`examples/adapter-session.jsonl`](examples/adapter-session.jsonl),
 which holds the full lines and validates against the schema. PSBTs are
-shortened here. The vectors are real (`vectors/roles.json`); the project is
+shortened here. The vectors are from the synthetic test fixture (`rust/tests/fixtures/roles.json`); the project is
 the illustrative `example-wallet` of the report example.
 
 ```

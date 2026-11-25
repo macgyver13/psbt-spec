@@ -2,7 +2,7 @@
 //! of docs/examples/report.json, and `vectors` accepts the corpus.
 //!
 //! The adapter (tests/fixtures/example_adapter.py, needs python3) replays the
-//! invented example-wallet of the report example over vectors/roles.json.
+//! invented example-wallet of the report example over rust/tests/fixtures/roles.json.
 
 use std::process::Command;
 
@@ -21,8 +21,8 @@ fn evaluate_reproduces_the_example_report() {
         .current_dir(ROOT)
         .args(["evaluate", "--out"])
         .arg(&out)
-        .args(["--corpus", "vectors/roles.json", "--", "python3", "rust/tests/fixtures/example_adapter.py"])
-        .args(["docs/examples/report.json", "vectors/roles.json"])
+        .args(["--corpus", "rust/tests/fixtures/roles.json", "--", "python3", "rust/tests/fixtures/example_adapter.py"])
+        .args(["docs/examples/report.json", "rust/tests/fixtures/roles.json"])
         .status()
         .unwrap();
     assert!(status.success());
@@ -38,15 +38,15 @@ fn evaluate_reproduces_the_example_report() {
     assert_eq!(actual["summary"], expected["summary"]);
     assert_eq!(actual["rows"], expected["rows"]);
     assert_eq!(actual["vectors"], expected["vectors"]);
-    assert_eq!(actual["corpus"][0]["file"], "vectors/roles.json");
+    assert_eq!(actual["corpus"][0]["file"], "rust/tests/fixtures/roles.json");
     assert_eq!(actual["corpus"][0]["vectors"], 50);
 
     assert!(markdown.starts_with("# example-wallet PSBT behavior vs. psbt-spec "));
-    assert!(markdown.contains("| ROLE-B-1 | combine | 174, 370 | MATCH | not located | #38, #39 | rejected #38, #39 | unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#38, vectors/roles.json#39 |"));
+    assert!(markdown.contains("| ROLE-B-1 | combine | 174, 370 | MATCH | not located | #38, #39 | rejected #38, #39 | unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#38, rust/tests/fixtures/roles.json#39 |"));
     assert!(markdown.contains("- Valid vectors passed: 14 of 18"));
 }
 
-/// Runs `evaluate` over vectors/roles.json with tests/fixtures/stage_adapter.py
+/// Runs `evaluate` over rust/tests/fixtures/roles.json with tests/fixtures/stage_adapter.py
 /// in `mode` and returns report.json.
 fn evaluate_stage_adapter(mode: &str) -> Value {
     let out = std::env::temp_dir().join(format!("psbt-spec-stage-test-{mode}-{}", std::process::id()));
@@ -54,7 +54,7 @@ fn evaluate_stage_adapter(mode: &str) -> Value {
         .current_dir(ROOT)
         .args(["evaluate", "--out"])
         .arg(&out)
-        .args(["--corpus", "vectors/roles.json", "--", "python3", "rust/tests/fixtures/stage_adapter.py", mode])
+        .args(["--corpus", "rust/tests/fixtures/roles.json", "--", "python3", "rust/tests/fixtures/stage_adapter.py", mode])
         .status()
         .unwrap();
     assert!(status.success());
@@ -79,15 +79,15 @@ fn role_owned_rule_accepted_at_deserialize_refused_at_sign_is_match() {
     let report = evaluate_stage_adapter("refuse-sign");
     let sp7 = row(&report, "GEN-SP-7", "sign").unwrap();
     assert_eq!(sp7["verdicts"], serde_json::json!(["MATCH"]));
-    assert_eq!(sp7["evidence"], serde_json::json!([{"vector": "vectors/roles.json#12", "verdict": "MATCH"}]));
-    assert!(sp7["notes"].as_str().unwrap().contains("deserialize (informational, the BIP assigns this duty to Signer): accepted vectors/roles.json#12"));
+    assert_eq!(sp7["evidence"], serde_json::json!([{"vector": "rust/tests/fixtures/roles.json#12", "verdict": "MATCH"}]));
+    assert!(sp7["notes"].as_str().unwrap().contains("deserialize (informational, the BIP assigns this duty to Signer): accepted rust/tests/fixtures/roles.json#12"));
     assert!(row(&report, "GEN-SP-7", "deserialize").is_none());
     assert!(row(&report, "GEN-T-2", "deserialize").is_none());
     let t2 = row(&report, "GEN-T-2", "sign").unwrap();
     assert_eq!(t2["verdicts"], serde_json::json!(["MATCH"]));
     assert_eq!(t2["evidence"].as_array().unwrap().len(), 5);
 
-    let v = vector(&report, "vectors/roles.json#12");
+    let v = vector(&report, "rust/tests/fixtures/roles.json#12");
     assert_eq!((v["task"].as_str(), v["outcome"].as_str()), (Some("deserialize"), Some("accept")));
     assert_eq!(v["evidence"], serde_json::json!([]));
     assert_eq!(v["stages"].as_array().unwrap().len(), 1);
@@ -110,7 +110,7 @@ fn role_owned_rule_accepted_at_deserialize_and_sign_is_looser_at_sign() {
         assert_eq!(row(&report, rule, "sign").unwrap()["verdicts"], serde_json::json!(["LOOSER"]), "{rule}");
         assert!(row(&report, rule, "deserialize").is_none(), "{rule}");
     }
-    assert_eq!(vector(&report, "vectors/roles.json#12")["stages"][0]["evidence"], serde_json::json!([{"rule": "GEN-SP-7", "verdict": "LOOSER"}]));
+    assert_eq!(vector(&report, "rust/tests/fixtures/roles.json#12")["stages"][0]["evidence"], serde_json::json!([{"rule": "GEN-SP-7", "verdict": "LOOSER"}]));
     assert_eq!(report["summary"]["stages"]["accepted"], 6);
 }
 
@@ -121,7 +121,7 @@ fn role_owned_rule_accepted_at_deserialize_and_sign_is_looser_at_sign() {
 #[test]
 fn named_rule_decides_whether_a_refusal_is_match() {
     let out = std::env::temp_dir().join(format!("psbt-spec-named-test-{}", std::process::id()));
-    let corpora = ["vectors/bip174.json", "vectors/roles.json"];
+    let corpora = ["vectors/bip174.json", "rust/tests/fixtures/roles.json"];
     let status = Command::new(env!("CARGO_BIN_EXE_psbt-spec"))
         .current_dir(ROOT)
         .args(["evaluate", "--out"])
@@ -163,15 +163,15 @@ fn named_rule_decides_whether_a_refusal_is_match() {
     // sign stage requests: the same four cases on GEN-T-2, and GEN-SP-7 named
     // for a GEN-T-2 vector gets a note, not evidence.
     let t2 = ["#6 MATCH", "#7 NOT RUN", "#8 MATCH", "#9 MATCH", "#10 NOT RUN"]
-        .map(|e| { let (n, v) = e.split_once(' ').unwrap(); pair(&format!("vectors/roles.json{n}"), v) });
+        .map(|e| { let (n, v) = e.split_once(' ').unwrap(); pair(&format!("rust/tests/fixtures/roles.json{n}"), v) });
     assert_eq!(evidence("GEN-T-2", "sign"), t2);
     assert_eq!(row(&report, "GEN-T-2", "sign").unwrap()["verdicts"], serde_json::json!(["MATCH"]));
-    assert!(notes("GEN-T-2", "sign").contains("vectors/roles.json#7 rejected naming GEN-SP-7, not this rule (NOT RUN)"));
-    assert!(notes("GEN-T-2", "sign").contains("vectors/roles.json#9: project names GEN-T-99, not in rules.json"));
-    assert!(notes("GEN-T-2", "sign").contains("unconfirmed MATCH (project named no rule in rules.json): vectors/roles.json#8, vectors/roles.json#9"));
-    assert_eq!(evidence("GEN-SP-7", "sign"), [pair("vectors/roles.json#12", "MATCH")]);
-    assert!(notes("GEN-SP-7", "sign").contains("vectors/roles.json#7: project names GEN-SP-7 on rejecting it, but attribution finds GEN-T-2 failing there"));
-    assert_eq!(vector(&report, "vectors/roles.json#7")["stages"][0]["evidence"], serde_json::json!([{"rule": "GEN-T-2", "verdict": "NOT RUN"}]));
+    assert!(notes("GEN-T-2", "sign").contains("rust/tests/fixtures/roles.json#7 rejected naming GEN-SP-7, not this rule (NOT RUN)"));
+    assert!(notes("GEN-T-2", "sign").contains("rust/tests/fixtures/roles.json#9: project names GEN-T-99, not in rules.json"));
+    assert!(notes("GEN-T-2", "sign").contains("unconfirmed MATCH (project named no rule in rules.json): rust/tests/fixtures/roles.json#8, rust/tests/fixtures/roles.json#9"));
+    assert_eq!(evidence("GEN-SP-7", "sign"), [pair("rust/tests/fixtures/roles.json#12", "MATCH")]);
+    assert!(notes("GEN-SP-7", "sign").contains("rust/tests/fixtures/roles.json#7: project names GEN-SP-7 on rejecting it, but attribution finds GEN-T-2 failing there"));
+    assert_eq!(vector(&report, "rust/tests/fixtures/roles.json#7")["stages"][0]["evidence"], serde_json::json!([{"rule": "GEN-T-2", "verdict": "NOT RUN"}]));
 
     // Confounded sign vectors: naming one of its failing rules is MATCH for
     // that rule alone; naming another gives nothing.
@@ -190,7 +190,7 @@ fn named_rule_decides_whether_a_refusal_is_match() {
 
 #[test]
 fn vectors_accepts_the_corpus() {
-    let files = ["bip174", "bip370", "bip371", "bip373", "bip375", "bip376", "roles"].map(|n| format!("vectors/{n}.json"));
+    let files = ["bip174", "bip370", "bip371", "bip373", "bip375", "bip376"].map(|n| format!("vectors/{n}.json"));
     let output = Command::new(env!("CARGO_BIN_EXE_psbt-spec")).current_dir(ROOT).arg("vectors").args(&files).output().unwrap();
     let text = String::from_utf8_lossy(&output.stdout);
     assert!(output.status.success(), "{text}");

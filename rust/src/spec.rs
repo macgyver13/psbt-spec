@@ -37,12 +37,13 @@ macro_rules! bip {
     };
 }
 
-/// Evidence: a section of BIP375 at its own pinned revision (bips change lvmvsnym).
+/// Evidence: a section of BIP375 at its own pinned revision, tag psbt-spec-bip375-21e48c11 on
+/// macgyver13/bips (bips change vwyyuntk). bitcoin/bips does not serve the commit.
 macro_rules! bip375 {
     ($label:literal, $path:literal) => {
         crate::catalog::Evidence {
             label: $label,
-            url: concat!("https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/", $path),
+            url: concat!("https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/", $path),
         }
     };
 }
@@ -161,10 +162,10 @@ pub const PAY_TO_CONTRACT: DeclaredSection = DeclaredSection { category: "genera
 pub const SILENT_PAYMENTS: DeclaredSection = DeclaredSection { category: "general", title: "Silent payments", entries: &[
     Declaration::rule("GEN-SP-1", Must, Full, bip375!("BIP375 - Invalid Psbts", "bip-0375.mediawiki#invalid-psbts"),
         "An output with PSBT_OUT_SP_V0_LABEL MUST also have PSBT_OUT_SP_V0_INFO."),
-    Declaration::rule("GEN-SP-2", Must, Full, bip375!("BIP375 - Invalid Psbts (PSBT Structure); Signer", "bip-0375.mediawiki#invalid-psbts"),
+    Declaration::rule("GEN-SP-2", Must, Full, bip375!("BIP375 - Invalid Psbts (Input Eligibility); Signer", "bip-0375.mediawiki#invalid-psbts"),
         "Once a silent-payment output has PSBT_OUT_SCRIPT, PSBT_GLOBAL_TX_MODIFIABLE MUST have Inputs Modifiable and Outputs Modifiable clear.")
-        .derived("Merges the BIP375 PSBT Structure invalid case with the Signer's duty to clear both flags when it sets the output scripts.")
-        .note("BIP375 publishes this as a PSBT Structure failure. It also covers the Signer's duty to clear both flags when it sets the scripts.")
+        .derived("Merges the BIP375 Input Eligibility invalid case with the Signer's duty to clear both flags when it sets the output scripts.")
+        .note("BIP375 publishes this as an Input Eligibility failure. It also covers the Signer's duty to clear both flags when it sets the scripts.")
         .roles(&["Signer"]),
     Declaration::rule("GEN-SP-3", Must, Full, bip375!("BIP375 - Invalid Psbts (ECDH Coverage)", "bip-0375.mediawiki#invalid-psbts"),
         "A PSBT with silent-payment outputs MUST pass the ECDH coverage check REF-8 describes.")
@@ -173,7 +174,7 @@ pub const SILENT_PAYMENTS: DeclaredSection = DeclaredSection { category: "genera
     Declaration::rule("GEN-SP-4", Must, Full, bip375!("BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor", "bip-0375.mediawiki#signer"),
         "A PSBT with silent-payment outputs MUST pass the input eligibility check REF-9 describes.")
         .derived("Merges the BIP375 Signer's sighash check, the Input Eligibility invalid cases and the Constructor's eligibility check into one check, REF-9.")
-        .note("Bound once per subcheck. The Signer section allows SIGHASH_DEFAULT on a taproot input in both sighash sentences: it fails if a provided sighash type is not \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\", and signs using \"SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input\" when none is provided.")
+        .note("Bound once per subcheck. The Signer fails if PSBT_IN_SIGHASH_TYPE is not SIGHASH_ALL, and without it signs using SIGHASH_ALL. \"For a taproot input, SIGHASH_DEFAULT is accepted in place of SIGHASH_ALL in both cases.\"")
         .roles(&["Creator and Constructor", "Signer"]),
     Declaration::rule("GEN-SP-5", Must, Full, bip375!("BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor", "bip-0375.mediawiki#invalid-psbts"),
         "A PSBT with silent-payment outputs MUST pass the output script check REF-10 describes.")
@@ -375,8 +376,7 @@ pub const REFERENCE: DeclaredSection = DeclaredSection { category: "reference", 
         "Global verification uses the sum of all eligible-input public keys; per-input verification uses that input’s key. Use the matching scan key, share and proof with BIP374 VerifyProof.")
         .note("A proof check requires the matching proof and complete verification inputs. Summing only recoverable public keys or trusting unrelated derivation keys does not establish the required aggregate key."),
     Declaration::reference("REF-4", "SP output ordering", bip375!("BIP375 - Computing The Output Scripts", "bip-0375.mediawiki#computing-the-output-scripts"),
-        "Assign k per scan key after sorting silent-payment codes lexicographically. Break identical-code ties by ascending output index, then derive the BIP352 script using the selected shared secret.")
-        .note("The ordering stated here follows BIP375 prose. The published helper uses output-map ordering, which can produce different results."),
+        "Assign k per scan key after sorting silent-payment codes lexicographically. Break identical-code ties by ascending output index, then derive the BIP352 script using the selected shared secret."),
     Declaration::reference("REF-5", "Signature verification", bip!("BIP174 - Specification; BIP341; BIP327", "bip-0174.mediawiki#specification"),
         "PSBT_IN_PARTIAL_SIG: an ECDSA signature by its public key under the BIP143 signature message for a segwit v0 spend, or the legacy message otherwise. PSBT_IN_TAP_KEY_SIG: a BIP340 signature by the spent output key under the BIP341 key-path message for its hash type. PSBT_IN_TAP_SCRIPT_SIG: a BIP340 signature by its x-only key under the BIP341 script-path message for its leaf. PSBT_IN_MUSIG2_PARTIAL_SIG: BIP327 PartialSigVerify under its session's aggregate key, tweaks and nonces."),
     Declaration::reference("REF-6", "DNSSEC proof validation", bip!("BIP353 - Resolution", "bip-0353.mediawiki#resolution"),

@@ -1,6 +1,6 @@
 mod common;
 
-use common::{outcome, passed, psbt, vector_bips, vectors};
+use common::{outcome, passed, psbt, vectors};
 use psbt_spec::context::{determine_locktime, PsbtContext};
 use psbt_spec::encoding::scan;
 use psbt_spec::{evaluate, Bip, Evaluation};
@@ -43,21 +43,8 @@ fn bip375_vectors() {
 
 #[test]
 fn bip376_vectors() {
-    run("bip376", &[Bip::Bip375, Bip::Bip376]);
+    run("bip376", &[Bip::Bip376]);
     assert_disabled_results("bip376");
-}
-
-/// Signer snapshot, Input Finalizer, Transaction Extractor and Combiner vectors.
-/// Each names its task and enabled BIPs.
-#[test]
-fn role_vectors() {
-    let mismatches: Vec<_> = vectors("roles")
-        .iter()
-        .filter_map(|v| {
-            check(v, &vector_bips(v))
-        })
-        .collect();
-    assert!(mismatches.is_empty(), "{}", mismatches.join("\n"));
 }
 
 /// Without the extension enabled, every registered field is still known and

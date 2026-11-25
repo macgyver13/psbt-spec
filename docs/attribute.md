@@ -142,7 +142,9 @@ before interop relies on it.
 From [`examples/attribute-session.jsonl`](examples/attribute-session.jsonl),
 which holds the full lines; the results are the reference checks' real output at
 `e536919` (computed with the probe described above). PSBTs are shortened
-here.
+here. At that revision the role vectors were in `vectors/roles.json`, now the
+test fixture `rust/tests/fixtures/roles.json`, and `bip375.json` was an
+earlier import of the BIP's vectors.
 
 ```
 > {"id": 0, "task": "hello"}

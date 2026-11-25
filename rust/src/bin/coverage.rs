@@ -427,7 +427,6 @@ fn report(root: &Path) -> Value {
         "bip373",
         "bip375",
         "bip376",
-        "roles",
     ] {
         let path = root.join(format!("{corpus}.json"));
         let file: Value = serde_json::from_str(&std::fs::read_to_string(path).expect("read vector corpus"))
@@ -519,24 +518,25 @@ mod tests {
         }
         let finalizer = vectors
             .iter()
-            .find(|vector| vector["id"] == "roles:30")
+            .find(|vector| vector["id"] == "bip174:35")
             .unwrap();
         assert_eq!(
             finalizer["cells"]["ROLE-F-6"][0]["status"],
             "context_missing"
         );
-        assert_eq!(finalizer["cells"]["ROLE-F-2"][0]["status"], "failed");
-        for id in ["roles:45", "roles:47"] {
-            let vector = vectors.iter().find(|vector| vector["id"] == id).unwrap();
-            assert!(vector["cells"]["GEN-ST-2"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .any(|event| event["status"] == "failed"
-                    && event["subject"]
-                        .as_str()
-                        .unwrap()
-                        .starts_with("Combiner source")));
-        }
+        assert_eq!(finalizer["cells"]["ROLE-F-1"][0]["status"], "passed");
+        let combiner = vectors
+            .iter()
+            .find(|vector| vector["id"] == "bip174:37")
+            .unwrap();
+        assert!(combiner["cells"]["GEN-F-1"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|event| event["status"] == "passed"
+                && event["subject"]
+                    .as_str()
+                    .unwrap()
+                    .starts_with("Combiner source")));
     }
 }

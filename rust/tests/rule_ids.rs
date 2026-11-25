@@ -17,7 +17,7 @@ mod common;
 use std::collections::{BTreeMap, BTreeSet};
 
 use base64::{engine::general_purpose::STANDARD, Engine};
-use common::{encode, field, graph_statuses, hex, outcome, psbt, status, txout, vector_bips, vectors};
+use common::{encode, field, graph_statuses, hex, outcome, psbt, status, txout, vectors};
 use psbt_spec::algebra::{Trace, TraceStatus};
 use psbt_spec::context::*;
 use psbt_spec::encoding::{scan, Psbt, Record, MAGIC};
@@ -34,15 +34,14 @@ use psbt_spec::{
 };
 use serde_json::Value;
 
-const CORPORA: [(&str, &[Bip]); 8] = [
+const CORPORA: [(&str, &[Bip]); 7] = [
     ("bip174", &[]),
     ("bip370", &[]),
     ("bip370_locktime", &[]),
     ("bip371", &[]),
     ("bip373", &[]),
     ("bip375", &[Bip::Bip375]),
-    ("bip376", &[Bip::Bip375, Bip::Bip376]),
-    ("roles", &[]),
+    ("bip376", &[Bip::Bip376]),
 ];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -57,8 +56,7 @@ fn vector_evidence() -> BTreeMap<&'static str, BTreeSet<Seen>> {
     let mut seen: BTreeMap<&'static str, BTreeSet<Seen>> = BTreeMap::new();
     for (corpus, bips) in CORPORA {
         for v in vectors(corpus) {
-            let bips = if corpus == "roles" { vector_bips(&v) } else { bips.to_vec() };
-            match outcome(&v, &bips) {
+            match outcome(&v, bips) {
                 Evaluation::Failed(x) => {
                     seen.entry(x.rule).or_default().insert(Seen::Failed);
                 }
@@ -67,7 +65,7 @@ fn vector_evidence() -> BTreeMap<&'static str, BTreeSet<Seen>> {
                 }
                 _ => {}
             }
-            for id in general_passed(&psbt(&v), &bips) {
+            for id in general_passed(&psbt(&v), bips) {
                 seen.entry(id).or_default().insert(Seen::Verified);
             }
         }
@@ -277,11 +275,16 @@ fn general_cases() -> Vec<Case> {
     let mut v3_message = message(0, vec![], None);
     find(&mut v3_message.maps[0], GLOBAL_TX_VERSION).value = u32le(3);
 
+    let modifiable_signed = edited(fixture("bip375", "can finalize: one P2WPKH input with PSBT_GLOBAL_TX_MODIFIABLE omitted"), |p| {
+        p.maps[0].push(field(GLOBAL_TX_MODIFIABLE, vec![], vec![0x01]));
+    });
+
     vec![
         general("GEN-F-2", Failed, "value length past the end", &truncated),
         general("GEN-F-2", Failed, "non-minimal key type", &non_minimal),
         general("GEN-F-3", Failed, "last map unterminated", &unterminated),
         general("GEN-ST-1", Failed, "version 3", &version_3),
+        general("GEN-T-2", Failed, "SIGHASH_ALL signature with Inputs Modifiable set", &modifiable_signed),
         general("GEN-TR-1", Failed, "control block for another key", &edited(script_input(), |p| {
             find(&mut p.maps[1], IN_TAP_LEAF_SCRIPT).key_data[1..33].copy_from_slice(&hex(OTHER_KEY))
         })),
@@ -442,7 +445,14 @@ fn finalized(psbt: &Psbt, final_witness: Vec<u8>) -> Psbt {
 fn finalizer_cases() -> Vec<Case> {
     use Seen::*;
     let sp = [Bip::Bip375];
-    let combined = encode(&fixture("roles", "BIP-174 combiner result, whose signatures use its SIGHASH_ALL sighash types"));
+    let combined_psbt = fixture("bip174", "BIP-174 combiner result, whose signatures use its SIGHASH_ALL sighash types");
+    let combined = encode(&combined_psbt);
+    let sighash_mismatch = edited(combined_psbt.clone(), |p| {
+        find(&mut p.maps[1], IN_SIGHASH_TYPE).value = u32le(0x81);
+    });
+    let forged_partial = edited(combined_psbt, |p| {
+        find(&mut p.maps[1], IN_PARTIAL_SIG).value[10] ^= 1;
+    });
     let signed = workflow("Signer");
     let workflow_finalized = workflow("Input Finalizer");
 
@@ -466,6 +476,9 @@ fn finalizer_cases() -> Vec<Case> {
 
     let key_path = fixture("bip371", "key only input with internal key, its derivation path, and signature");
     let key_sig = key_path.maps[1].iter().find(|r| r.key_type == IN_TAP_KEY_SIG).unwrap().value.clone();
+    let key_path_bad_sig = edited(key_path.clone(), |p| {
+        find(&mut p.maps[1], IN_TAP_KEY_SIG).value[0] ^= 1;
+    });
     let key_path_final = finalized(&key_path, witness(&[&key_sig]));
     let mut bad_key_sig = key_sig.clone();
     bad_key_sig[0] ^= 1;
@@ -497,9 +510,13 @@ fn finalizer_cases() -> Vec<Case> {
 
     vec![
         for_finalizing("ROLE-F-1", Verified, "BIP174 SIGHASH_ALL signatures", &combined, &[]),
+        for_finalizing("ROLE-F-1", Failed, "signature sighash disagrees with PSBT_IN_SIGHASH_TYPE", &sighash_mismatch, &[]),
         for_finalizing("ROLE-F-2", Verified, "SP input with a key signature", &encode(&sp_signed), &[]),
+        for_finalizing("ROLE-F-2", Failed, "SP tweak without taproot key signature", &encode(&sp_unsigned), &[]),
         for_finalizing("ROLE-F-3", Verified, "BIP371 key-path signature", &encode(&key_path), &[]),
+        for_finalizing("ROLE-F-3", Failed, "changed key-path signature", &key_path_bad_sig, &[]),
         for_finalizing("ROLE-F-4", Verified, "BIP174 legacy and BIP143 partial signatures", &combined, &[]),
+        for_finalizing("ROLE-F-4", Failed, "changed partial signature", &forged_partial, &[]),
         for_finalizing("ROLE-F-5", Verified, "BIP373 partial signatures", &encode(&musig()), &[]),
         for_finalizing("ROLE-F-5", Failed, "changed partial signature", &encode(&musig_forged), &[]),
         finalizing("ROLE-F-6", Verified, "BIP375 workflow P2WPKH", &encode(&signed), &encode(&workflow_finalized), &sp),
@@ -527,21 +544,27 @@ fn extractor_and_combiner_cases() -> Vec<Case> {
         let trace = graph_statuses(spec::combiner_obligations(), &transition, rule);
         role(rule, seen, what, evaluate_combining(sources, combined, &[]), trace)
     };
-    let finalizer_result = encode(&fixture("roles", "BIP-174 input finalizer result"));
+    let finalizer_result = encode(&fixture("bip174", "BIP-174 input finalizer result"));
     let sp_final = fixture("bip375", "can finalize: two inputs single-signer using per-input ECDH shares (finalized result)");
     let mut sp_wrong_script = sp_final.clone();
     let sp_output = sp_wrong_script.maps.iter_mut().rev().find(|m| m.iter().any(|r| r.key_type == OUT_SP_V0_INFO)).unwrap();
     find(sp_output, OUT_SCRIPT).value[5] ^= 1;
 
-    let v = vectors("roles").into_iter().find(|v| v["description"] == "BIP-174 combiner test vector").unwrap();
+    let bip174 = vectors("bip174");
+    let v = bip174.iter().find(|v| v["description"] == "BIP-174 combiner test vector").unwrap();
     let sources: Vec<Vec<u8>> = v["combine"].as_array().unwrap().iter().map(|p| STANDARD.decode(p.as_str().unwrap()).unwrap()).collect();
     let sources: Vec<&[u8]> = sources.iter().map(Vec::as_slice).collect();
-    let combined = psbt(&v);
+    let combined = psbt(v);
+    let other_v = bip174.iter().find(|v| v["description"] == "BIP-174 unknown key-value pairs combiner test vector").unwrap();
+    let other_source = STANDARD.decode(other_v["combine"][0].as_str().unwrap()).unwrap();
 
     vec![
         extracting("ROLE-X-1", Verified, "BIP174 finalizer result", &finalizer_result, &[]),
+        extracting("ROLE-X-1", Failed, "BIP174 combiner result, not finalized", &combined, &[]),
         combining("ROLE-B-1", Verified, "BIP174 combiner vector", &sources, &combined),
+        combining("ROLE-B-1", Failed, "PSBTs for different transactions", &[sources[0], &other_source], &combined),
         combining("ROLE-B-2", Verified, "BIP174 combiner vector", &sources, &combined),
+        combining("ROLE-B-2", Failed, "combined drops second signer partial signatures", &sources, sources[0]),
     ]
 }
 

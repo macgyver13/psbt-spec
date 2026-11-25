@@ -424,9 +424,7 @@ const PREAMBLE: &[StatementMetadata] = &[
 ];
 
 #[rustfmt::skip]
-const OPEN_QUESTIONS: &[Question] = &[
-    Question { topic: "SP output ordering", text: "REF-4 follows the BIP375 prose ordering of silent-payment codes; the published helper uses output-map ordering, which can produce different scripts." },
-];
+const OPEN_QUESTIONS: &[Question] = &[];
 
 #[cfg(test)]
 mod tests {

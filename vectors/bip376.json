@@ -1,6 +1,6 @@
 {
   "bip_revision": "5aadddb",
-  "bips": [375, 376],
+  "bips": [376],
   "vectors": [
     {
       "description": "Tweak and spend key derivation that match the P2TR output key",

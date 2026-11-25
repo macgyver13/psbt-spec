@@ -123,7 +123,7 @@ fn rendered_catalog_matches_rust_statements() {
             .collect();
         assert!(html.contains(&format!("<tr class=section id=\"role-{slug}\">")), "role section {}", section.title);
     }
-    assert!(html.contains("<h2 id=\"questions\">Open questions</h2>"));
+    assert_eq!(html.contains("<h2 id=\"questions\">Open questions</h2>"), !specification.open_questions.is_empty());
     for question in specification.open_questions {
         assert!(html.contains(&format!("<strong>{}.</strong>", question.topic)), "open question {}", question.topic);
     }

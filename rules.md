@@ -20,9 +20,8 @@ A PSBT MUST begin with the five-byte header 70 73 62 74 FF: ASCII psbt followed 
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 #### GEN-F-2 (MUST)
@@ -35,9 +34,8 @@ Each key-value record MUST be complete and use its declared lengths; the key typ
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 - Note: The linked parser also requires minimally encoded outer CompactSize lengths.
 
@@ -51,9 +49,8 @@ A PSBT MUST contain a global map, and each map MUST end with 00.
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 #### GEN-F-4 (MUST)
@@ -67,9 +64,8 @@ Keys MUST be unique within each map.
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Handling Duplicated Keys](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#handling-duplicated-keys)
 
 #### GEN-F-5 (MUST)
@@ -120,7 +116,12 @@ Every present known field MUST conform to the key-data and value format the fiel
   - isolates: vectors/bip375.json #1: psbt structure: incorrect byte length for PSBT_OUT_SP_V0_LABEL field
   - isolates: vectors/bip375.json #2: psbt structure: incorrect byte length for PSBT_OUT_SP_V0_INFO field
   - isolates: vectors/bip375.json #3: psbt structure: incorrect byte length for PSBT_IN_SP_ECDH_SHARE field
-  - isolates: vectors/bip375.json #4: psbt structure: incorrect byte length for PSBT_IN_SP_DLEQ field
+  - isolates: vectors/bip375.json #4: psbt structure: incorrect byte length for PSBT_IN_SP_ECDH_SHARE scan key
+  - isolates: vectors/bip375.json #5: psbt structure: incorrect byte length for PSBT_IN_SP_DLEQ field
+  - isolates: vectors/bip375.json #6: psbt structure: PSBT_IN_SP_ECDH_SHARE scan key is not a valid point
+  - isolates: vectors/bip375.json #7: psbt structure: PSBT_IN_SP_ECDH_SHARE value is not a valid point
+  - isolates: vectors/bip375.json #8: psbt structure: PSBT_OUT_SP_V0_INFO scan key is not a valid point
+  - isolates: vectors/bip375.json #9: psbt structure: PSBT_OUT_SP_V0_INFO spend key is not a valid point
   - isolates: vectors/bip376.json #13: Tweak of 31 bytes
   - isolates: vectors/bip376.json #14: Spend key derivation with a 32-byte x-only key
   - isolates: vectors/bip376.json #15: Spend key derivation with an uncompressed key
@@ -129,9 +130,8 @@ Every present known field MUST conform to the key-data and value format the fiel
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 - Note: Bound three times: the global map first, then each input map and each output map once the map count assigns them. The field registry below is the table it enforces, including the unsigned transaction's empty scriptSigs and the required-locktime ranges. It checks structure and the relations the field tables state, not every property a value may need, such as xpub version bytes or ECDSA signature validity.
 
@@ -147,9 +147,8 @@ The PSBT version MUST be 0 or 2.
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Version Numbers](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#version-numbers)
 
 #### GEN-ST-2 (MUST)
@@ -180,20 +179,15 @@ Each map MUST include the fields its PSBT version requires and exclude the field
   - isolates: vectors/bip370.json #18: PSBTv2 missing PSBT_IN_OUTPUT_INDEX.
   - isolates: vectors/bip370.json #19: PSBTv2 missing PSBT_OUT_AMOUNT.
   - isolates: vectors/bip370.json #20: PSBTv2 missing PSBT_OUT_SCRIPT.
-  - isolates: vectors/bip375.json #6: psbt structure: missing PSBT_OUT_SCRIPT field when sending to non-sp output
+  - isolates: vectors/bip375.json #10: psbt structure: missing PSBT_OUT_SCRIPT field when sending to non-sp output
   - isolates: vectors/bip376.json #17: PSBTv0 with PSBT_IN_SP_TWEAK
   - isolates: vectors/bip376.json #18: PSBTv0 with PSBT_IN_SP_SPEND_BIP32_DERIVATION
-  - isolates: vectors/roles.json #13: Signed input while a silent payment output has no script, BIP-375 not enabled
-  - isolates: vectors/roles.json #44: BIP-375 Single-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled
-  - isolates: vectors/roles.json #46: BIP-375 Two-input P2WPKH to silent payment workflow (global-share): Updater and Signer PSBTs, BIP-375 not enabled
-  - isolates: vectors/roles.json #48: BIP-375 Two-input P2WPKH to silent payment workflow (per-input-share): Updater and Signer PSBTs, BIP-375 not enabled
   - passes: vectors/bip174.json #20 #21 #22 #23 #24 #25 #26 #27 #28 #29
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP370 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#specification)
 - Note: Bound three times: the global map before the map count is known, then each input map and each output map. The field registry's Required and Excluded columns are the table it enforces.
 
@@ -209,9 +203,8 @@ Input maps MUST follow the global map, followed by output maps, with one map for
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #0 #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP174 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#specification)
 
 ### Transaction
@@ -224,9 +217,8 @@ The inputs’ required locktimes MUST permit nLockTime to be determined by the B
 - Coverage: Full
 - Vectors: tests only
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - From: [BIP370 - Determining Lock Time](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#determining-lock-time)
 
 #### GEN-T-2 (MUST)
@@ -235,16 +227,10 @@ A PSBT's signatures MUST agree with PSBT_GLOBAL_TX_MODIFIABLE: Inputs Modifiable
 
 - Applies when: PSBTv2
 - Coverage: Full
-- Vectors: corpus
-  - isolates: vectors/roles.json #6: SIGHASH_ALL signature with Inputs Modifiable set
-  - isolates: vectors/roles.json #7: SIGHASH_DEFAULT taproot key path signature with Inputs Modifiable set
-  - isolates: vectors/roles.json #8: Finalized P2WPKH input signed with SIGHASH_ALL with Inputs Modifiable set
-  - isolates: vectors/roles.json #9: SIGHASH_ALL|ANYONECANPAY signature with Outputs Modifiable set
-  - isolates: vectors/roles.json #10: SIGHASH_SINGLE|ANYONECANPAY signature with Has SIGHASH_SINGLE clear
+- Vectors: tests only
   - passes: vectors/bip370.json #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
   - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #0 #1 #2 #3 #4 #5 #11
 - Enforced by: Signer
 - From: [BIP370 - Signer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#signer)
 - Note: Bound three times, one per flag. It also covers the Signer's BIP370 flag duties: a Signer that leaves a flag wrong returns a PSBT that fails this rule. Signatures are found as input_signatures finds them, including those in finalized key-path and legacy fields.
@@ -259,6 +245,7 @@ For each input with PSBT_IN_TAP_LEAF_SCRIPT, every control block MUST reconstruc
 - Vectors: tests only
   - passes: vectors/bip371.json #14 #16
   - passes: vectors/bip373.json #6 #7 #8
+  - passes: vectors/bip375.json #78
 - Basis: derived. BIP371 describes the control block only as specified in BIP341. A control block that does not reconstruct to the spent output key fails BIP341 script path validation.
 - From: [BIP371 - PSBT_IN_TAP_LEAF_SCRIPT](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Script validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#script-validation-rules)
 - Note: Applies only to inputs with PSBT_IN_TAP_LEAF_SCRIPT. Takes the spent output from either UTXO field; a missing spent output returns Incomplete. The control block leaf version must equal the leaf script version.
@@ -271,7 +258,7 @@ PSBT_IN_TAP_INTERNAL_KEY, tweaked by PSBT_IN_TAP_MERKLE_ROOT or, without it, by 
 - Vectors: tests only
   - passes: vectors/bip371.json #11 #12 #13 #14 #15 #16
   - passes: vectors/bip373.json #3 #4 #5 #6 #7 #8 #9 #10 #11
-  - passes: vectors/bip375.json #49 #61 #68 #69 #70 #74 #75
+  - passes: vectors/bip375.json #66 #78 #92 #93 #94 #98 #99
 - Basis: derived. BIP371 gives the internal key and merkle root of the spent output. BIP341 defines the output key as the internal key tweaked by that root, so fields that do not produce it do not describe the output.
 - From: [BIP371 - PSBT_IN_TAP_INTERNAL_KEY and PSBT_IN_TAP_MERKLE_ROOT](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Constructing and spending Taproot outputs](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#constructing-and-spending-taproot-outputs)
 - Note: Without PSBT_IN_TAP_MERKLE_ROOT, a key-only tweak that matches is Verified and a mismatch is Incomplete. The PSBT may omit the script tree. A missing spent output returns Incomplete.
@@ -397,10 +384,8 @@ An output with PSBT_OUT_SP_V0_LABEL MUST also have PSBT_OUT_SP_V0_INFO.
 - Coverage: Full
 - Vectors: corpus
   - isolates: vectors/bip375.json #0: psbt structure: missing PSBT_OUT_SP_V0_INFO field when PSBT_OUT_SP_V0_LABEL set
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/bip376.json #0 #1 #2 #3 #4 #5
-  - passes: vectors/roles.json #11
-- From: [BIP375 - Invalid Psbts](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
+- From: [BIP375 - Invalid Psbts](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts)
 
 #### GEN-SP-2 (MUST, derived)
 
@@ -409,13 +394,12 @@ Once a silent-payment output has PSBT_OUT_SCRIPT, PSBT_GLOBAL_TX_MODIFIABLE MUST
 - Applies when: From BIP-375; Silent payment outputs
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/bip375.json #5: psbt structure: PSBT_GLOBAL_TX_MODIFIABLE field is non-zero when PSBT_OUT_SCRIPT set for sp output
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/roles.json #11
+  - isolates: vectors/bip375.json #45: input eligibility: PSBT_GLOBAL_TX_MODIFIABLE Inputs/Outputs Modifiable flags not cleared when PSBT_OUT_SCRIPT set for sp output
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
 - Enforced by: Signer
-- Basis: derived. Merges the BIP375 PSBT Structure invalid case with the Signer's duty to clear both flags when it sets the output scripts.
-- From: [BIP375 - Invalid Psbts (PSBT Structure); Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
-- Note: BIP375 publishes this as a PSBT Structure failure. It also covers the Signer's duty to clear both flags when it sets the scripts.
+- Basis: derived. Merges the BIP375 Input Eligibility invalid case with the Signer's duty to clear both flags when it sets the output scripts.
+- From: [BIP375 - Invalid Psbts (Input Eligibility); Signer](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts)
+- Note: BIP375 publishes this as an Input Eligibility failure. It also covers the Signer's duty to clear both flags when it sets the scripts.
 
 #### GEN-SP-3 (MUST)
 
@@ -424,26 +408,32 @@ A PSBT with silent-payment outputs MUST pass the ECDH coverage check REF-8 descr
 - Applies when: From BIP-375; Silent payment outputs
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/bip375.json #7: ecdh coverage: only one ineligible P2SH multisig input when PSBT_OUT_SCRIPT set for sp output
-  - isolates: vectors/bip375.json #8: ecdh coverage: missing PSBT_IN_SP_ECDH_SHARE field for input 0 when PSBT_OUT_SCRIPT set for sp output
-  - isolates: vectors/bip375.json #9: ecdh coverage: missing PSBT_IN_SP_DLEQ field for input when PSBT_IN_SP_ECDH_SHARE set
-  - isolates: vectors/bip375.json #10: ecdh coverage: missing PSBT_GLOBAL_SP_DLEQ field when PSBT_GLOBAL_SP_ECDH_SHARE set
-  - isolates: vectors/bip375.json #11: ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field
-  - isolates: vectors/bip375.json #12: ecdh coverage: invalid proof in PSBT_GLOBAL_SP_DLEQ field
-  - isolates: vectors/bip375.json #13: ecdh coverage: missing PSBT_IN_BIP32_DERIVATION field for input when PSBT_IN_SP_DLEQ set
-  - isolates: vectors/bip375.json #15: ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field when PSBT_OUT_SCRIPT not set
-  - isolates: vectors/bip375.json #16: ecdh coverage: global ECDH share proven over a subset of eligible inputs
-  - isolates: vectors/bip375.json #17: ecdh coverage: output 1 missing ECDH share for scan key with one input / three sp outputs (different scan keys)
-  - isolates: vectors/bip375.json #18: ecdh coverage: input 1 missing ECDH share for output 1 with two inputs / two sp outputs (different scan keys)
-  - isolates: vectors/bip375.json #19: ecdh coverage: input 1 missing ECDH share for scan key with two inputs / one sp output
-  - isolates: vectors/bip375.json #33: input derivation: P2WPKH BIP32_DERIVATION pubkey does not match prevout script
-  - isolates: vectors/bip375.json #34: input derivation: P2PKH BIP32_DERIVATION pubkey does not match prevout script
-  - isolates: vectors/bip375.json #35: input derivation: P2SH-P2WPKH BIP32_DERIVATION pubkey does not match prevout script
-  - isolates: vectors/bip375.json #36: input pubkey mismatch: global ECDH share computed from decoy pubkey not matching prevout script
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/roles.json #11
+  - isolates: vectors/bip375.json #11: ecdh coverage: only one ineligible P2SH multisig input when PSBT_OUT_SCRIPT set for sp output
+  - isolates: vectors/bip375.json #12: ecdh coverage: missing PSBT_IN_SP_ECDH_SHARE field for input 0 when PSBT_OUT_SCRIPT set for sp output
+  - isolates: vectors/bip375.json #13: ecdh coverage: input 1 with no PSBT_IN_WITNESS_UTXO or PSBT_IN_NON_WITNESS_UTXO and no ECDH share
+  - isolates: vectors/bip375.json #14: ecdh coverage: P2SH input 1 with no PSBT_IN_REDEEM_SCRIPT and no ECDH share
+  - isolates: vectors/bip375.json #15: ecdh coverage: missing PSBT_IN_SP_DLEQ field for input when PSBT_IN_SP_ECDH_SHARE set
+  - isolates: vectors/bip375.json #16: ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field
+  - isolates: vectors/bip375.json #17: ecdh coverage: invalid proof in PSBT_IN_SP_DLEQ field when PSBT_OUT_SCRIPT not set for sp output
+  - isolates: vectors/bip375.json #18: ecdh coverage: missing PSBT_GLOBAL_SP_DLEQ field when PSBT_GLOBAL_SP_ECDH_SHARE set
+  - isolates: vectors/bip375.json #19: ecdh coverage: invalid proof in PSBT_GLOBAL_SP_DLEQ field
+  - isolates: vectors/bip375.json #20: ecdh coverage: global ECDH share proven over a subset of eligible inputs
+  - isolates: vectors/bip375.json #21: ecdh coverage: PSBT_GLOBAL_SP_ECDH_SHARE set when the only input is ineligible (P2TR with NUMS internal key)
+  - isolates: vectors/bip375.json #22: ecdh coverage: eligible input keys sum to the point at infinity when PSBT_GLOBAL_SP_ECDH_SHARE set
+  - isolates: vectors/bip375.json #23: ecdh coverage: missing PSBT_IN_BIP32_DERIVATION field for input when PSBT_IN_SP_DLEQ set
+  - isolates: vectors/bip375.json #24: ecdh coverage: output 1 missing ECDH share for scan key with one input / three sp outputs (different scan keys)
+  - isolates: vectors/bip375.json #25: ecdh coverage: input 1 missing ECDH share for output 1 with two inputs / two sp outputs (different scan keys)
+  - isolates: vectors/bip375.json #26: ecdh coverage: input 1 missing ECDH share for scan key with two inputs / one sp output
+  - isolates: vectors/bip375.json #27: ecdh coverage: P2WPKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey
+  - isolates: vectors/bip375.json #28: ecdh coverage: P2PKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey
+  - isolates: vectors/bip375.json #29: ecdh coverage: P2SH-P2WPKH PSBT_IN_BIP32_DERIVATION pubkey does not match scriptPubKey
+  - isolates: vectors/bip375.json #30: ecdh coverage: global ECDH share computed from a PSBT_IN_BIP32_DERIVATION pubkey not matching scriptPubKey
+  - isolates: vectors/bip375.json #32: ecdh coverage: P2SH-P2WPKH input 1 with a non-P2WPKH PSBT_IN_REDEEM_SCRIPT that does not hash to scriptPubKey and no ECDH share
+  - isolates: vectors/bip375.json #33: ecdh coverage: finalized NUMS script-path witness not committed to prevout, input missing ECDH share
+  - isolates: vectors/bip375.json #34: ecdh coverage: finalized P2SH-P2WPKH input with non-P2WPKH final scriptSig redeem script and no ECDH share
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
 - Enforced by: Signer, Transaction Extractor
-- From: [BIP375 - Invalid Psbts (ECDH Coverage)](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
+- From: [BIP375 - Invalid Psbts (ECDH Coverage)](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts)
 - Note: Bound once per subcheck, in REF-8's order; the failure detail names the subcheck. DLEQ proofs are verified with BIP374 VerifyProof.
 
 #### GEN-SP-4 (MUST, derived)
@@ -453,21 +443,21 @@ A PSBT with silent-payment outputs MUST pass the input eligibility check REF-9 d
 - Applies when: From BIP-375; Silent payment outputs
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/bip375.json #20: input eligibility: segwit version greater than 1 in transaction inputs with sp output
-  - isolates: vectors/bip375.json #21: input eligibility: segwit version greater than 1 supplied via PSBT_IN_NON_WITNESS_UTXO with sp output
-  - isolates: vectors/bip375.json #22: input eligibility: non-SIGHASH_ALL signature on input with sp output
-  - isolates: vectors/bip375.json #23: input eligibility: non-SIGHASH_ALL signature on input with sp output and PSBT_IN_SIGHASH_TYPE omitted
-  - isolates: vectors/bip375.json #24: input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output
-  - isolates: vectors/bip375.json #25: input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output and PSBT_IN_SIGHASH_TYPE omitted
-  - isolates: vectors/bip375.json #26: input eligibility: SIGHASH_ALL|ANYONECANPAY sighash type on input with sp output
-  - isolates: vectors/bip375.json #27: input eligibility: non-SIGHASH_ALL signature on taproot input with sp output
-  - isolates: vectors/bip375.json #28: input eligibility: SIGHASH_DEFAULT sighash type on non-taproot input with sp output
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/roles.json #11
+  - isolates: vectors/bip375.json #35: input eligibility: segwit version greater than 1 in transaction inputs with sp output
+  - isolates: vectors/bip375.json #36: input eligibility: segwit version greater than 1 supplied via PSBT_IN_NON_WITNESS_UTXO with sp output
+  - isolates: vectors/bip375.json #37: input eligibility: non-SIGHASH_ALL signature on input with sp output
+  - isolates: vectors/bip375.json #38: input eligibility: non-SIGHASH_ALL signature on input with sp output and PSBT_IN_SIGHASH_TYPE omitted
+  - isolates: vectors/bip375.json #39: input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output
+  - isolates: vectors/bip375.json #40: input eligibility: non-SIGHASH_ALL signature on ineligible input with sp output and PSBT_IN_SIGHASH_TYPE omitted
+  - isolates: vectors/bip375.json #41: input eligibility: non-SIGHASH_ALL signature on taproot input with sp output
+  - isolates: vectors/bip375.json #42: input eligibility: non-SIGHASH_ALL signature on taproot input with sp output and PSBT_IN_SIGHASH_TYPE omitted
+  - isolates: vectors/bip375.json #43: input eligibility: SIGHASH_ALL|ANYONECANPAY sighash type on input with sp output
+  - isolates: vectors/bip375.json #44: input eligibility: SIGHASH_DEFAULT sighash type on non-taproot input with sp output
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
 - Enforced by: Creator and Constructor, Signer
 - Basis: derived. Merges the BIP375 Signer's sighash check, the Input Eligibility invalid cases and the Constructor's eligibility check into one check, REF-9.
-- From: [BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
-- Note: Bound once per subcheck. The Signer section allows SIGHASH_DEFAULT on a taproot input in both sighash sentences: it fails if a provided sighash type is not "SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input", and signs using "SIGHASH_ALL, or SIGHASH_DEFAULT for a taproot input" when none is provided.
+- From: [BIP375 - Signer (sighash type); Invalid Psbts (Input Eligibility); Constructor](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer)
+- Note: Bound once per subcheck. The Signer fails if PSBT_IN_SIGHASH_TYPE is not SIGHASH_ALL, and without it signs using SIGHASH_ALL. "For a taproot input, SIGHASH_DEFAULT is accepted in place of SIGHASH_ALL in both cases."
 
 #### GEN-SP-5 (MUST, derived)
 
@@ -476,16 +466,15 @@ A PSBT with silent-payment outputs MUST pass the output script check REF-10 desc
 - Applies when: From BIP-375; Silent payment outputs
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/bip375.json #29: output scripts: P2TR input with NUMS internal key cannot derive sp output
-  - isolates: vectors/bip375.json #30: output scripts: PSBT_OUT_SCRIPT does not match derived sp output
-  - isolates: vectors/bip375.json #31: output scripts: two sp outputs (same scan / different spend keys) not sorted lexicographically by spend key
-  - isolates: vectors/bip375.json #32: output scripts: k values assigned to wrong output indices with three sp outputs (same scan / spend keys)
-  - isolates: vectors/bip375.json #79: input eligibility: bare OP_2 script is not a segwit v2 witness program
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/roles.json #11
+  - isolates: vectors/bip375.json #47: output scripts: P2TR input with NUMS internal key cannot derive sp output
+  - isolates: vectors/bip375.json #48: output scripts: PSBT_OUT_SCRIPT does not match derived sp output
+  - isolates: vectors/bip375.json #49: output scripts: two sp outputs (same scan / different spend keys) not sorted lexicographically by spend key
+  - isolates: vectors/bip375.json #50: output scripts: k values assigned to wrong output indices with three sp outputs (same scan / spend keys)
+  - isolates: vectors/bip375.json #51: output scripts: PSBT_OUT_SCRIPT set for sp output when the eligible input keys sum to the point at infinity
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
 - Enforced by: Signer, Transaction Extractor
 - Basis: derived. Merges the BIP375 Output Scripts invalid cases with the Signer's and Transaction Extractor's output script checks into one check, REF-10.
-- From: [BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
+- From: [BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#invalid-psbts)
 - Note: Bound twice: the derivation context first, then the scripts. With GEN-SP-3 the shares a set script needs are present. That lets the check decide rather than report missing context.
 
 #### GEN-SP-6 (MUST, derived)
@@ -515,11 +504,10 @@ A PSBT with silent-payment outputs MUST NOT carry a signature while any output l
 - Applies when: From BIP-375; Silent payment outputs
 - Coverage: Full
 - Vectors: corpus
-  - isolates: vectors/roles.json #12: Signed input while a silent payment output has no script
-  - passes: vectors/bip375.json #37 #38 #39 #40 #41 #42 #43 #44 #45 #46 #47 #48 #49 #50 #51 #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93
-  - passes: vectors/roles.json #11
+  - isolates: vectors/bip375.json #46: input eligibility: input signed before every sp output has PSBT_OUT_SCRIPT
+  - passes: vectors/bip375.json #52 #53 #54 #55 #56 #57 #58 #59 #60 #61 #62 #63 #64 #65 #66 #67 #68 #69 #70 #71 #72 #73 #74 #75 #76 #77 #78 #79 #80 #81 #82 #83 #84 #85 #86 #87 #88 #89 #90 #91 #92 #93 #94 #95 #96 #97 #98 #99 #100 #101 #102 #103 #104 #105 #106 #107 #108 #109 #110 #111 #112 #113
 - Enforced by: Signer
-- From: [BIP375 - Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
+- From: [BIP375 - Signer](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer)
 - Note: Restates the Signer's duty "If any output does not have PSBT_OUT_SCRIPT set, the Signer must not yet add a signature" as a property of the PSBT: no conforming Signer produces it, and a Signer that receives it refuses. A present empty script counts as set.
 
 ## Creator and Constructor
@@ -660,14 +648,14 @@ When adding a PSBT format version, use the highest required version as recommend
 
 Updaters SHOULD supply BIP32 derivation fields for P2PKH, P2WPKH and P2SH-P2WPKH inputs so public keys are available. BIP375 permits setting the derivation value to zero to withhold origin information.
 
-- From: [BIP375 - Updater](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#updater)
+- From: [BIP375 - Updater](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#updater)
 - Note: BIP375 describes a privacy alternative as setting the value to zero. Do not assume this uses BIP376’s separate four-byte-fingerprint encoding.
 
 #### GUIDE-8 (MAY) SP change annotations
 
 Updaters may supply scan/spend derivation information and a label for change detection.
 
-- From: [BIP375 - Change Detection](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#change-detection)
+- From: [BIP375 - Change Detection](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#change-detection)
 
 #### GUIDE-9 (SHOULD) SP spending derivation
 
@@ -834,7 +822,7 @@ The Signer MUST write the BIP340 signature for an SP input to PSBT_IN_TAP_KEY_SI
 
 The Signer SHOULD generate per-input shares and proofs for eligible inputs whose private keys it has, or a global share and proof when it has all eligible private keys, and compute missing scripts when share coverage is complete.
 
-- From: [BIP375 - Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
+- From: [BIP375 - Signer](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer)
 
 #### GUIDE-16 (MAY) Signer UTXO policy
 
@@ -884,7 +872,7 @@ BIP372: Signers SHOULD remove PSBT_IN_P2C_TWEAK after PSBT_IN_PARTIAL_SIG is con
 BIP375: at minimum, the Signer SHOULD verify the DLEQ proofs of eligible inputs it has no private keys for, or the global DLEQ proof if it is set, as REF-3 describes. Verifying the proofs of inputs it has the private keys for as well is acceptable.
 
 - Basis: resolution. BIP375's Signer section limits per-input verification to inputs the Signer has no private keys for, while the reference validator and the ECDH coverage vectors verify every eligible input's proof. The BIP's scope is read as the minimum, so a Signer that also verifies its own inputs, as GEN-SP-3 requires of the PSBT it receives, conforms.
-- From: [BIP375 - Signer](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#signer)
+- From: [BIP375 - Signer](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#signer)
 
 ## Input Finalizer
 
@@ -899,7 +887,7 @@ If PSBT_IN_SIGHASH_TYPE is present, the Finalizer MUST refuse to finalize an inp
 - Phase: Precondition
 - Coverage: Partial
 - Vectors: tests only
-  - passes: vectors/roles.json #20
+  - passes: vectors/bip174.json #34
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
 - Note: Compares the sighash types of the input's signatures: partial and Taproot signature fields, and those in a finalized key-path or legacy witness. evaluate_finalizing applies it to the input the Finalizer received, where every signature is in a labeled field. Not applicable without PSBT_IN_SIGHASH_TYPE or without a signature.
 - Not decided: An input already finalized with a Taproot script path is Incomplete, because its witness does not say which items are signatures. Finalized P2WSH spends are not searched.
@@ -910,9 +898,7 @@ Before finalizing an input with PSBT_IN_SP_TWEAK, the Finalizer MUST require PSB
 
 - Phase: Precondition
 - Coverage: Full
-- Vectors: corpus
-  - isolates: vectors/roles.json #29: Silent payment tweak without a taproot key path signature
-  - isolates: vectors/roles.json #30: Silent payment tweak without a taproot key path signature, BIP-376 not enabled
+- Vectors: tests only
 - From: [BIP376 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#input-finalizer)
 - Note: Checks the input the Finalizer receives: one with PSBT_IN_SP_TWEAK must have PSBT_IN_TAP_KEY_SIG.
 
@@ -922,10 +908,7 @@ Before finalizing an input, the Finalizer MUST verify each PSBT_IN_TAP_KEY_SIG a
 
 - Phase: Precondition
 - Coverage: Full
-- Vectors: corpus
-  - isolates: vectors/roles.json #23: 64-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_DEFAULT
-  - isolates: vectors/roles.json #24: 65-byte taproot key path signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL
-  - isolates: vectors/roles.json #28: Silent payment tweak with a taproot key path signature
+- Vectors: tests only
 - Basis: derived. BIP174 finalizes an input only when it has enough data to pass validation. A Taproot signature that does not verify under BIP341 cannot pass validation.
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer), [BIP371 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Signature validation rules](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#signature-validation-rules)
 - Note: Performed with BIP340 through crate::signature. The BIP341 signature message is computed from the unsigned transaction and every input's spent output (only this input's for ANYONECANPAY); missing data returns Incomplete.
@@ -936,10 +919,9 @@ Before finalizing an input, the Finalizer MUST verify each PSBT_IN_PARTIAL_SIG i
 
 - Phase: Precondition
 - Coverage: Full
-- Vectors: corpus
-  - isolates: vectors/roles.json #21: SIGHASH_ALL signature with PSBT_IN_SIGHASH_TYPE SIGHASH_ALL
-  - isolates: vectors/roles.json #22: SIGHASH_SINGLE signature without PSBT_IN_SIGHASH_TYPE
-  - passes: vectors/roles.json #20
+- Vectors: tests only
+  - passes: vectors/bip174.json #34
+  - passes: vectors/bip375.json #114 #116 #118
 - Basis: derived. BIP174 finalizes an input only when it has enough data to pass validation. An ECDSA signature that does not verify cannot pass validation.
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
 - Note: Performed with ECDSA (k256) over the BIP143 signature message for a P2WPKH or P2WSH spend, bare or inside P2SH, and the legacy message otherwise. The signature must be strict DER; a high S is accepted, as consensus does. A missing UTXO, redeem script or witness script returns Incomplete. So does a script code with OP_CODESEPARATOR or a witness version above 0. Runs after ROLE-F-3 and ROLE-F-5.
@@ -1039,12 +1021,9 @@ The Extractor MUST extract only when every input has the final fields its spend 
 
 - Phase: Precondition
 - Coverage: Partial
-- Vectors: corpus
-  - isolates: vectors/roles.json #15: PSBTv2 with an input that is signed but not finalized
-  - isolates: vectors/roles.json #16: PSBTv2 with an empty PSBT_OUT_SCRIPT
-  - isolates: vectors/roles.json #17: PSBTv2 with a finalized unsigned input and a silent payment output without a script
-  - isolates: vectors/roles.json #19: BIP-174 combiner result, not finalized
-  - passes: vectors/roles.json #14 #18
+- Vectors: tests only
+  - passes: vectors/bip174.json #35
+  - passes: vectors/bip375.json #115 #117 #119
 - From: [BIP174 - Transaction Extractor](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#transaction-extractor)
 - Note: The linked check tests final-field presence and some v2 transaction fields, without constructing the transaction or establishing spend satisfaction. It currently rejects present empty output scripts.
 - Not decided: Tests final-field presence and some version 2 fields; it does not build the transaction or establish that each spend is satisfied.
@@ -1059,10 +1038,8 @@ A Combiner MUST NOT combine PSBTs whose transaction identifiers differ.
 
 - Phase: Precondition
 - Coverage: Full
-- Vectors: corpus
-  - isolates: vectors/roles.json #38: PSBTs for different transactions
-  - isolates: vectors/roles.json #39: PSBTv2s with different required lock times
-  - passes: vectors/roles.json #31 #32 #33 #34 #35 #36 #37 #43 #45 #47
+- Vectors: tests only
+  - passes: vectors/bip174.json #36 #37 #38 #39 #40
 - From: [BIP174 - Combiner](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#combiner)
 - Note: Validate each source and result before comparing identifiers. Equal identifiers do not establish a consistent metadata merge; apply ROLE-B-2 separately.
 
@@ -1074,11 +1051,8 @@ A successful combination MUST preserve source key-value data in the correspondin
 
 - Phase: Result
 - Coverage: Partial
-- Vectors: corpus
-  - isolates: vectors/roles.json #40: Combined PSBT drops the second signer's partial signatures
-  - isolates: vectors/roles.json #41: Combined PSBT adds partial signatures neither PSBT holds
-  - isolates: vectors/roles.json #42: PSBTv2s whose PSBT_IN_SEQUENCE conflicts, combined to a third sequence
-  - passes: vectors/roles.json #31 #32 #33 #34 #35 #36 #37 #43 #45 #47
+- Vectors: tests only
+  - passes: vectors/bip174.json #36 #37 #38 #39 #40
 - From: [BIP174 - Combiner](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#combiner)
 - Note: The linked check preserves source keys and selects supplied values after identity comparison. It does not establish comprehensive consistency between merged metadata fields.
 - Not decided: Key preservation and supplied-value selection exist; comprehensive merge consistency is not established.
@@ -1136,7 +1110,7 @@ A PSBT with PSBT_GLOBAL_GENERIC_SIGNED_MESSAGE whose first input spends output 0
 
 An output with PSBT_OUT_SP_V0_INFO.
 
-- From: [BIP375 - Specification](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#specification)
+- From: [BIP375 - Specification](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#specification)
 
 ### Scan key and spend key
 
@@ -1160,7 +1134,7 @@ An integer m the recipient uses to tweak its spend key, so payments to one scan 
 
 A scan key multiplied by an input's private key (PSBT_IN_SP_ECDH_SHARE) or by the sum of the eligible inputs' private keys (PSBT_GLOBAL_SP_ECDH_SHARE). Shares let the output script be computed without revealing private keys to whoever computes it.
 
-- From: [BIP375 - Specification](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#specification)
+- From: [BIP375 - Specification](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#specification)
 
 ### DLEQ proof
 
@@ -1186,22 +1160,21 @@ Use the shared locktime type supported by all constrained inputs and take its ma
 
 For output derivation, select at least one eligible input. Use the scan key’s global ECDH share, or sum the matching shares from all eligible inputs. Public keys and eligibility must be established for the inputs included in the computation.
 
-- From: [BIP375 - Computing The Output Scripts](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#computing-the-output-scripts)
+- From: [BIP375 - Computing The Output Scripts](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#computing-the-output-scripts)
 - Note: Derivation requires complete eligible-input context. Missing public keys or shares cannot count as successful derivation.
 
 ### REF-3 DLEQ verification
 
 Global verification uses the sum of all eligible-input public keys; per-input verification uses that input’s key. Use the matching scan key, share and proof with BIP374 VerifyProof.
 
-- From: [BIP375 - Verifying The Dleq Proof](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#verifying-the-dleq-proof)
+- From: [BIP375 - Verifying The Dleq Proof](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#verifying-the-dleq-proof)
 - Note: A proof check requires the matching proof and complete verification inputs. Summing only recoverable public keys or trusting unrelated derivation keys does not establish the required aggregate key.
 
 ### REF-4 SP output ordering
 
 Assign k per scan key after sorting silent-payment codes lexicographically. Break identical-code ties by ascending output index, then derive the BIP352 script using the selected shared secret.
 
-- From: [BIP375 - Computing The Output Scripts](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#computing-the-output-scripts)
-- Note: The ordering stated here follows BIP375 prose. The published helper uses output-map ordering, which can produce different results.
+- From: [BIP375 - Computing The Output Scripts](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#computing-the-output-scripts)
 
 ### REF-5 Signature verification
 
@@ -1225,19 +1198,19 @@ Take P from the input's P2TR PSBT_IN_WITNESS_UTXO. Compute d = (b_spend + tweak)
 
 For each silent-payment output's scan key: once the output has PSBT_OUT_SCRIPT, there is a global ECDH share, or per-input shares on at least one input and every eligible input. A global share has a global DLEQ proof, the PSBT has an eligible input, every eligible input has a public key, and the proof verifies for the sum of those keys, the scan key and the share. An eligible input's share has a DLEQ proof, the input has a public key, and the proof verifies for that key, the scan key and the share.
 
-- From: [BIP375 - Test Vectors](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors)
+- From: [BIP375 - Test Vectors](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors)
 
 ### REF-9 Input eligibility
 
 With silent-payment outputs, no input spends a SegWit version 2 or later output, PSBT_IN_SIGHASH_TYPE is SIGHASH_ALL (or SIGHASH_DEFAULT on a P2TR input), and every signature uses SIGHASH_ALL (or SIGHASH_DEFAULT for a 64-byte Schnorr signature).
 
-- From: [BIP375 - Test Vectors](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors)
+- From: [BIP375 - Test Vectors](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors)
 
 ### REF-10 Output scripts
 
 A silent-payment output with PSBT_OUT_SCRIPT has the ECDH shares and input public keys its derivation needs (REF-2), and its script is the BIP352 output script, with k assigned as REF-4 describes.
 
-- From: [BIP375 - Test Vectors](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#test-vectors)
+- From: [BIP375 - Test Vectors](https://github.com/macgyver13/bips/blob/21e48c1175b966eb2919965692759e0a0f7a2fb1/bip-0375.mediawiki#test-vectors)
 
 ### REF-11 BIP376 spend fields
 

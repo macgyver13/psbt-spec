@@ -20,7 +20,7 @@ evaluation (`jj log -r @ -T commit_id --no-graph`, or `git rev-parse HEAD`).
 
 ```bash
 cargo build --release --manifest-path rust/Cargo.toml --bin psbt-spec
-rust/target/release/psbt-spec evaluate --out audits/rust-psbt --corpus vectors/bip174.json --corpus vectors/bip370.json --corpus vectors/bip371.json --corpus vectors/bip373.json --corpus vectors/bip375.json --corpus vectors/bip376.json --corpus vectors/roles.json -- adapters/rust-psbt/target/release/psbt-spec-adapter-rust-psbt --revision COMMIT
+rust/target/release/psbt-spec evaluate --out audits/rust-psbt --corpus vectors/bip174.json --corpus vectors/bip370.json --corpus vectors/bip371.json --corpus vectors/bip373.json --corpus vectors/bip375.json --corpus vectors/bip376.json -- adapters/rust-psbt/target/release/psbt-spec-adapter-rust-psbt --revision COMMIT
 ```
 
 To evaluate another checkout, change the `path` of `psbt-v2` in `Cargo.toml`

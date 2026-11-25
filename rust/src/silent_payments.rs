@@ -140,13 +140,24 @@ pub fn is_eligible(input: &InputContext) -> Result<bool, String> {
             && input.value(IN_TAP_MERKLE_ROOT).is_some_and(|root| nums_output_key(root).is_some_and(|k| k[..] == *output_key));
         return Ok(!nums_fields && !final_witness_nums_claim(input, output_key));
     }
+    if is_p2pkh(&spk) {
+        let derived = records(input.map(), IN_BIP32_DERIVATION).map(|r| r.key_data.clone());
+        let finalized = pushes(input.value(IN_FINAL_SCRIPTSIG)).pop();
+        if derived.chain(finalized).any(|k| k.len() == 65 && commits_to(&spk, &k)) {
+            return Ok(false);
+        }
+        return Ok(true);
+    }
     if is_p2sh(&spk) {
         return match redeem_script(input) {
+            Some(rs) if p2sh_script(&rs) != spk => {
+                Err(format!("P2SH input {} redeemScript does not match prevout", input.index))
+            }
             Some(rs) => Ok(is_p2wpkh(&rs)),
             None => Err(format!("P2SH input {} has no redeemScript", input.index)),
         };
     }
-    Ok(is_p2pkh(&spk) || is_p2wpkh(&spk))
+    Ok(is_p2wpkh(&spk))
 }
 
 /// The public key of an eligible input: the P2TR output key, or a key the

@@ -8,14 +8,13 @@ use crate::attribution::{classify, Class, Request, Task};
 use crate::{encoding, Failures};
 
 /// The corpus files that follow the schema, by name, with their contents.
-pub const FILES: [(&str, &str); 7] = [
+pub const FILES: [(&str, &str); 6] = [
     ("bip174", include_str!("../../vectors/bip174.json")),
     ("bip370", include_str!("../../vectors/bip370.json")),
     ("bip371", include_str!("../../vectors/bip371.json")),
     ("bip373", include_str!("../../vectors/bip373.json")),
     ("bip375", include_str!("../../vectors/bip375.json")),
     ("bip376", include_str!("../../vectors/bip376.json")),
-    ("roles", include_str!("../../vectors/roles.json")),
 ];
 
 pub struct File {

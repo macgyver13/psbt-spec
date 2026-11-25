@@ -46,8 +46,8 @@ The phase comes from `rules.json`. The vector's class:
 | none | invalid, `failed` and `incomplete` empty |
 | undecided | invalid, `failed` empty, `incomplete` not empty |
 
-The split matters: `roles.json#38` and `#39` (Combiner sources for different
-transactions) fail ROLE-B-1 (Precondition) and ROLE-B-2 (Result). The
+The split matters: in the synthetic test fixture (`rust/tests/fixtures/roles.json` `#38` and `#39`, Combiner sources for different
+transactions), both fail ROLE-B-1 (Precondition) and ROLE-B-2 (Result). The
 Combiner should refuse because of ROLE-B-1; ROLE-B-2 only says the corpus's
 combined PSBT is wrong too. Both vectors are isolated on ROLE-B-1, not
 confounded.
@@ -325,7 +325,7 @@ The schema is normative; in brief:
 
 [`examples/report.json`](examples/report.json) and
 [`examples/report.md`](examples/report.md): the illustrative `example-wallet`
-over `vectors/roles.json` (50 vectors, `bip_revision` 5aadddb). The vectors,
+over the synthetic test fixture `rust/tests/fixtures/roles.json` (50 vectors, `bip_revision` 5aadddb). The vectors,
 their attribution and the rule IDs are real: the attribution was computed by
 the reference checks at `e536919`, with `failed` and `incomplete` kept apart. The
 project's answers are invented to reach every verdict row. It declares tasks
@@ -361,5 +361,5 @@ The example does not declare `sign`, so it reaches no stage MATCH or LOOSER.
 and GEN-SP-7 / sign; one that accepts them at both is LOOSER there. Its
 mode `named` covers "Named rules": the same rule, another rule, no rule and
 an unknown ID, at `deserialize` (`vectors/bip174.json`), at `sign` stage
-requests (`vectors/roles.json` #6 to #10, #12) and on confounded `sign`
+requests (`rust/tests/fixtures/roles.json` #6 to #10, #12) and on confounded `sign`
 vectors (`vectors/bip174.json` #31, #32).

@@ -63,7 +63,7 @@ Published normative strengths are preserved. Guidance IDs identify entries witho
 changing their SHOULD or MAY wording. Display order is not the order the reference checks run. The scope covers versions
 0 and 2, with an absent `PSBT_GLOBAL_VERSION` meaning version 0.
 
-Open questions are listed at the top of `spec.html`. Creator, Constructor, Updater, private-key signing, script construction,
+Open questions, when there are any, are listed at the top of `spec.html`. Creator, Constructor, Updater, private-key signing, script construction,
 and missing-context outcomes require implementation work beyond the current APIs.
 
 ## Implementation
@@ -208,15 +208,25 @@ is an adapter for the bips BIP-375 reference validator.
 
 ## Vector generators
 
-The local BIP-376 corpus is generated from fixed keys. `vectors/roles.json` is
-maintained by hand; no script reproduces it. Its vectors include the supplied
-and combined PSBTs for transition checks.
+The local BIP-376 corpus is generated from fixed keys.
 
 FIXME: `gen_bip376.py` still writes the pre-schema-v1 shape (`error`, no
 `valid`, no `bip_revision` wrapper); convert its output before regenerating.
 
 ```bash
 PYTHONPATH=<secp256k1lab>/src python3 vectors/tools/gen_bip376.py > vectors/bip376.json
+```
+
+The BIP-375 corpus follows the BIP's `bip375_test_vectors.json`. When the
+BIP375 pin moves, `import_bip375.py` takes the vector file at the corpus's
+current `bip_revision` and at the new revision. It replaces each vector's PSBT
+and description by position, keeping its `rule`, `task` and `note`, and refuses
+to write unless the old file reproduces the current corpus exactly. Run
+`psbt-spec vectors ../vectors/bip375.json` afterwards to confirm every vector
+still isolates its rule.
+
+```bash
+python3 vectors/tools/import_bip375.py OLD.json NEW.json vectors/bip375.json <short revision>
 ```
 
 Published vectors are pinned to `bitcoin/bips` revision

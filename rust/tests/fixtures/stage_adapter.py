@@ -27,12 +27,12 @@ NAMED = {
     ("deserialize", "vectors/bip174.json#4"): None,
     ("deserialize", "vectors/bip174.json#3"): "GEN-ST-99",
     # sign stage requests on GEN-T-2 and GEN-SP-7: the same four cases.
-    ("sign", "vectors/roles.json#6"): "GEN-T-2",
-    ("sign", "vectors/roles.json#7"): "GEN-SP-7",
-    ("sign", "vectors/roles.json#10"): "GEN-SP-7",
-    ("sign", "vectors/roles.json#8"): None,
-    ("sign", "vectors/roles.json#9"): "GEN-T-99",
-    ("sign", "vectors/roles.json#12"): "GEN-SP-7",
+    ("sign", "rust/tests/fixtures/roles.json#6"): "GEN-T-2",
+    ("sign", "rust/tests/fixtures/roles.json#7"): "GEN-SP-7",
+    ("sign", "rust/tests/fixtures/roles.json#10"): "GEN-SP-7",
+    ("sign", "rust/tests/fixtures/roles.json#8"): None,
+    ("sign", "rust/tests/fixtures/roles.json#9"): "GEN-T-99",
+    ("sign", "rust/tests/fixtures/roles.json#12"): "GEN-SP-7",
     # sign vectors confounded on ROLE-S-2 and ROLE-S-4 (and ROLE-S-3).
     ("sign", "vectors/bip174.json#31"): "ROLE-S-4",
     ("sign", "vectors/bip174.json#32"): "ROLE-S-1",

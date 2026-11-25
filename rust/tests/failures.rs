@@ -4,7 +4,7 @@
 mod common;
 
 use common::{psbt, vectors};
-use psbt_spec::{failing_rules_finalizing, failing_rules_signing, Failures};
+use psbt_spec::{failing_rules_finalizing, failing_rules_signing, Bip, Failures};
 
 #[test]
 fn merge_keeps_a_rule_failed_anywhere_only_in_failed() {
@@ -20,11 +20,12 @@ fn merge_keeps_a_rule_failed_anywhere_only_in_failed() {
 /// valid PSBT attributes no failure under either received-and-returned form.
 #[test]
 fn returning_a_valid_psbt_unchanged_fails_nothing() {
-    for v in vectors("roles").iter().filter(|v| v["valid"] == true && v["task"] == "finalizing") {
-        let bytes = psbt(v);
-        let bips = common::vector_bips(v);
-        assert!(failing_rules_finalizing(&bytes, &bytes, &bips).is_empty(), "{}", v["description"]);
-        assert!(failing_rules_signing(&bytes, &bytes, &bips).is_empty(), "{}", v["description"]);
+    for (corpus, bips) in [("bip174", &[][..]), ("bip375", &[Bip::Bip375][..])] {
+        for v in vectors(corpus).iter().filter(|v| v["valid"] == true && v["task"] == "finalizing") {
+            let bytes = psbt(v);
+            assert!(failing_rules_finalizing(&bytes, &bytes, bips).is_empty(), "{}", v["description"]);
+            assert!(failing_rules_signing(&bytes, &bytes, bips).is_empty(), "{}", v["description"]);
+        }
     }
 }
 
@@ -32,8 +33,8 @@ fn returning_a_valid_psbt_unchanged_fails_nothing() {
 /// as in `evaluate_signing`.
 #[test]
 fn signing_that_changes_the_inputs_fails_role_s_11_alone() {
-    let all = vectors("roles");
+    let all = vectors("bip375");
     let valid: Vec<Vec<u8>> = all.iter().filter(|v| v["valid"] == true && v["task"] == "finalizing").map(psbt).collect();
     let other = valid.iter().find(|p| **p != valid[0]).unwrap();
-    assert_eq!(failing_rules_signing(&valid[0], other, &[]).failed, ["ROLE-S-9"]);
+    assert_eq!(failing_rules_signing(&valid[0], other, &[Bip::Bip375]).failed, ["ROLE-S-9"]);
 }
