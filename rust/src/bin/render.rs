@@ -432,7 +432,7 @@ fn catalog(specification: &Specification, corpus: &BTreeMap<String, RuleCorpus>)
 
     let mut html = table("general", "General rules", "Properties a PSBT must satisfy under the applicable version and extensions. They are the precondition of every role.", "Rule", "Check", &general);
     html += &format!(
-        "<h2 id=\"roles\">Role obligations</h2>\n<p>Requirements that apply when performing the named operation. A <em>Precondition</em> is checked on the PSBT the role received, and failing it means the role must refuse. A <em>Result</em> is checked on the PSBT the role returned, alone or against what it received. Each role's SHOULD and MAY guidance follows its rules.</p>\n<p class=strip>{strip}</p>\n<div class=scroll><table class=rules><tr><th>ID</th><th>Obligation</th><th>Check</th></tr>\n{roles}</table></div>\n"
+        "<h2 id=\"roles\">Role obligations</h2>\n<p>Requirements that apply when performing the named operation. A <em>Precondition</em> is checked on the PSBT the role received. Failing it means the role must refuse. A <em>Result</em> is checked on the PSBT the role returned, alone or against what it received. Each role's SHOULD and MAY guidance follows its rules.</p>\n<p class=strip>{strip}</p>\n<div class=scroll><table class=rules><tr><th>ID</th><th>Obligation</th><th>Check</th></tr>\n{roles}</table></div>\n"
     );
     html += &table("definitions", "Definitions", "Terms the rules use.", "Definition", "", &rows("definition"));
     html += &table("procedures", "Procedures", "Procedures the rules cite.", "Procedure", "", &rows("reference"));
@@ -605,7 +605,7 @@ fn evaluate_section() -> String {
     // branch is not on github.com/macgyver13/bip375-interop.
     format!(
         "<h2 id=\"evaluate\">Evaluate your project</h2>\n\
-<p>A project judges its own compliance by rule ID. <code>psbt-spec evaluate</code> puts every corpus vector to the project through an adapter and writes a report with one verdict per rule and operation. <code>psbt-spec attribute</code> reads a PSBT, with the task that produced it, and lists the rules it fails.</p>\n\
+<p>A project judges its own compliance by rule ID. <code>psbt-spec evaluate</code> puts every corpus vector to the project through an adapter and writes a report with one verdict per rule and operation. <code>psbt-spec attribute</code> reads a PSBT and the task that produced it, then lists the rules it fails.</p>\n\
 <p>To run an evaluation, build <code>psbt-spec</code> from source and point it at your adapter and one or more corpus files:</p>\n\
 <pre>git clone https://github.com/macgyver13/psbt-spec\n\
 cd psbt-spec/rust\n\
@@ -626,8 +626,8 @@ cargo run --release --bin psbt-spec -- evaluate --out DIR \\\n\
 <li><a href=\"docs/attribute.md\">The attribute command</a>: which rules a PSBT fails.</li>\n\
 <li>Example adapters: <a href=\"{base}adapters/bip375-reference\">bip375-reference</a> (Python, 138 lines), <a href=\"{base}adapters/rust-psbt\">rust-psbt</a> (Rust, 325 lines) and <a href=\"{base}adapters/spdk\">spdk</a> (Rust, 265 lines). A minimal adapter is a loop of a few dozen lines; see the skeleton in the adapter contract.</li>\n\
 </ul>\n\
-<p>This page publishes no project's results. Cross-implementation results are seen in the interoperability harnesses: bip375-interop-v2 and <a href=\"https://github.com/GautamBytes/psbt-interop-lab\">psbt-interop-lab</a>.</p>\n\
-<p id=\"vector-coverage\">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule, so <code>evaluate</code> judges projects on it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>\n"
+<p>This page publishes no project's results. Cross-implementation results live in the interoperability harnesses: bip375-interop-v2 and <a href=\"https://github.com/GautamBytes/psbt-interop-lab\">psbt-interop-lab</a>.</p>\n\
+<p id=\"vector-coverage\">Each rule's Check column shows its corpus coverage: the invalid vectors that isolate it, the valid vectors that pass it, and a status. <em>corpus</em>: a vector isolates the rule. <code>evaluate</code> judges projects on it. <em>tests only</em>: no vector isolates it yet; its check is observed failing only by the repository's tests. <em>none</em>: the rule has no check. Vectors are numbered from 0 within their file.</p>\n"
     )
 }
 
@@ -889,17 +889,17 @@ a.field {{ text-decoration-style: dotted; }}
 <dt>Incomplete</dt><dd>The PSBT lacks the context to decide; this is not a pass.</dd>
 <dt>Full</dt><dd>Coverage: the check decides the stated property whenever the PSBT carries the context it needs.</dd>
 <dt>Partial</dt><dd>Coverage: it decides part of the property; the implementation note says what it leaves undecided.</dd>
-<dt>Declared</dt><dd>Coverage: this reference cannot decide it, because it needs cryptography the reference does not carry or behavior a PSBT does not show.</dd>
+<dt>Declared</dt><dd>Coverage: this reference cannot decide it. It needs cryptography the reference does not carry or behavior a PSBT does not show.</dd>
 <dt>Pending</dt><dd>Coverage: there is no check yet.</dd>
 <dt>Derived</dt><dd>Basis: the rule follows from BIP text but does not restate one sentence; it merges sentences, or reads a requirement from a field description or another BIP. An unmarked rule restates one BIP sentence.</dd>
-<dt>Resolution</dt><dd>Basis: the BIP text is ambiguous or silent, and the project decided; the reading gives the basis.</dd>
+<dt>Resolution</dt><dd>Basis: the BIP text is ambiguous or silent and the project decided. The reading gives the basis.</dd>
 </dl>
 <p><a href="{source}rust/src/spec.rs">Rust specification source</a> &middot; <a href="rules.json">rules.json</a> (<a href="docs/rules.md">schema</a>) &middot; <a href="rules.md">rules.md</a> &middot; <a href="llms.txt">llms.txt</a> &middot; <a href="PRINCIPLES.md">Principles</a> &middot; <a href="ROADMAP.md">Roadmap</a></p>
 {version}{evaluate}{questions}{preamble}
 <div class=filters><label>Strength <select id=filter-strength><option value="">All</option><option>MUST</option><option>MUST NOT</option><option>SHOULD</option><option>MAY</option></select></label><label>BIP <select id=filter-bip><option value="">All</option>{bip_options}</select></label><label>Search <input id=filter-text type=search></label></div>
 {catalog}
 <h2 id="fields">Field registry</h2>
-<p>The source of truth for PSBT field type numbers and names is the BIP174 <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174/type-registry.mediawiki">type registry</a>, where new fields must be added; each field's definition is in its BIP. These tables restate them only to show what this specification adds: the format constraints the validators enforce, collected across BIPs, and the version and replacement rules extensions introduce. Where they differ, the upstream registry and BIPs govern.</p>
+<p>The source of truth for PSBT field type numbers and names is the BIP174 <a href="https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174/type-registry.mediawiki">type registry</a>. New fields must be added there, and each field's definition is in its BIP. These tables restate them only to show what this specification adds: the format constraints the validators enforce (collected across BIPs) and the version and replacement rules that extensions introduce. Where they differ, the upstream registry and BIPs govern.</p>
 <p>Every listed field is checked whatever extensions the caller enables; enabling a BIP adds its semantic rules, not its field formats. Unlisted field types pass unchecked. Key data and value constraints are enforced by <a href="#GEN-F-5">GEN-F-5</a>. Under <a href="#GEN-ST-2">GEN-ST-2</a>, a version listed under <em>Required</em> or <em>Excluded</em> must include or must omit the field, unless a known field listed with it stands in its place. <em>Rules</em> lists the statements that name the field.</p>
 {fields}{script}
 </body>

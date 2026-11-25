@@ -1,6 +1,6 @@
 # psbt-spec
 
-> A rulebook and evaluation tool for the PSBT BIPs: BIP174 (version 0), BIP370 (version 2), and the extensions BIP371 (Taproot), BIP373 (MuSig2), BIP353 (DNS payment proofs), BIP322 (message signing), BIP372 (pay-to-contract, Draft), BIP375 and BIP376 (silent payments). Every requirement is a rule with a stable ID, its BIP evidence, a strength (MUST, MUST NOT, SHOULD, MAY) and a coverage value. A PSBT is well formed if it passes every General rule (GEN-*). A role (Creator, Constructor, Updater, Signer, Input Finalizer, Transaction Extractor, Combiner) conforms if its rules (ROLE-*) hold on the PSBT it received and the PSBT it returned. Status: draft; rule IDs may change until 1.0.
+> A rulebook and evaluation tool for the PSBT BIPs: BIP174 (version 0), BIP370 (version 2), and the extensions BIP371 (Taproot), BIP373 (MuSig2), BIP353 (DNS payment proofs), BIP322 (message signing), BIP372 (pay-to-contract), BIP375 and BIP376 (silent payments). Every requirement is a rule with a stable ID, its BIP evidence, a strength (MUST, MUST NOT, SHOULD, MAY) and a coverage value. A PSBT is well formed if it passes every General rule (GEN-*). A role (Creator, Constructor, Updater, Signer, Input Finalizer, Transaction Extractor, Combiner) conforms if its rules (ROLE-*) hold on the PSBT it received and the PSBT it returned. Status: draft; rule IDs may change until 1.0.
 
 ## Rules
 

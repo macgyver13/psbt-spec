@@ -274,7 +274,7 @@ PSBT_IN_TAP_INTERNAL_KEY, tweaked by PSBT_IN_TAP_MERKLE_ROOT or, without it, by 
   - passes: vectors/bip375.json #49 #61 #68 #69 #70 #74 #75
 - Basis: derived. BIP371 gives the internal key and merkle root of the spent output. BIP341 defines the output key as the internal key tweaked by that root, so fields that do not produce it do not describe the output.
 - From: [BIP371 - PSBT_IN_TAP_INTERNAL_KEY and PSBT_IN_TAP_MERKLE_ROOT](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0371.mediawiki#specification), [BIP341 - Constructing and spending Taproot outputs](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0341.mediawiki#constructing-and-spending-taproot-outputs)
-- Note: Without PSBT_IN_TAP_MERKLE_ROOT, a key-only tweak that matches is Verified and a mismatch is Incomplete, since the PSBT may omit the script tree. A missing spent output returns Incomplete.
+- Note: Without PSBT_IN_TAP_MERKLE_ROOT, a key-only tweak that matches is Verified and a mismatch is Incomplete. The PSBT may omit the script tree. A missing spent output returns Incomplete.
 
 #### GEN-TR-3 (MUST, derived)
 
@@ -383,7 +383,7 @@ For each PSBT_IN_P2C_TWEAK, the original key plus the tweak times G MUST be a ke
 
 - Coverage: Partial
 - Vectors: tests only
-- From: [BIP372 - Specification (Draft)](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0372.mediawiki#specification)
+- From: [BIP372 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0372.mediawiki#specification)
 - Note: Matches P + tG as a P2PKH or P2WPKH key hash or a 33-byte push in the spent, redeem, or witness script. Taproot spends return Incomplete because BIP372 leaves them unresolved.
 - Not decided: Does not check that redeem or witness scripts match the spent script, or verify signatures.
 
@@ -486,7 +486,7 @@ A PSBT with silent-payment outputs MUST pass the output script check REF-10 desc
 - Enforced by: Signer, Transaction Extractor
 - Basis: derived. Merges the BIP375 Output Scripts invalid cases with the Signer's and Transaction Extractor's output script checks into one check, REF-10.
 - From: [BIP375 - Invalid Psbts (Output Scripts); Signer; Transaction Extractor](https://github.com/bitcoin/bips/blob/9c5b825e4ba43fab0431fa042ddb00afdf251a95/bip-0375.mediawiki#invalid-psbts)
-- Note: Bound twice: the derivation context first, then the scripts. With GEN-SP-3 the shares a set script needs are present, so the check decides rather than reporting missing context.
+- Note: Bound twice: the derivation context first, then the scripts. With GEN-SP-3 the shares a set script needs are present. That lets the check decide rather than report missing context.
 
 #### GEN-SP-6 (MUST, derived)
 
@@ -559,7 +559,7 @@ Before adding inputs or outputs, the Constructor MUST check the corresponding mo
 - Vectors: tests only
 - From: [BIP370 - Constructor](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0370.mediawiki#constructor)
 - Note: evaluate_constructing runs the General rules on both PSBTs first. The linked check compares input and output counts with the modification flags of the PSBT the Constructor received.
-- Not decided: Assumes new maps are appended, so an inserted map is read as a changed one.
+- Not decided: Assumes new maps are appended. An inserted map is read as a changed one.
 
 #### ROLE-C-4 (MUST)
 
@@ -731,7 +731,7 @@ Before signing an input with PSBT_IN_REDEEM_SCRIPT, the Signer MUST verify that 
 - Coverage: Full
 - Vectors: tests only
 - From: [BIP174 - Data Signers Check For](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#data-signers-check-for)
-- Note: Not applicable without PSBT_IN_REDEEM_SCRIPT, so a P2SH spend missing it passes this rule; ROLE-S-3 and ROLE-S-4 are then Incomplete. Takes the spent output from either UTXO field; without one it is Incomplete.
+- Note: Not applicable without PSBT_IN_REDEEM_SCRIPT. A P2SH spend missing it passes this rule; ROLE-S-3 and ROLE-S-4 are then Incomplete. Takes the spent output from either UTXO field; without one it is Incomplete.
 
 #### ROLE-S-3 (MUST)
 
@@ -742,7 +742,7 @@ Before signing an input with PSBT_IN_WITNESS_SCRIPT, the Signer MUST verify that
 - Vectors: corpus
   - isolates: vectors/bip174.json #33: witnessScript with witness UTXO does not match the redeemScript
 - From: [BIP174 - Data Signers Check For](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#data-signers-check-for)
-- Note: Not applicable without PSBT_IN_WITNESS_SCRIPT, so a P2WSH spend missing it passes this rule. A P2SH spend without its redeemScript, or an input without a spent output, is Incomplete.
+- Note: Not applicable without PSBT_IN_WITNESS_SCRIPT. A P2WSH spend missing it passes this rule. A P2SH spend without its redeemScript, or an input without a spent output, is Incomplete.
 
 #### ROLE-S-4 (MUST)
 
@@ -764,7 +764,7 @@ A Signer that validates a PSBT_OUT_DNSSEC_PROOF MUST validate it as REF-6 descri
 - Vectors: tests only
 - Basis: derived. Merges BIP353's PSBT types and Resolution sections into one procedure, REF-6.
 - From: [BIP353 - PSBT types; Resolution](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0353.mediawiki#psbt-types)
-- Note: Run by evaluate_dnssec_proofs with a supplied time; without one it is Incomplete. Uses dnssec-prover, which enforces the DNSSEC algorithm policy and resolves CNAME and DNAME. TXT character-strings are concatenated in RDATA order.
+- Note: Run by evaluate_dnssec_proofs with a supplied time; without one it is Incomplete. Uses dnssec-prover. It enforces the DNSSEC algorithm policy and resolves CNAME and DNAME. TXT character-strings are concatenated in RDATA order.
 
 ### Not shown in the PSBT
 
@@ -826,7 +826,7 @@ The Signer MUST write the BIP340 signature for an SP input to PSBT_IN_TAP_KEY_SI
 - Coverage: Full
 - Vectors: tests only
 - From: [BIP376 - Signer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0376.mediawiki#signer)
-- Note: Compares the PSBT the Signer received with the one it returned. For an SP input that gained a signature, it must be in PSBT_IN_TAP_KEY_SIG, not a partial or script-path signature, and verify as a key-path signature by the spent output key. Missing transaction data returns Incomplete.
+- Note: Compares the PSBT the Signer received with the one it returned. For an SP input that gained a signature, the signature must be in PSBT_IN_TAP_KEY_SIG rather than a partial or script-path signature. It must verify as a key-path signature by the spent output key. Missing transaction data returns Incomplete.
 
 ### Guidance
 
@@ -875,9 +875,9 @@ BIP322: the Signer's presentation SHOULD resemble signing a message rather than 
 
 #### GUIDE-25 (SHOULD) P2C tweak cleanup
 
-BIP372 (Draft): Signers SHOULD remove PSBT_IN_P2C_TWEAK after PSBT_IN_PARTIAL_SIG is constructed.
+BIP372: Signers SHOULD remove PSBT_IN_P2C_TWEAK after PSBT_IN_PARTIAL_SIG is constructed.
 
-- From: [BIP372 - Specification (Draft)](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0372.mediawiki#specification)
+- From: [BIP372 - Specification](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0372.mediawiki#specification)
 
 #### GUIDE-26 (SHOULD, resolution) SP DLEQ verification
 
@@ -942,7 +942,7 @@ Before finalizing an input, the Finalizer MUST verify each PSBT_IN_PARTIAL_SIG i
   - passes: vectors/roles.json #20
 - Basis: derived. BIP174 finalizes an input only when it has enough data to pass validation. An ECDSA signature that does not verify cannot pass validation.
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
-- Note: Performed with ECDSA (k256) over the BIP143 signature message for a P2WPKH or P2WSH spend, bare or inside P2SH, and the legacy message otherwise. The signature must be strict DER; a high S is accepted, as consensus does. A missing UTXO, redeem script or witness script, a script code with OP_CODESEPARATOR, or a witness version above 0 returns Incomplete. Runs after ROLE-F-3 and ROLE-F-5.
+- Note: Performed with ECDSA (k256) over the BIP143 signature message for a P2WPKH or P2WSH spend, bare or inside P2SH, and the legacy message otherwise. The signature must be strict DER; a high S is accepted, as consensus does. A missing UTXO, redeem script or witness script returns Incomplete. So does a script code with OP_CODESEPARATOR or a witness version above 0. Runs after ROLE-F-3 and ROLE-F-5.
 
 #### ROLE-F-5 (MUST, derived)
 
@@ -966,8 +966,8 @@ For each input with enough data to pass validation, the Finalizer MUST construct
 - Coverage: Partial
 - Vectors: tests only
 - From: [BIP174 - Input Finalizer](https://github.com/bitcoin/bips/blob/5aadddb511a5dcfe4599531bd8ae5e5b96d0f793/bip-0174.mediawiki#input-finalizer)
-- Note: Checks a finalized input against its spent script. P2PKH and P2WPKH must reveal a key that hashes to the committed hash; P2SH and P2WSH must reveal a script that hashes to the commitment; wrapped segwit uses a scriptSig of only the redeem script push; native segwit has no scriptSig; P2TR has a witness and no scriptSig. A matching template is not Verified on its own: a P2PKH or P2WPKH signature, bare or inside P2SH, is verified with ECDSA as ROLE-F-4 does, and P2SH, P2WSH and Taproot script-path spends are Incomplete because script satisfaction is not checked. A Taproot key-path spend is Verified here; ROLE-F-10 verifies its signature. Other spent scripts, or a missing UTXO, return Incomplete. evaluate_finalizing applies it to every input whose final fields the Finalizer set or changed, and fails an input whose final fields it removed. Whether every input with enough data was finalized is not checked.
-- Not decided: Does not execute scripts, so script-hash and Taproot script-path spends are Incomplete rather than Verified; does not determine which inputs had enough data to finalize.
+- Note: Checks a finalized input against its spent script. P2PKH and P2WPKH must reveal a key that hashes to the committed hash; P2SH and P2WSH must reveal a script that hashes to the commitment; wrapped segwit uses a scriptSig of only the redeem script push; native segwit has no scriptSig; P2TR has a witness and no scriptSig. A matching template is not Verified on its own. A P2PKH or P2WPKH signature (bare or inside P2SH) is verified with ECDSA as ROLE-F-4 does. P2SH, P2WSH and Taproot script-path spends are Incomplete because script satisfaction is not checked. A Taproot key-path spend is Verified here; ROLE-F-10 verifies its signature. Other spent scripts and a missing UTXO return Incomplete. evaluate_finalizing applies it to every input whose final fields the Finalizer set or changed, and fails an input whose final fields it removed. Whether every input with enough data was finalized is not checked.
+- Not decided: Does not execute scripts. Script-hash and Taproot script-path spends are Incomplete rather than Verified. Does not determine which inputs had enough data to finalize.
 
 #### ROLE-F-7 (MUST)
 

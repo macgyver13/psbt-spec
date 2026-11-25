@@ -7,7 +7,7 @@ value, so a report can say which rules a project matches, over-enforces or
 misses. It specifies PSBT versions 0 and 2, including silent payments under
 BIP-375 and BIP-376. Extension rules cover
 Taproot (BIP-371), MuSig2 (BIP-373), DNS payment proofs (BIP-353), message
-signing (BIP-322), and pay-to-contract (BIP-372, Draft).
+signing (BIP-322), and pay-to-contract (BIP-372).
 
 The `evaluate`, `vectors` and `attribute` commands run a project against the
 vectors through an adapter ([`docs/adapter.md`](docs/adapter.md)) and write a
